@@ -14,10 +14,10 @@ public class Main extends JFrame{
         Panel panel = new Panel(subs);
         frame.add(panel);
         frame.setVisible(true);
-        subs.add(new Subject(new Genome(), Color.yellow, new Coor(0, 0)));
-        subs.add(new Subject(new Genome(), Color.yellow, new Coor(0, 400)));
-        subs.add(new Subject(new Genome(), Color.yellow, new Coor(900, 0)));
-        subs.add(new Subject(new Genome(), Color.yellow, new Coor(1000, 500)));
+        subs.add(new Subject(Color.yellow, new Coor(0, 0)));
+        subs.add(new Subject(Color.yellow, new Coor(0, 400)));
+        subs.add(new Subject(Color.yellow, new Coor(900, 0)));
+        subs.add(new Subject(Color.yellow, new Coor(1000, 500)));
         
         // how many ticks
         for (int i = 0; i < 200; i++) {

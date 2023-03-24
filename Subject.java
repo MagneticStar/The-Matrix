@@ -5,8 +5,13 @@ public class Subject{
     private Coor position;
     private Color color;
     
-    public Subject(Genome genome, Color color, Coor position) {
-        this.genome = genome;
+    public Subject() {
+        this.genome = new Genome();
+        this.color = new Color(genome.getColor()[0]);
+        // this.position = position; Random position from list of available positions
+    }
+    public Subject(Color color,Coor position){
+        this.genome = new Genome();
         this.color = color;
         this.position = position;
     }
