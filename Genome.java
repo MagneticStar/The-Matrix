@@ -2,8 +2,8 @@ import java.awt.Color;
 import java.util.Random;
 
 public class Genome{
-    private int genomeLength;
-    private int geneLength;
+    private int genomeLength 8;
+    private int geneLength = 16;
     private String DNA;
 
     private Neuron[] neurons;
@@ -46,6 +46,13 @@ public class Genome{
 
     private void interpretDNA(){
         // Each gene of geneLength in DNA is a neuron.
-        // Example 10 10 10
+        // Example:  Source   Sink     Weight
+        //          [0][10] [1][10] [1010101010]
+        // Source: The first bit is the type. Since the source neuron can only be an internal neuron (0) or sensor neuron (1)
+        // The next two bits are the type of source which is only used for sensor neurons (since internal neurons are typeless)
+        // Sink: The first bit is the type. Since the sink neuron can only be an internal neuron (0) or motor neuron (1)
+        // 
+
+        
     }
 }

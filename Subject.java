@@ -7,7 +7,7 @@ public class Subject{
     
     public Subject() {
         this.genome = new Genome();
-        this.color = new Color(genome.getColor()[0]);
+        this.color = genome.getColor();
         // this.position = position; Random position from list of available positions
     }
     public Subject(Color color,Coor position){
