@@ -19,12 +19,12 @@ public class Panel extends JPanel{
     }
 
     public void drawSub(Graphics g, ArrayList<Subject> sub) {
+
         // prints all Subjects in subject array
         for (int i = 0; i < sub.size(); i++) {
             g.setColor(sub.get(i).getColor());
-            // cannot use Coor for drawing!! Coor are doubles and define worldspace, not screenspace
-            // currently I am typecasting becasue the matrix math for translating between the two is not done and I need to debug 
-            g.fillRect((int)sub.get(i).getPosX(), (int)sub.get(i).getPosY(), 30, 30);
+            g.fillRect((int)sub.get(i).getPrintPos().x(), (int)sub.get(i).getPrintPos().y(), 30, 30);
+            // warning!! typecast could cause bugs if getPrintPos fails to output a whole number
         }
     }
 }

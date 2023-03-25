@@ -7,9 +7,10 @@ public class Subject{
     
     public Subject() {
         this.genome = new Genome();
-        this.color = new Color(genome.getColor()[0]);
+        this.color = genome.getColor();
         // this.position = position; Random position from list of available positions
     }
+    
     public Subject(Color color,Coor position){
         this.genome = new Genome();
         this.color = color;
@@ -37,6 +38,15 @@ public class Subject{
     public double getPosY() {
         return position.y();
     }
+    
+    public Coor getPrintPos() {
+        
+        Translation t = new Translation();
+        t.setMat(1, .5);
+        int[] ans = t.translate(position.matrix());
+        return new Coor(ans[0], ans[1]);
+    }
+    
     public Color getColor() {
         return color;
     }

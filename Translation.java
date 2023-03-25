@@ -1,24 +1,38 @@
 public class Translation {
-    private double[][] transMat;
-
+    private double[][] transMat = new double[2][2];
+    
+    // constructors
     public Translation() {
 
     }
+    public Translation(double[][] m) {
+        transMat = m;
+    }
+    
+    // setters
+    public void setMat(double xScaler, double yScaler) {
+        transMat[0][0] = xScaler;
+        transMat[1][1] = yScaler;
+    }
+    
+    // getters
+    public double[][] getMat() {
+        return transMat;
+    }
+  
+    public int[] translate(double[] input) {
 
-    public int[][] translate(double[][] input) {
-        int[][] result = new int[input.length][transMat[0].length];
+        int[] result = new int[2];
 
-        for (int row = 0; row < result.length; row++) {
-            for (int col = 0; col < result[row].length; col++) {
-                result[row][col] = multiplycell(input, row, col);
-            }
+        for (int i = 0; i < result.length; i++) {
+                result[i] = multiplycell(input, i);
         }
         return result;
     }
-    public int multiplycell(double[][] input, int row, int col) {
+    public int multiplycell(double[] input, int col) {
         double cell = 0;
         for (int i = 0; i < transMat.length; i++) {
-            cell += input[row][i] * transMat[i][col];
+            cell += input[i] * transMat[i][col];
         }
         // this typecasting could cause some issues.
         // The cell should already be a whole number but...
