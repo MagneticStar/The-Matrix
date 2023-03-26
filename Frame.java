@@ -1,5 +1,6 @@
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-
+import java.awt.Image;
 public class Frame extends JFrame{
     
     private int height = 500;
