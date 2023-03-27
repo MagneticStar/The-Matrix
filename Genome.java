@@ -2,7 +2,7 @@ import java.awt.Color;
 import java.util.Random;
 
 public class Genome{
-    private int genomeLength 8;
+    private int genomeLength = 8;
     private int geneLength = 16;
     private String DNA;
 
