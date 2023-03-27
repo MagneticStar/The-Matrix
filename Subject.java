@@ -42,8 +42,8 @@ public class Subject{
     public Coor getPrintPos() {
         
         Translation t = new Translation();
-        t.setMat(1, .5);
-        int[] ans = t.translate(position.matrix());
+        t.setMat(Main.frame.getWidth()/1000.0, Main.frame.getHeight()/1000.0);
+        double[] ans = t.translate(position.matrix());
         return new Coor(ans[0], ans[1]);
     }
     
