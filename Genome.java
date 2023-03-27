@@ -2,14 +2,20 @@ import java.awt.Color;
 import java.util.Random;
 
 public class Genome{
-    private int genomeLength 8;
+    private int genomeLength = 8;
     private int geneLength = 16;
     private String DNA;
 
     private Neuron[] neurons;
     private Color color;
+    private Subject subject;
 
+<<<<<<< Updated upstream
     public Genome(){
+=======
+    public Genome(Subject subject){
+        this.subject = subject;
+>>>>>>> Stashed changes
         generateDNA(); // sets this.DNA to a random binary String
         calculateColor(); // sets this.color to RGB values based on the content of this.DNA
     }
@@ -46,13 +52,25 @@ public class Genome{
 
     private void interpretDNA(){
         // Each gene of geneLength in DNA is a neuron.
-        // Example:  Source   Sink     Weight
-        //          [0][10] [1][10] [1010101010]
-        // Source: The first bit is the type. Since the source neuron can only be an internal neuron (0) or sensor neuron (1)
-        // The next two bits are the type of source which is only used for sensor neurons (since internal neurons are typeless)
-        // Sink: The first bit is the type. Since the sink neuron can only be an internal neuron (0) or motor neuron (1)
-        // 
 
+        // Example DNA String
+        //  Source   Sink    Weight
+        // [1][01] [0][10] [1010101010]
+
+        // Source states which neuron feeds into this neuron. Multiple neurons may feed into another but only one will be specified as a source in each. 
+        // The rest will be specified in sink of another neuron.
+        // Sink states which neuron this neuron feeds into.
+        // Weight states how strong the connection of the sink is.
         
+        for(int i=genomeLength; i<0; i--){
+            String sourceType = DNA.substring(0,1);
+            if(sourceType.equals(0)){
+                // Source is an internal neuron
+            }
+            else{
+                // Source is a sensor neuron
+            }
+        }
+
     }
 }
