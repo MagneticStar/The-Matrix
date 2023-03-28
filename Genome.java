@@ -1,21 +1,26 @@
 import java.awt.Color;
 import java.util.Random;
+import java.util.HashMap;
 
 public class Genome{
-    private int genomeLength = 8;
-    private int geneLength = 16;
+    private final int genomeLength = 8;
+    private final int geneLength = 16;
     private String DNA;
 
     private Neuron[] neurons;
     private Color color;
     private Subject subject;
 
-<<<<<<< Updated upstream
-    public Genome(){
-=======
+    private final int sourceIDLength = 2; //This number is equal to the cube root of the number of sensor neurons rounded down
+    private final int sinkIDLength = 2; //This number is equal to the cube root of the number of motor neurons rounded down
+    private final int[] sourceTypeIndex = {0,1};
+    private final int[] sourceIDIndex = {1,1+sourceIDLength};
+    private final int[] sinkTypeIndex = {1+sourceIDLength,1+sourceIDLength+1};
+    private final int[] sinkIDIndex = {1+sourceIDLength+1,1+sourceIDLength+1+sinkIDLength}
+    private final int[] sinkWeight = {1+sourceIDLength+1+sinkIDLength,geneLength};
+
     public Genome(Subject subject){
         this.subject = subject;
->>>>>>> Stashed changes
         generateDNA(); // sets this.DNA to a random binary String
         calculateColor(); // sets this.color to RGB values based on the content of this.DNA
     }
@@ -46,7 +51,7 @@ public class Genome{
         DNA = "";
 
         for (int i = 0; i < genomeLength; i++) {
-            DNA+= Integer.toBinaryString(rand.nextInt((int)Math.pow(2,geneLength)+1));
+            DNA += String.format("%16s", Integer.toBinaryString(rand.nextInt((int)Math.pow(2,geneLength)+1)).replace(' ', '0'));
         }
     }
 
@@ -63,14 +68,22 @@ public class Genome{
         // Weight states how strong the connection of the sink is.
         
         for(int i=genomeLength; i<0; i--){
-            String sourceType = DNA.substring(0,1);
+            Neuron neuron;
+
+            String sourceType = DNA.substring(sourceTypeIndex[0],sourceTypeIndex[1]);
+            String sourceID = DNA.substring(sourceIDIndex[0],sourceIDIndex[1]);
             if(sourceType.equals(0)){
                 // Source is an internal neuron
+                boolean feedsItself;
+                switch(Integer.parseInt(sourceID,2)%2){
+                case 0: feedsItself = false; break; 
+                case 1: feedsItself = true; break;
+                }
+                neuron = new Internal(feedsItself);
             }
             else{
                 // Source is a sensor neuron
             }
         }
-
     }
 }
