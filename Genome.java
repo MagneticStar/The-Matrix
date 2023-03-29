@@ -1,23 +1,25 @@
 import java.awt.Color;
 import java.util.Random;
-import java.util.HashMap;
 
 public class Genome{
     private final int genomeLength = 8;
-    private final int geneLength = 16;
+    private final int geneLength = 32;
     private String DNA;
 
     private Neuron[] neurons;
     private Color color;
     private Subject subject;
 
-    private final int sourceIDLength = 2; //This number is equal to the cube root of the number of sensor neurons rounded down
-    private final int sinkIDLength = 2; //This number is equal to the cube root of the number of motor neurons rounded down
-    private final int[] sourceTypeIndex = {0,1};
-    private final int[] sourceIDIndex = {1,1+sourceIDLength};
-    private final int[] sinkTypeIndex = {1+sourceIDLength,1+sourceIDLength+1};
-    private final int[] sinkIDIndex = {1+sourceIDLength+1,1+sourceIDLength+1+sinkIDLength}
-    private final int[] sinkWeight = {1+sourceIDLength+1+sinkIDLength,geneLength};
+    private final int[] neuronTypeIndex = new int[]{0,1};
+    private final int[] neuronIDIndex = new int[]{1,5};
+
+    private final int[] sourceTypeIndex = new int[]{5,6};
+    private final int[] sourceIDIndex = new int[]{6,10};
+
+    private final int[] sinkTypeIndex = new int[]{10,11};
+    private final int[] sinkIDIndex = new int[]{11,15};
+
+    private final int[] sinkWeightIndex = new int[]{15,geneLength};
 
     public Genome(Subject subject){
         this.subject = subject;
@@ -51,7 +53,7 @@ public class Genome{
         DNA = "";
 
         for (int i = 0; i < genomeLength; i++) {
-            DNA += String.format("%16s", Integer.toBinaryString(rand.nextInt((int)Math.pow(2,geneLength)+1)).replace(' ', '0'));
+            DNA += String.format("%32s", Integer.toBinaryString(rand.nextInt((int)Math.pow(2,geneLength)+1)).replace(' ', '0'));
         }
     }
 
@@ -59,8 +61,8 @@ public class Genome{
         // Each gene of geneLength in DNA is a neuron.
 
         // Example DNA String
-        //  Source   Sink    Weight
-        // [1][01] [0][10] [1010101010]
+        // Neuron      Source   Sink      Weight
+        // [10][1010] [1][0101] [0][1010] [1010101010101010]
 
         // Source states which neuron feeds into this neuron. Multiple neurons may feed into another but only one will be specified as a source in each. 
         // The rest will be specified in sink of another neuron.
@@ -70,12 +72,28 @@ public class Genome{
         for(int i=genomeLength; i<0; i--){
             Neuron neuron;
 
-            String sourceType = DNA.substring(sourceTypeIndex[0],sourceTypeIndex[1]);
-            String sourceID = DNA.substring(sourceIDIndex[0],sourceIDIndex[1]);
-            if(sourceType.equals(0)){
+            int neuronType = Integer.parseInt(DNA.substring(0,1),2);
+            int sourceType = Integer.parseInt(DNA.substring(1,5),2);
+            int sourceID = Integer.parseInt(DNA.substring(5,6),2);
+            int sinkType = Integer.parseInt(DNA.substring(sinkTypeIndex[0],sinkTypeIndex[1]),2);
+            int sinkID = Integer.parseInt(DNA.substring(sinkIDIndex[0],sinkIDIndex[1]),2);
+            int sinkWeight = Integer.parseInt(DNA.substring(sinkWeightIndex[0],sinkWeightIndex[1]),2);
+
+            if(neuronType == 0 || neuronType == 2){
+                // Neuron is an internal neuron
+
+            }
+            else if(neuronType == 1){
+                // Neuron is a sensor neuron
+            }
+            else{
+                // Neuron is a motor neuron
+            }
+
+            if(sourceType == 0){
                 // Source is an internal neuron
                 boolean feedsItself;
-                switch(Integer.parseInt(sourceID,2)%2){
+                switch(sourceID%2){
                 case 0: feedsItself = false; break; 
                 case 1: feedsItself = true; break;
                 }
@@ -83,6 +101,7 @@ public class Genome{
             }
             else{
                 // Source is a sensor neuron
+                neuron = new Sensor(sourceID);
             }
         }
     }
