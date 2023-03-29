@@ -23,10 +23,10 @@ public class Main extends JFrame{
         Panel panel = new Panel();
         frame.add(panel);
         frame.setVisible(true);
-        
-        
+        Sensor s = new Sensor(subs.get(new Coor(0.0, 0.0)));
+        s.findObjs(foods, new Coor(0.0, 0.0));
         // how many ticks
-        for (int i = 0; i < 200; i++) {
+        for (int i = 0; i < 10; i++) {
             tick(panel, subs, i);
         }
     }

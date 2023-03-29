@@ -35,8 +35,6 @@ public class Translation {
         for (int i = 0; i < transMat.length; i++) {
             cell += input[i] * transMat[i][col];
         }
-        // this typecasting could cause some issues.
-        // The cell should already be a whole number but...
         return cell;
     }
 

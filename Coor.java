@@ -1,6 +1,9 @@
 public class Coor {
     private double[] coor = new double[2];
 
+    public Coor() {
+        
+    }
     public Coor(double x, double y) {
         coor[0] = x;
         coor[1] = y;
