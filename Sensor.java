@@ -6,7 +6,6 @@ public class Sensor extends Neuron{
         switch(methodID%(numberOfSensorMethods+1)){
             case 0: this.sensorMethod = Sensor::nearestFood; break;
             case 1: this.sensorMethod = Sensor::nearestWater; break;
-            default: this.sensorMethod = Sensor::nearestFood; break;
         }
     }
 
