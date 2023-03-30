@@ -1,16 +1,17 @@
 public class Sensor extends Neuron{
-    public sensorMethod invoke; 
+    public SensorMethod sensorMethod; 
+    private static int numberOfSensorMethods = 2; // Update this when creating new Sensor methods
 
     public Sensor(int methodID){
-        switch(methodID){
-            case 0: this.invoke = Sensor::nearestFood; break;
-            case 1: this.invoke = Sensor::nearestWater; break;
+        switch(methodID%(numberOfSensorMethods+1)){
+            case 0: this.sensorMethod = Sensor::nearestFood; break;
+            case 1: this.sensorMethod = Sensor::nearestWater; break;
+            default: this.sensorMethod = Sensor::nearestFood; break;
         }
-        
     }
 
-    public interface sensorMethod{
-        double SensorMethod(Subject subject);
+    public interface SensorMethod{
+        double invoke(Subject subject);
     }
 
     ////////////////////////////////////////////////////////

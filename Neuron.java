@@ -1,19 +1,20 @@
 import java.util.HashMap;
+import java.util.ArrayList;
 
 public class Neuron{
-    private HashMap<Neuron,Integer> sources = new HashMap<Neuron,Integer>();
+    private ArrayList<Neuron> sources = new ArrayList<Neuron>();
     private HashMap<Neuron,Integer> sinks = new HashMap<Neuron,Integer>();
 
-    public HashMap<Neuron,Integer> Sources(){
+    public ArrayList<Neuron> getSources(){
         return this.sources;
     }
 
-    public HashMap<Neuron,Integer> Sinks(){
+    public HashMap<Neuron,Integer> getSinks(){
         return this.sinks;
     }
 
     public void addSource(Neuron neuron){
-        this.sources.put(neuron,0);
+        this.sources.add(neuron);
     }
 
     public void addSink(Neuron neuron,int sinkWeight){
