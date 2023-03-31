@@ -21,21 +21,21 @@ public class Translation {
     }
 
     // multiplies two matrices for translating
-    public double[] translate(double[] input) {
+    public int[] translate(int[] input) {
 
-        double[] result = new double[2];
+        int[] result = new int[2];
 
         for (int i = 0; i < result.length; i++) {
                 result[i] = multiplycell(input, i);
         }
         return result;
     }
-    public double multiplycell(double[] input, int col) {
+    public int multiplycell(int[] input, int col) {
         double cell = 0.0;
         for (int i = 0; i < transMat.length; i++) {
             cell += input[i] * transMat[i][col];
         }
-        return cell;
+        return (int)cell;
     }
 
 }

@@ -1,37 +1,40 @@
 
 import java.awt.Color;
-import java.util.HashMap;
+import java.util.ArrayList;
 import javax.swing.*;
 
 public class Main extends JFrame{
     // HashMap for all food
-    public static HashMap<Coor, Food> foods = new HashMap<Coor, Food>();
+    public static  ArrayList<Food> foods = new ArrayList<Food>();
     // HashMap for all subjects
-    public static HashMap<Coor, Subject> subs = new HashMap<Coor, Subject>();
+    public static ArrayList<Subject> subs = new ArrayList<Subject>();
     // Translation obj used to find scalers
     public static Translation matCalc = new Translation();
     // window
     public static Frame frame = new Frame();
+    public static Panel panel = new Panel();
     public static void main(String[] args) {
 
-        subs.put(new Coor(0.0, 0.0), new Subject(Color.yellow, new Coor(0.0, 0.0)));
-        subs.put(new Coor(0.0, 900.0), new Subject(Color.yellow, new Coor(0.0, 900.0)));
-        subs.put(new Coor(900.0, 0.0), new Subject(Color.yellow, new Coor(900.0, 0.0)));
-        subs.put(new Coor(900.0, 900.0), new Subject(Color.yellow, new Coor(900.0, 900.0)));
-        foods.put(new Coor(500.0, 500.0), new Food(new Coor(500.0, 500.0)));
+        subs.add(new Subject(Color.yellow, new Coor(0, 0)));
+        subs.add(new Subject(Color.yellow, new Coor(0, 900)));
+        subs.add(new Subject(Color.yellow, new Coor(900, 0)));
+        subs.add(new Subject(Color.yellow, new Coor(900, 900)));
+        foods.add(new Food(new Coor(0, 0)));
+
         // Create a gui for our program 
-        Panel panel = new Panel();
         frame.add(panel);
         frame.setVisible(true);
-        Sensor s = new Sensor(subs.get(new Coor(0.0, 0.0)));
-        s.findObjs(foods, new Coor(0.0, 0.0));
+        
+        Sensor s = new Sensor(subs.get(0));
+        s.find();
+        
         // how many ticks
         for (int i = 0; i < 10; i++) {
-            tick(panel, subs, i);
+            tick(panel, i);
         }
     }
 
-    public static void tick(Panel panel, HashMap<Coor, Subject> subjects, int i) {
+    public static void tick(Panel panel, int i) {
        
         // do all gamestate changes before repaint() is called
         

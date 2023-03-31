@@ -12,25 +12,25 @@ public class Panel extends JPanel{
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         // Where all graphics are rendered
-        drawSub(g, Main.subs);
-        drawFood(g, Main.foods);
+        drawSub(g);
+        drawFood(g);
     }
 
-    public void drawSub(Graphics g, HashMap<Coor, Subject> sub) {
+    public void drawSub(Graphics g) {
 
         // prints all Subjects in subject array
-        for(Subject value : sub.values()) {
-            g.setColor(value.getColor());
-            g.fillRect((int)value.getPrintPos().x(), (int)value.getPrintPos().y(), 30, 30);
+        for(Subject s: Main.subs) {
+            g.setColor(s.getColor());
+            g.fillRect((int)s.getPrintPos().x(), (int)s.getPrintPos().y(), 30, 30);
         }
             // warning!! typecast could cause bugs if getPrintPos fails to output a whole number
     }
-    public void drawFood(Graphics g, HashMap<Coor, Food> food) {
+    public void drawFood(Graphics g) {
 
         // prints all Subjects in subject array
-        for(Food value : food.values()) {
-            g.setColor(value.getColor());
-            g.fillRect((int)value.getPrintPos().x(), (int)value.getPrintPos().y(), 20, 20);
+        for(Food f : Main.foods) {
+            g.setColor(f.getColor());
+            g.fillRect(f.getPrintPos().x(), f.getPrintPos().y(), 20, 20);
         }
             // warning!! typecast could cause bugs if getPrintPos fails to output a whole number
     }
