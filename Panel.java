@@ -1,30 +1,38 @@
 import java.awt.*;
 import javax.swing.JPanel;  
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Panel extends JPanel{
-    // Array of Subjects to draw
-    private ArrayList<Subject> subjects;
 
-    public Panel(ArrayList<Subject> subjects) {
+    public Panel() {
         setBackground(Color.BLACK);
-        this.subjects = subjects;
     }
     
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         // Where all graphics are rendered
-        drawSub(g, subjects);
+        drawSub(g);
+        drawFood(g);
     }
 
-    public void drawSub(Graphics g, ArrayList<Subject> sub) {
+    public void drawSub(Graphics g) {
 
         // prints all Subjects in subject array
-        for (int i = 0; i < sub.size(); i++) {
-            g.setColor(sub.get(i).getColor());
-            g.fillRect((int)sub.get(i).getPrintPos().x(), (int)sub.get(i).getPrintPos().y(), 30, 30);
-            // warning!! typecast could cause bugs if getPrintPos fails to output a whole number
+        for(Subject s: Main.subs) {
+            g.setColor(s.getColor());
+            g.fillRect((int)s.getPrintPos().x(), (int)s.getPrintPos().y(), 30, 30);
         }
+            // warning!! typecast could cause bugs if getPrintPos fails to output a whole number
+    }
+    public void drawFood(Graphics g) {
+
+        // prints all Subjects in subject array
+        for(Food f : Main.foods) {
+            g.setColor(f.getColor());
+            g.fillRect(f.getPrintPos().x(), f.getPrintPos().y(), 20, 20);
+        }
+            // warning!! typecast could cause bugs if getPrintPos fails to output a whole number
     }
 }
+
