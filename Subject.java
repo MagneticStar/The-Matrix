@@ -5,7 +5,7 @@ public class Subject extends Obj{
     
     public Subject() {
         super();
-        this.genome = new Genome(this);
+        this.genome = new Genome();
         // this.position = position; Random position from list of available positions
     }
     
@@ -19,10 +19,7 @@ public class Subject extends Obj{
         this.genome = genome;
     }
 
-<<<<<<< Updated upstream
-=======
     // getters
->>>>>>> Stashed changes
     public Genome getGenome() {
         return genome;
     }

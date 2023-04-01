@@ -114,8 +114,6 @@ public class Sensor extends Neuron{
         return false;
     }
     
-<<<<<<< Updated upstream
-=======
     public boolean abNext(){
         if(j < i+1){
           temp.setX(subject.getPos().x()+j);temp.setY(subject.getPos().y()+i); // Above right
@@ -130,5 +128,4 @@ public class Sensor extends Neuron{
         }
         return false;
     }    
->>>>>>> Stashed changes
 }

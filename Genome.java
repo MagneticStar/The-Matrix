@@ -1,26 +1,19 @@
 import java.awt.Color;
 import java.util.Random;
+import java.util.ArrayList;
 
 public class Genome{
     private int genomeLength;
     private int geneLength;
     private String DNA;
-
+    private Subject subject;
     private Neuron[] neurons;
     private Color color;
 
-<<<<<<< Updated upstream
-    // public Genome(){
-    //     generateDNA(); // sets this.DNA to a random binary String
-    //     calculateColor(); // sets this.color to RGB values based on the content of this.DNA
-    // }
-=======
-    public Genome(Subject subject){
-        this.subject = subject;
+    public Genome(){
         // generateDNA(); // sets this.DNA to a random binary String
         // calculateColor(); // sets this.color to RGB values based on the content of this.DNA
     }
->>>>>>> Stashed changes
 
     public Color getColor(){
         return this.color;
@@ -48,19 +41,12 @@ public class Genome{
     //     DNA = "";
 
     //     for (int i = 0; i < genomeLength; i++) {
-<<<<<<< Updated upstream
-    //         DNA+= Integer.toBinaryString(rand.nextInt((int)Math.pow(2,geneLength)+1));
-=======
     //         DNA += String.format("%32s", Integer.toBinaryString(rand.nextInt((int)Math.pow(2,geneLength)+1)).replace(' ', '0'));
->>>>>>> Stashed changes
     //     }
     // }
 
     private void interpretDNA(){
         // Each gene of geneLength in DNA is a neuron.
-<<<<<<< Updated upstream
-        // Example 10 10 10
-=======
 
         // Example DNA String
         // Neuron      Source   Sink      Weight
@@ -88,61 +74,61 @@ public class Genome{
             int sinkID = Integer.parseInt(DNA.substring(11,15),2);
             int sinkWeight = Integer.parseInt(DNA.substring(15,geneLength),2);
 
-            if(neuronType == 0 || neuronType == 2){
-                // Neuron is an internal neuron
-                neuron = new Internal(neuronID%2);
-            }
-            else if(neuronType == 1){
-                // Neuron is a sensor neuron
-                neuron = new Sensor(new Subject(), neuronID);
-            }
-            else{
-                // Neuron is a motor neuron
-                neuron = new Motor(neuronID);
-            }
+    //         if(neuronType == 0 || neuronType == 2){
+    //             // Neuron is an internal neuron
+    //             neuron = new Internal(neuronID%2);
+    //         }
+    //         else if(neuronType == 1){
+    //             // Neuron is a sensor neuron
+    //             neuron = new Sensor(new Subject(), neuronID);
+    //         }
+    //         else{
+    //             // Neuron is a motor neuron
+    //             neuron = new Motor(neuronID);
+    //         }
             
-            if(emptyNeurons.size()>0){
-                for(int j=0; j<emptyNeurons.size();j++){
-                    if(neuron.getClass().equals(emptyNeurons.get(j).getClass())){
+    //         if(emptyNeurons.size()>0){
+    //             for(int j=0; j<emptyNeurons.size();j++){
+    //                 if(neuron.getClass().equals(emptyNeurons.get(j).getClass())){
                         
-                    }
-                }
+    //                 }
+    //             }
                 
-            }
+    //         }
 
-            if(sourceType == 0){
-                // Source is an internal neuron
-                source = new Internal(sourceID);
-            }
-            else{
-                // Source is a sensor neuron
-                source = new Sensor(new Subject(), sourceID);
-            }
-            neuron.addSource(source);
-            source.addSink(neuron,0);
-            emptyNeurons.add(source);
-            emptyNeuronIndexes.add(neuron.getSources().size());
+    //         if(sourceType == 0){
+    //             // Source is an internal neuron
+    //             source = new Internal(sourceID);
+    //         }
+    //         else{
+    //             // Source is a sensor neuron
+    //             source = new Sensor(new Subject(), sourceID);
+    //         }
+    //         neuron.addSource(source);
+    //         source.addSink(neuron,0);
+    //         emptyNeurons.add(source);
+    //         emptyNeuronIndexes.add(neuron.getSources().size());
 
-            if(sinkType == 0){
-                // Sink is an internal neuron
-                sink = new Internal(sinkID);
-            }
-            else{
-                // Sink is a motor neuron
-                sink = new Motor(sinkID);
-            }
-            neuron.addSink(sink,sinkWeight);
-            source.addSource(neuron);
-            emptyNeurons.add(sink);
-            emptyNeuronIndexes.add(neuron.getSinks().size());
+    //         if(sinkType == 0){
+    //             // Sink is an internal neuron
+    //             sink = new Internal(sinkID);
+    //         }
+    //         else{
+    //             // Sink is a motor neuron
+    //             sink = new Motor(sinkID);
+    //         }
+    //         neuron.addSink(sink,sinkWeight);
+    //         source.addSource(neuron);
+    //         emptyNeurons.add(sink);
+    //         emptyNeuronIndexes.add(neuron.getSinks().size());
 
-            neurons.add(neuron);
-        }
+    //         neurons.add(neuron);
+    //     }
 
-        this.neurons = new Neuron[neurons.size()];
-        for (int i = 0; i < neurons.size(); i++) {
-            this.neurons[i] = neurons.get(i);
-        }
->>>>>>> Stashed changes
+    //     this.neurons = new Neuron[neurons.size()];
+    //     for (int i = 0; i < neurons.size(); i++) {
+    //         this.neurons[i] = neurons.get(i);
+    //     }
     }
+}
 }
