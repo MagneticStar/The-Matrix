@@ -1,18 +1,68 @@
+import java.util.ArrayList;
+
 public class Sensor extends Neuron{
 
-    private Subject subject;
-    private double output;
-
-    public Sensor(Subject subject) {
-        this.subject = subject;
-    }
-
-    public double getOutput() {
-        return output;
-    }
-
+    private static Subject subject = new Subject();
+    public SensorMethod sensorMethod; 
+    private static int numberOfSensorMethods = 2; // Update this when creating new Sensor methods
+    private Coor temp = new Coor();
+    private ArrayList<Double> arr= new ArrayList<Double>();
+    private static int i;
+    private static int j;
     
-    public void find() {
+    public Sensor(Subject s, int methodID) {
+        subject = s;
+        switch(methodID%(numberOfSensorMethods+1)){
+            case 0: this.sensorMethod = Sensor::detectFood; break;
+            case 1: this.sensorMethod = Sensor::nearestWater; break;
+        }
+    }
+
+    public interface SensorMethod{
+        double invoke(Coor coor);
+    }
+
+    ////////////////////////////////////////////////////////
+    // SENSOR METHODS // SENSOR METHODS // SENSOR METHODS //
+    ////////////////////////////////////////////////////////
+
+    public static double detectFood(Coor coor) {
+        for (Food f: Main.foods) {
+            if (f.getPos().equals(coor)) {
+                double d = distance(f);
+                if (d != -1.0) {
+                    return d;
+                }
+            }
+        }
+        // -1.0 means null 
+        return -1.0;
+    }
+
+    private static double nearestWater(Coor coor){
+        for (Water w: Main.waters) {
+            if (w.getPos().equals(coor)) {
+                double d = distance(w);
+                if (d != -1.0) {
+                    return d;
+                }
+            }
+        } 
+        return -1.0;
+    }
+
+    //////////////////////////////////////////////////////////////////
+    
+    public static double distance(Obj obj) {
+        // using Pyth theorem
+        try {
+            return Math.sqrt(Math.pow(obj.getPos().x() - subject.getPos().x(), 2) + Math.pow(obj.getPos().y() - subject.getPos().y(), 2));
+        } catch (NullPointerException e) {
+            return -1.0;
+        }    
+    }
+
+    public void findAdj() {
 
         Coor tempPos = new Coor();
 
@@ -25,66 +75,60 @@ public class Sensor extends Neuron{
         }
     }
 
-    // int[] center = subject.getPos().matrix();
-    // private static int[] centerCoord = {12,3}; // Format (x,y)
-    // private static int i;
-    // private static int j;
-    // public void search() {
-    //     // Search logic
-    // for(i=1;i<10;i++){
-    //     System.out.println("\nChecks this pass:");
+    public double search() {
+        // Search logic
+    for(i=1;i<10;i++){
+
+        temp.setX(subject.getPos().x());temp.setY(subject.getPos().y()+i); // Above
+        arr.add(sensorMethod.invoke(temp)); 
+        temp.setX(subject.getPos().x()+i);temp.setY(subject.getPos().y()); // Right
+        arr.add(sensorMethod.invoke(temp));
+        temp.setX(subject.getPos().x()-i);temp.setY(subject.getPos().y()); // Left
+        arr.add(sensorMethod.invoke(temp));  
+        temp.setX(subject.getPos().x());temp.setY(subject.getPos().y()-i); // Below
         
-    //     printCoord(centerCoord[0],centerCoord[1]+i); // Above
-    //     printCoord(centerCoord[0],centerCoord[1]-i); // Below
-    //     printCoord(centerCoord[0]+i,centerCoord[1]); // Right
-    //     printCoord(centerCoord[0]-i,centerCoord[1]); // Left
-        
-    //     j = 1;
-    //     while(abNext() || rlNext()){
-    //       j++;
-    //     }
-    //   }
-    // }
-    // public static boolean rlNext(){
-    //     if(j < i){
-    //       printCoord(centerCoord[0]+i,centerCoord[1]+j); // Right Above
-    //       printCoord(centerCoord[0]+i,centerCoord[1]-j); // Right Below
-    //       printCoord(centerCoord[0]-i,centerCoord[1]+j); // Left Above
-    //       printCoord(centerCoord[0]-i,centerCoord[1]-j); // Left Below
-    //       return true;
-    //     }
-    //     return false;
-    // }
-    
-    // public static boolean abNext(){
-    //     if(j < i+1){
-    //       printCoord(centerCoord[0]+j,centerCoord[1]+i); // Above right
-    //       printCoord(centerCoord[0]-j,centerCoord[1]+i); // Above Left
-    //       printCoord(centerCoord[0]+j,centerCoord[1]-i); // Below Right
-    //       printCoord(centerCoord[0]-j,centerCoord[1]-i); // Below Left
-    //       return true;
-    //     }
-    //     return false;
-    // }
-    
-    // public static void printCoord(int x, int y){
-    //     System.out.print("("+x+","+y+") ");
-    // }
-    
-    public void detectFood(Coor tempPos) {
-        for (Food f: Main.foods) {
-            if (f.getPos().equals(tempPos)) {
-                System.out.println(distance(f));
-            }
+        j = 1;
+        while(abNext() || rlNext()){
+          j++;
         }
+      }
+      for (double num : arr) {
+        if (num != -1.0) {
+            return num;
+        }
+      }
+      return -1.0;
     }
-    public double distance(Obj obj) {
-        // using Pyth theorem
-        try {
-            return Math.sqrt(Math.pow(obj.getPos().x() - subject.getPos().x(), 2) + Math.pow(obj.getPos().y() - subject.getPos().y(), 2));
-        } catch (NullPointerException e) {
-            return -1.0;
-        }    
+    public boolean rlNext(){
+        if(j < i){
+            temp.setX(subject.getPos().x()+i);temp.setY(subject.getPos().y()+j); // Right Above
+            arr.add(sensorMethod.invoke(temp));  
+            temp.setX(subject.getPos().x()+i);temp.setY(subject.getPos().y()-j); // Right Below
+            arr.add(sensorMethod.invoke(temp));  
+            temp.setX(subject.getPos().x()-i);temp.setY(subject.getPos().y()+j); // Left Above
+            arr.add(sensorMethod.invoke(temp));  
+            temp.setX(subject.getPos().x()-i);temp.setY(subject.getPos().y()-j); // Left Below
+            arr.add(sensorMethod.invoke(temp));  
+            return true;
+        }
+        return false;
     }
     
+<<<<<<< Updated upstream
+=======
+    public boolean abNext(){
+        if(j < i+1){
+          temp.setX(subject.getPos().x()+j);temp.setY(subject.getPos().y()+i); // Above right
+          arr.add(sensorMethod.invoke(temp));  
+          temp.setX(subject.getPos().x()-j);temp.setY(subject.getPos().y()+i); // Above Left
+          arr.add(sensorMethod.invoke(temp));  
+          temp.setX(subject.getPos().x()+j);temp.setY(subject.getPos().y()-i); // Below Right
+          arr.add(sensorMethod.invoke(temp));  
+          temp.setX(subject.getPos().x()-j);temp.setY(subject.getPos().y()-i); // Below Left
+          arr.add(sensorMethod.invoke(temp));  
+          return true;
+        }
+        return false;
+    }    
+>>>>>>> Stashed changes
 }
