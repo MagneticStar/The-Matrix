@@ -11,7 +11,7 @@ public class Subject extends Obj{
     
     public Subject(Color color,Coor position){
         super(color, position);
-        this.genome = new Genome(this);
+        this.genome = new Genome();
     }
 
     // setters

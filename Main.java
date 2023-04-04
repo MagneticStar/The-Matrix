@@ -18,9 +18,9 @@ public class Main extends JFrame{
     public static void main(String[] args) {
 
         subs.add(new Subject(Color.yellow, new Coor(0, 0)));
-        subs.add(new Subject(Color.yellow, new Coor(0, 9)));
-        subs.add(new Subject(Color.yellow, new Coor(9, 0)));
-        subs.add(new Subject(Color.yellow, new Coor(9, 9)));
+        subs.add(new Subject(Color.yellow, new Coor(0, 10)));
+        subs.add(new Subject(Color.yellow, new Coor(10, 0)));
+        subs.add(new Subject(Color.yellow, new Coor(10, 10)));
         foods.add(new Food(new Coor(1, 3)));
         foods.add(new Food(new Coor(7, 3)));
         waters.add(new Water(new Coor(6, 8)));

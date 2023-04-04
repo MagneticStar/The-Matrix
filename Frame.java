@@ -9,5 +9,6 @@ public class Frame extends JFrame{
         this.setDefaultCloseOperation(Frame.EXIT_ON_CLOSE);
         this.setResizable(true);
         this.setLocationRelativeTo(null);
+        this.setUndecorated(true);
     }
 }
