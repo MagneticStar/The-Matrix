@@ -5,13 +5,13 @@ public class Subject extends Obj{
     
     public Subject() {
         super();
-        this.genome = new Genome();
+        this.genome = new Genome(this);
         // this.position = position; Random position from list of available positions
     }
     
     public Subject(Color color,Coor position){
         super(color, position);
-        this.genome = new Genome();
+        this.genome = new Genome(this);
     }
 
     // setters
