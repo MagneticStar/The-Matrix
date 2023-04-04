@@ -14,6 +14,7 @@ public class Genome{
         this.subject = subject;
         generateDNA(); // sets this.DNA to a random binary String
         calculateColor(); // sets this.color to RGB values based on the content of this.DNA
+        interpretDNA();
     }
 
     public Color getColor(){
@@ -26,12 +27,13 @@ public class Genome{
         // then that binary string is converted to a number and it's range is reduced from
         // 0-2^segmentLength to 0-256 based on it's position within the first range
 
-        int segmentLength = (DNA.length()-DNA.length()%3)/3;
-        int segmentOne = (int) (Integer.parseInt(DNA.substring(0, segmentLength+1),2)/(Math.pow(2,segmentLength)));
-        int segmentTwo = (int) (Integer.parseInt(DNA.substring(segmentLength+1, segmentLength*2+1),2)/(Math.pow(2,segmentLength)));
-        int segmentThree = (int) (Integer.parseInt(DNA.substring(segmentLength*2+1, segmentLength*3+1),2)/(Math.pow(2,segmentLength)));
+        // int segmentLength = (DNA.length()-DNA.length()%3)/3;
+        // int segmentOne = (int) (Integer.parseInt(DNA.substring(0, segmentLength+1),2)/(Math.pow(2,segmentLength)));
+        // int segmentTwo = (int) (Integer.parseInt(DNA.substring(segmentLength+1, segmentLength*2+1),2)/(Math.pow(2,segmentLength)));
+        // int segmentThree = (int) (Integer.parseInt(DNA.substring(segmentLength*2+1, segmentLength*3+1),2)/(Math.pow(2,segmentLength)));
 
-        color = new Color(segmentOne,segmentTwo,segmentThree);
+        // color = new Color(segmentOne,segmentTwo,segmentThree);
+        color = Color.yellow;
     }
 
     private void generateDNA(){
