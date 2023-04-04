@@ -23,7 +23,7 @@ public class Genome{
 
     private void calculateColor(){
         // The color is calculated by splicing the DNA into three equal segments
-        // (in cases where the length is not divisible by 3, the last 2 or 2 bits are dropped)
+        // (in cases where the length is not divisible by 3, the last 1 or 2 bits are dropped)
         // then that binary string is converted to a number and it's range is reduced from
         // 0-2^segmentLength to 0-256 based on it's position within the first range
 
@@ -43,8 +43,11 @@ public class Genome{
         DNA = "";
 
         for (int i = 0; i < genomeLength; i++) {
-            DNA += String.format("%32s", Integer.toBinaryString(rand.nextInt((int)Math.pow(2,geneLength)+1)).replace(' ', '0'));
+            for(int j=0; j<geneLength; j++){
+                DNA+=rand.nextInt(0,2);
+            }
         }
+        
     }
 
     private void interpretDNA(){
@@ -60,21 +63,22 @@ public class Genome{
         // Weight states how strong the connection of the sink is.
 
         ArrayList<Neuron> emptyNeurons = new ArrayList<Neuron>(); // Contains neurons created as a byproduct that have yet to be initialized with values
-        ArrayList<Integer> emptyNeuronIndexes = new ArrayList<Integer>(); // Contains the index of the empty neurons in the source or sink array lists respectively
         ArrayList<Neuron> neurons = new ArrayList<Neuron>();
 
         for(int i=genomeLength; i<0; i--){
             Neuron neuron;
             Neuron source;
             Neuron sink;
-
-            int neuronType = Integer.parseInt(DNA.substring(0,1),2);
-            int neuronID = Integer.parseInt(DNA.substring(1,5),2);
-            int sourceType = Integer.parseInt(DNA.substring(5,6),2);
-            int sourceID = Integer.parseInt(DNA.substring(6,10),2);
-            int sinkType = Integer.parseInt(DNA.substring(10,11),2);
-            int sinkID = Integer.parseInt(DNA.substring(11,15),2);
-            int sinkWeight = Integer.parseInt(DNA.substring(15,geneLength),2);
+            String DNASlice = DNA.substring(i*geneLength,(i+1)*geneLength);
+            
+            // parses the DNA by splicing it using the format described above
+            int neuronType = Integer.parseInt(DNASlice.substring(0,1),2);
+            int neuronID = Integer.parseInt(DNASlice.substring(1,5),2);
+            int sourceType = Integer.parseInt(DNASlice.substring(5,6),2);
+            int sourceID = Integer.parseInt(DNASlice.substring(6,10),2);
+            int sinkType = Integer.parseInt(DNASlice.substring(10,11),2);
+            int sinkID = Integer.parseInt(DNASlice.substring(11,15),2);
+            int sinkWeight = Integer.parseInt(DNASlice.substring(15,geneLength),2);
 
             if(neuronType == 0 || neuronType == 2){
                 // Neuron is an internal neuron
@@ -82,7 +86,7 @@ public class Genome{
             }
             else if(neuronType == 1){
                 // Neuron is a sensor neuron
-                neuron = new Sensor(neuronID);
+                neuron = new Sensor(new Subject(), neuronID);
             }
             else{
                 // Neuron is a motor neuron
@@ -91,8 +95,11 @@ public class Genome{
             
             if(emptyNeurons.size()>0){
                 for(int j=0; j<emptyNeurons.size();j++){
+                    // Checks if an empty neuron is the same type of this new neuron
                     if(neuron.getClass().equals(emptyNeurons.get(j).getClass())){
-                        
+                        // Sets the prexisting empty neuron to this new neuron
+                        neuron = emptyNeurons.get(j);
+                        emptyNeurons.remove(j);
                     }
                 }
                 
@@ -104,12 +111,11 @@ public class Genome{
             }
             else{
                 // Source is a sensor neuron
-                source = new Sensor(sourceID);
+                source = new Sensor(new Subject(), sourceID);
             }
             neuron.addSource(source);
             source.addSink(neuron,0);
             emptyNeurons.add(source);
-            emptyNeuronIndexes.add(neuron.getSources().size());
 
             if(sinkType == 0){
                 // Sink is an internal neuron
@@ -122,7 +128,6 @@ public class Genome{
             neuron.addSink(sink,sinkWeight);
             source.addSource(neuron);
             emptyNeurons.add(sink);
-            emptyNeuronIndexes.add(neuron.getSinks().size());
 
             neurons.add(neuron);
         }
@@ -131,5 +136,7 @@ public class Genome{
         for (int i = 0; i < neurons.size(); i++) {
             this.neurons[i] = neurons.get(i);
         }
+
+
     }
 }

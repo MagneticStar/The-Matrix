@@ -6,9 +6,14 @@ public class Subject{
     private Color color;
     
     public Subject() {
+<<<<<<< Updated upstream
         this.genome = new Genome();
         this.color = genome.getColor();
         // this.position = position; Random position from list of available positions
+=======
+        super();
+        this.genome = new Genome(this);
+>>>>>>> Stashed changes
     }
     
     public Subject(Color color,Coor position){
