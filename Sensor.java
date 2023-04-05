@@ -13,7 +13,7 @@ public class Sensor extends Neuron{
     public Sensor(Subject s, int methodID) {
         subject = s;
         switch(methodID%(numberOfSensorMethods+1)){
-            case 0: this.sensorMethod = Sensor::detectFood; break;
+            case 0: this.sensorMethod = Sensor::nearestFood; break;
             case 1: this.sensorMethod = Sensor::nearestWater; break;
         }
     }
@@ -26,7 +26,7 @@ public class Sensor extends Neuron{
     // SENSOR METHODS // SENSOR METHODS // SENSOR METHODS //
     ////////////////////////////////////////////////////////
 
-    public static double detectFood(Coor coor) {
+    public static double nearestFood(Coor coor) {
         for (Food f: Main.foods) {
             if (f.getPos().equals(coor)) {
                 double d = distance(f);
@@ -70,7 +70,7 @@ public class Sensor extends Neuron{
             for (int j = subject.getPos().y() - 1; j <= subject.getPos().y() + 1; j++) {
                 tempPos.setX(i);
                 tempPos.setY(j);
-                detectFood(tempPos);
+                nearestFood(tempPos);
             }
         }
     }
