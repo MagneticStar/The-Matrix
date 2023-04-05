@@ -61,7 +61,7 @@ public class Sensor extends Neuron{
 
 
     
-    public static double distance(Obj obj) {
+    public static double distance(screenObject obj) {
         // using Pyth theorem
         try {
             return Math.sqrt(Math.pow(obj.getPos().x() - subject.getPos().x(), 2) + Math.pow(obj.getPos().y() - subject.getPos().y(), 2));

@@ -1,6 +1,10 @@
 import java.awt.*;
 
+<<<<<<< Updated upstream
 public class Subject{
+=======
+public class Subject extends screenObject{
+>>>>>>> Stashed changes
     private Genome genome;
     private Coor position;
     private Color color;
