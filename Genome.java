@@ -21,6 +21,10 @@ public class Genome{
         return this.color;
     }
 
+    public Neuron[] getNeurons(){
+        return this.neurons;
+    }
+
     private void calculateColor(){
         // The color is calculated by splicing the DNA into three equal segments
         // (in cases where the length is not divisible by 3, the last 2 or 2 bits are dropped)
