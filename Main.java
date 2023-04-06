@@ -19,6 +19,7 @@ public class Main extends JFrame{
     public static NeurPanel NeuronPanel = new NeurPanel();
     public static void main(String[] args) {
 
+        
         subs.add(new Subject(Color.yellow, new Coor(0, 0)));
         subs.add(new Subject(Color.yellow, new Coor(0, 10)));
         subs.add(new Subject(Color.yellow, new Coor(10, 0)));
