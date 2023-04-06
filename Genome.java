@@ -20,6 +20,9 @@ public class Genome{
     public Color getColor(){
         return this.color;
     }
+    public Neuron[] getNeurons() {
+        return neurons;
+    }
 
     private void calculateColor(){
         // The color is calculated by splicing the DNA into three equal segments
@@ -65,7 +68,7 @@ public class Genome{
         ArrayList<Neuron> emptyNeurons = new ArrayList<Neuron>(); // Contains neurons created as a byproduct that have yet to be initialized with values
         ArrayList<Neuron> neurons = new ArrayList<Neuron>();
 
-        for(int i=genomeLength; i<0; i--){
+        for(int i=0; i<genomeLength; i++){
             Neuron neuron;
             Neuron source;
             Neuron sink;

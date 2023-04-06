@@ -11,6 +11,7 @@ public class Sensor extends Neuron{
     private static int j;
     
     public Sensor(Subject s, int methodID) {
+        super(1);
         subject = s;
         switch(methodID%(numberOfSensorMethods+1)){
             case 0: this.sensorMethod = Sensor::nearestFood; break;

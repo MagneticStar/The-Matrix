@@ -45,7 +45,7 @@ public class Obj {
 
     public Coor getPrintPos() {
         Translation t = new Translation();
-        t.setMat(Main.frame.getWidth()/10.0, Main.frame.getHeight()/10.0);
+        t.setMat(Main.panel.getWidth()/10.0, Main.panel.getHeight()/10.0);
         int[] ans = t.translate(this.getPos().matrix());
         return new Coor(ans[0], ans[1]);
     }
