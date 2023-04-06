@@ -4,13 +4,13 @@ public class Sensor extends Neuron{
 
     public Sensor(int methodID){
         switch(methodID%(numberOfSensorMethods+1)){
-            case 0: this.sensorMethod = Sensor::nearestFood; break;
+            case 0: this.sensorMethod = Sensor::detectFood; break;
             case 1: this.sensorMethod = Sensor::nearestWater; break;
         }
     }
 
     public interface SensorMethod{
-        double invoke(Subject subject);
+        double invoke(Coor coordinate);
     }
 
     ////////////////////////////////////////////////////////
