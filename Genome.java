@@ -26,7 +26,7 @@ public class Genome{
 
     private void calculateColor(){
         // The color is calculated by splicing the DNA into three equal segments
-        // (in cases where the length is not divisible by 3, the last 2 or 2 bits are dropped)
+        // (in cases where the length is not divisible by 3, the last 1 or 2 bits are dropped)
         // then that binary string is converted to a number and it's range is reduced from
         // 0-2^segmentLength to 0-256 based on it's position within the first range
 
@@ -47,10 +47,11 @@ public class Genome{
         DNA = "";
 
         for (int i = 0; i < genomeLength; i++) {
-            for(int j = 0; j < geneLength; j++){
+            for(int j=0; j<geneLength; j++){
                 DNA+=rand.nextInt(0,2);
             }
         }
+        
     }
 
     private void interpretDNA(){
@@ -72,16 +73,16 @@ public class Genome{
             Neuron neuron;
             Neuron source;
             Neuron sink;
-
-            String DNASplice = DNA.substring(i*geneLength,(i+1)*geneLength);
-
-            int neuronType = Integer.parseInt(DNASplice.substring(0,1),2);
-            int neuronID = Integer.parseInt(DNASplice.substring(1,5),2);
-            int sourceType = Integer.parseInt(DNASplice.substring(5,6),2);
-            int sourceID = Integer.parseInt(DNASplice.substring(6,10),2);
-            int sinkType = Integer.parseInt(DNASplice.substring(10,11),2);
-            int sinkID = Integer.parseInt(DNASplice.substring(11,15),2);
-            int sinkWeight = Integer.parseInt(DNASplice.substring(15,geneLength),2);
+            String DNASlice = DNA.substring(i*geneLength,(i+1)*geneLength);
+            
+            // parses the DNA by splicing it using the format described above
+            int neuronType = Integer.parseInt(DNASlice.substring(0,1),2);
+            int neuronID = Integer.parseInt(DNASlice.substring(1,5),2);
+            int sourceType = Integer.parseInt(DNASlice.substring(5,6),2);
+            int sourceID = Integer.parseInt(DNASlice.substring(6,10),2);
+            int sinkType = Integer.parseInt(DNASlice.substring(10,11),2);
+            int sinkID = Integer.parseInt(DNASlice.substring(11,15),2);
+            int sinkWeight = Integer.parseInt(DNASlice.substring(15,geneLength),2);
 
             if(neuronType == 0 || neuronType == 2){
                 // Neuron is an internal neuron
@@ -98,7 +99,9 @@ public class Genome{
             
             if(emptyNeurons.size()>0){
                 for(int j=0; j<emptyNeurons.size();j++){
+                    // Checks if an empty neuron is the same type of this new neuron
                     if(neuron.getClass().equals(emptyNeurons.get(j).getClass())){
+                        // Sets the prexisting empty neuron to this new neuron
                         neuron = emptyNeurons.get(j);
                         emptyNeurons.remove(j);
                     }
@@ -137,5 +140,7 @@ public class Genome{
         for (int i = 0; i < neurons.size(); i++) {
             this.neurons[i] = neurons.get(i);
         }
+
+
     }
 }

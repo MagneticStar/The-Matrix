@@ -1,12 +1,11 @@
 import java.awt.*;
 
-public class Subject extends Obj{
+public class Subject extends screenObject{
     private Genome genome;
     
     public Subject() {
         super();
         this.genome = new Genome(this);
-        // this.position = position; Random position from list of available positions
     }
     
     public Subject(Color color,Coor position){

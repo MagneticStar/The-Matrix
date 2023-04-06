@@ -14,24 +14,25 @@ public class Sensor extends Neuron{
         super(1);
         subject = s;
         switch(methodID%(numberOfSensorMethods+1)){
-            case 0: this.sensorMethod = Sensor::nearestFood; break;
+            case 0: this.sensorMethod = Sensor::detectFood; break;
             case 1: this.sensorMethod = Sensor::nearestWater; break;
         }
     }
 
     public interface SensorMethod{
-        double invoke(Coor coor);
+        double invoke(Coor coordinate);
     }
 
     ////////////////////////////////////////////////////////
     // SENSOR METHODS // SENSOR METHODS // SENSOR METHODS //
     ////////////////////////////////////////////////////////
 
-    public static double nearestFood(Coor coor) {
+    public static double detectFood(Coor coor) {
         for (Food f: Main.foods) {
             if (f.getPos().equals(coor)) {
                 double d = distance(f);
                 if (d != -1.0) {
+                    // System.out.println(d);
                     return d;
                 }
             }
@@ -45,6 +46,7 @@ public class Sensor extends Neuron{
             if (w.getPos().equals(coor)) {
                 double d = distance(w);
                 if (d != -1.0) {
+                    // System.out.println(d);
                     return d;
                 }
             }
@@ -52,9 +54,13 @@ public class Sensor extends Neuron{
         return -1.0;
     }
 
-    //////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////
+    // SENSOR METHOD ASSISTORS // SENSOR METHOD ASSISTORS // 
+    ////////////////////////////////////////////////////////
+
+
     
-    public static double distance(Obj obj) {
+    public static double distance(screenObject obj) {
         // using Pyth theorem
         try {
             return Math.sqrt(Math.pow(obj.getPos().x() - subject.getPos().x(), 2) + Math.pow(obj.getPos().y() - subject.getPos().y(), 2));
@@ -71,7 +77,7 @@ public class Sensor extends Neuron{
             for (int j = subject.getPos().y() - 1; j <= subject.getPos().y() + 1; j++) {
                 tempPos.setX(i);
                 tempPos.setY(j);
-                nearestFood(tempPos);
+                detectFood(tempPos);
             }
         }
     }
