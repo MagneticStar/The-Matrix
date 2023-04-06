@@ -76,13 +76,13 @@ public class Genome{
             String DNASlice = DNA.substring(i*geneLength,(i+1)*geneLength);
             
             // parses the DNA by splicing it using the format described above
-            int neuronType = Integer.parseInt(DNASlice.substring(0,1),2);
-            int neuronID = Integer.parseInt(DNASlice.substring(1,5),2);
-            int sourceType = Integer.parseInt(DNASlice.substring(5,6),2);
-            int sourceID = Integer.parseInt(DNASlice.substring(6,10),2);
-            int sinkType = Integer.parseInt(DNASlice.substring(10,11),2);
-            int sinkID = Integer.parseInt(DNASlice.substring(11,15),2);
-            int sinkWeight = Integer.parseInt(DNASlice.substring(15,geneLength),2);
+            int neuronType = Integer.parseInt(DNASlice.substring(0,2),2);
+            int neuronID = Integer.parseInt(DNASlice.substring(2,6),2);
+            int sourceType = Integer.parseInt(DNASlice.substring(6,7),2);
+            int sourceID = Integer.parseInt(DNASlice.substring(7,11),2);
+            int sinkType = Integer.parseInt(DNASlice.substring(11,12),2);
+            int sinkID = Integer.parseInt(DNASlice.substring(12,16),2);
+            int sinkWeight = Integer.parseInt(DNASlice.substring(16,geneLength),2);
 
             if(neuronType == 0 || neuronType == 2){
                 // Neuron is an internal neuron

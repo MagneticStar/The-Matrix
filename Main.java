@@ -23,6 +23,9 @@ public class Main extends JFrame{
         foods.add(new Food(new Coor(7, 3)));
         waters.add(new Water(new Coor(6, 8)));
         
+        Frame.main(args);
+        NeurPanel.main(args);
+        
         // how many ticks
         for (int i = 0; i < 5; i++) {
             tick(Frame.simPanel, i);

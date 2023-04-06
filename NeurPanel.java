@@ -11,13 +11,18 @@ public class NeurPanel extends JPanel implements ActionListener{
 
     public static void main(String[] args){
         searchButton = new Button("Find");
-        searchReply = new Label("");
+        searchButton.setBounds(0, 20, 20, 10);
+
+        searchReply = new Label("         ");
+        searchReply.setLocation(50, 10);
+
+        searchBar = new TextField(4);
+        searchBar.setBounds(0, 20, 60, 10);
+        
         
         NeurPanel nP = new NeurPanel();
         // Adds an action listener to the button
         searchButton.addActionListener(nP);
-        // creates a TextField object with 16 columns
-        searchBar = new TextField(16);
         // creates a font object and sets the TextField font to the newly defined font object
         Font searchBarFont = new Font("Serif",Font.BOLD,20);
         searchBar.setFont(searchBarFont);

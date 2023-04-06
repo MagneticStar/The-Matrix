@@ -1,7 +1,7 @@
 import javax.swing.JFrame;
 public class Frame extends JFrame{
 
-    public static Frame simFrame = new Frame("sim");
+    public static Frame simFrame = new Frame("simulation");
     public static Panel simPanel = new Panel();
 
     public static Frame neuronMap = new Frame("neuronMap");

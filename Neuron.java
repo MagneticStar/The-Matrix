@@ -2,7 +2,7 @@ import java.util.HashMap;
 import java.awt.Color;
 import java.util.ArrayList;
 
-public class Neuron extends Obj{
+public class Neuron extends screenObject{
     private ArrayList<Neuron> sources = new ArrayList<Neuron>();
     private HashMap<Neuron,Integer> sinks = new HashMap<Neuron,Integer>();
     private int type;
