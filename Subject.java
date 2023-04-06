@@ -1,23 +1,13 @@
 import java.awt.*;
 
-<<<<<<< Updated upstream
-public class Subject{
-=======
 public class Subject extends screenObject{
->>>>>>> Stashed changes
     private Genome genome;
     private Coor position;
     private Color color;
     
     public Subject() {
-<<<<<<< Updated upstream
-        this.genome = new Genome();
-        this.color = genome.getColor();
-        // this.position = position; Random position from list of available positions
-=======
         super();
         this.genome = new Genome(this);
->>>>>>> Stashed changes
     }
     
     public Subject(Color color,Coor position){

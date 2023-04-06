@@ -13,20 +13,13 @@ public class Frame extends JFrame{
         simFrame.add(simPanel);
         simFrame.setVisible(true);
 
-        neuronMap.add(NeuronPanel);
+        neuronMap.add(neuronPanel);
         neuronMap.setVisible(true);
     }
     
     private int height = 500;
     private int width = 1000;
 
-<<<<<<< Updated upstream
-    public Frame() {
-        this.setSize(width, height);
-        this.setDefaultCloseOperation(Frame.EXIT_ON_CLOSE);
-        this.setResizable(true);
-        this.setLocationRelativeTo(null);
-=======
     public Frame(String frameID){
         switch(frameID){
             case "simulation": this.setSize(width, height);
@@ -44,6 +37,5 @@ public class Frame extends JFrame{
             break;
             }
         
->>>>>>> Stashed changes
     }
 }

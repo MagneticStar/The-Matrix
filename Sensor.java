@@ -17,17 +17,6 @@ public class Sensor extends Neuron{
     // SENSOR METHODS // SENSOR METHODS // SENSOR METHODS //
     ////////////////////////////////////////////////////////
 
-<<<<<<< Updated upstream
-    private static double nearestFood(Subject subject){
-        // Needs implementation
-        return 0; // Delete before implementing
-    }
-
-    private static double nearestWater(Subject subject){
-        // Needs implementation
-        return 0; // Delete before implementing
-    }
-=======
     public static double detectFood(Coor coor) {
         for (Food f: Main.foods) {
             if (f.getPos().equals(coor)) {
@@ -136,5 +125,4 @@ public class Sensor extends Neuron{
         }
         return false;
     }    
->>>>>>> Stashed changes
 }

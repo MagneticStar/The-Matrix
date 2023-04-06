@@ -12,15 +12,8 @@ public class Main extends JFrame{
     public static ArrayList<Subject> subs = new ArrayList<Subject>();
     // Translation obj used to find scalers
     public static Translation matCalc = new Translation();
-<<<<<<< Updated upstream
-    // window
-    public static Frame frame = new Frame();
-    public static Panel panel = new Panel();
-=======
-    // windows
     
     
->>>>>>> Stashed changes
     public static void main(String[] args) {
         // Testing
         subs.add(new Subject(Color.yellow, new Coor(0, 0)));
@@ -31,16 +24,9 @@ public class Main extends JFrame{
         foods.add(new Food(new Coor(7, 3)));
         waters.add(new Water(new Coor(6, 8)));
 
-        subs.add(new Subject(Color.yellow, new Coor(34,10)));
-
         // Actually important code
         // Create a gui for our program 
-<<<<<<< Updated upstream
-        frame.add(panel);
-        frame.setVisible(true);
-=======
         
->>>>>>> Stashed changes
         
         // how many ticks
         for (int i = 0; i < 5; i++) {
