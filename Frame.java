@@ -5,13 +5,13 @@ public class Frame extends JFrame{
     public static Panel simPanel = new Panel();
 
     public static Frame neuronMap = new Frame("neuronMap");
-    public static NeurPanel neuronPanel = new NeurPanel();
+    public static NeurPanel neuronMapPanel = new NeurPanel();
 
     public static void main(String[] args){
         simFrame.add(simPanel);
         simFrame.setVisible(true);
 
-        neuronMap.add(neuronPanel);
+        neuronMap.add(neuronMapPanel);
         neuronMap.setVisible(true);
     }
     

@@ -22,7 +22,7 @@ public class NeurPanel extends JPanel implements ActionListener{
         Font searchBarFont = new Font("Serif",Font.BOLD,20);
         searchBar.setFont(searchBarFont);
 
-        NeurPanel neuronPanel = Frame.neuronPanel;
+        NeurPanel neuronPanel = Frame.neuronMapPanel;
 
         neuronPanel.add(searchBar);
         neuronPanel.add(searchButton);
@@ -39,24 +39,6 @@ public class NeurPanel extends JPanel implements ActionListener{
         }
     }
 
-    public NeurPanel() {
-        setBackground(Color.BLACK);
-    }
-    
-    @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        // Where all graphics are rendered
-        drawNeuron(g);
-    }
-    public void drawNeuron(Graphics g) {
-        g.setColor(Color.white);
-        g.drawOval(50, Frame.neuronMap.HEIGHT, 40, 40);
-    }
-}
-import javax.swing.JPanel;
-import java.awt.*;
-public class NeurPanel extends JPanel{
     public NeurPanel() {
         setBackground(Color.BLACK);
     }

@@ -12,11 +12,6 @@ public class Main extends JFrame{
     public static ArrayList<Subject> subs = new ArrayList<Subject>();
     // Translation obj used to find scalers
     public static Translation matCalc = new Translation();
-    // windows
-    public static Frame frame = new Frame();
-    public static Panel panel = new Panel();
-    public static Frame neuronMap = new Frame();
-    public static NeurPanel NeuronPanel = new NeurPanel();
     public static void main(String[] args) {
 
         
@@ -27,15 +22,10 @@ public class Main extends JFrame{
         foods.add(new Food(new Coor(1, 3)));
         foods.add(new Food(new Coor(7, 3)));
         waters.add(new Water(new Coor(6, 8)));
-        // Create a gui for our program 
-        frame.add(panel);
-        frame.setVisible(true);
-        neuronMap.add(NeuronPanel);
-        neuronMap.setVisible(true);
         
         // how many ticks
         for (int i = 0; i < 5; i++) {
-            tick(panel, i);
+            tick(Frame.simPanel, i);
         }
     }
 
