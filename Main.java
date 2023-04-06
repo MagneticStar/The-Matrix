@@ -44,8 +44,8 @@ public class Main extends JFrame{
         subs.get(0).setPosX(subs.get(0).getPosX() + 1);
         Sensor s = new Sensor(subs.get(0), 0);
         Sensor s2 = new Sensor(subs.get(0), 1);
-        System.out.println(s.search());
-        System.out.println(s2.search());
+        // System.out.println(s.search());
+        // System.out.println(s2.search());
         panel.repaint();
 
         // Make tick wait
