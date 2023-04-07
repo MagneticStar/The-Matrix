@@ -22,7 +22,10 @@ public class Main extends JFrame{
         foods.add(new Food(new Coor(1, 3)));
         foods.add(new Food(new Coor(7, 3)));
         waters.add(new Water(new Coor(6, 8)));
-        
+
+        Frame.main(args);
+        NeurPanel.main(args);
+
         // how many ticks
         for (int i = 0; i < 5; i++) {
             tick(Frame.simPanel, i);
@@ -32,10 +35,10 @@ public class Main extends JFrame{
     public static void tick(Panel panel, int i) {
        
         // do all gamestate changes before repaint() is called
-        subs.get(0).setPosX(subs.get(0).getPosX() + 1);
-        Sensor s = new Sensor(subs.get(0), 0);
-        Sensor s2 = new Sensor(subs.get(0), 1);
-        // System.out.println(s.search());
+        // subs.get(0).setPosX(subs.get(0).getPosX() + 1);
+        // Sensor s = new Sensor(subs.get(0), 0);
+        // Sensor s2 = new Sensor(subs.get(0), 1);
+        // // System.out.println(s.search());
         // System.out.println(s2.search());
         panel.repaint();
 

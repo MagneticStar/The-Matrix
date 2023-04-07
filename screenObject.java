@@ -45,7 +45,7 @@ public class screenObject {
 
     public Coor getPrintPos() {
         Translation t = new Translation();
-        t.setMat(Frame.simFrame.getWidth()/10.0, Frame.simFrame.getHeight()/10.0);
+        t.setMat(Frame.simPanel.getWidth()/10.0, Frame.simPanel.getHeight()/10.0);
         int[] ans = t.translate(this.getPos().matrix());
         return new Coor(ans[0], ans[1]);
     }
