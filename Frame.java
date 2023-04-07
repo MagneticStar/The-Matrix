@@ -1,3 +1,5 @@
+import java.awt.FlowLayout;
+
 import javax.swing.JFrame;
 public class Frame extends JFrame{
 
@@ -11,6 +13,8 @@ public class Frame extends JFrame{
         simFrame.add(simPanel);
         simFrame.setVisible(true);
 
+        FlowLayout flowLayout = new FlowLayout(FlowLayout.LEADING);
+        neuronMapPanel.setLayout(flowLayout);
         neuronMap.add(neuronMapPanel);
         neuronMap.setVisible(true);
     }
@@ -27,7 +31,8 @@ public class Frame extends JFrame{
                                this.setUndecorated(false);
             break;
 
-            case "neuronMap": this.setSize(width, height);
+            case "neuronMap": 
+                              this.setSize(width, height);
                               this.setDefaultCloseOperation(Frame.EXIT_ON_CLOSE);
                               this.setResizable(true);
                               this.setLocationRelativeTo(null);

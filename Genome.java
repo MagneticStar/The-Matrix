@@ -135,7 +135,8 @@ public class Genome{
 
             neurons.add(neuron);
         }
-
+        
+        // Converts the arraylist to an array
         this.neurons = new Neuron[neurons.size()];
         for (int i = 0; i < neurons.size(); i++) {
             this.neurons[i] = neurons.get(i);
