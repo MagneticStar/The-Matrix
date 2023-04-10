@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.util.Random;
 import java.util.ArrayList;
 
@@ -99,19 +100,33 @@ public class Genome{
                 neuron = new Motor(neuronID);
                 emptyNeurons.add(createSource(sourceType, sourceID, neuron));
             }
-
+            
             if(emptyNeurons.size()>0){
                 for(int j=0; j<emptyNeurons.size();j++){
                     // Checks if an empty neuron is the same type of this new neuron
                     if(neuron.getClass().equals(emptyNeurons.get(j).getClass())){
                         // Sets the prexisting empty neuron to this new neuron
+                        System.out.println("New Neuron");
                         for(Neuron sink : emptyNeurons.get(j).getSinks().keySet()){
+                            System.out.println(sink.getSources());
                             neuron.addSink(sink, emptyNeurons.get(j).getSinks().get(sink));
+<<<<<<< Updated upstream
                             sink.replaceSink(sink, neuron);
+=======
+                            sink.replaceSource(emptyNeurons.get(j), neuron);
+                            System.out.println(sink.getSources());
+>>>>>>> Stashed changes
                         }
+                        System.out.println("New Neuron");
                         for(Neuron source : emptyNeurons.get(j).getSources()){
+                            System.out.println(source.getSinks());
                             neuron.addSource(source);
+<<<<<<< Updated upstream
                             source.replaceSource(source, neuron);
+=======
+                            source.replaceSink(emptyNeurons.get(j), neuron);
+                            System.out.println(source.getSinks());
+>>>>>>> Stashed changes
                         }
                         emptyNeurons.remove(j);
                     }

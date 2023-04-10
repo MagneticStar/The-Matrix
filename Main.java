@@ -11,7 +11,7 @@ public class Main extends JFrame{
     // ArrayList for all subjects
     public static ArrayList<Subject> subs = new ArrayList<Subject>();
     // An array containing a seralized name for each subject
-    public static String[] subNames = new String[0];
+    public static String[] subNames = new String[1];
     // Translation obj used to find scalers
     public static Translation matCalc = new Translation();
     public static void main(String[] args) {
