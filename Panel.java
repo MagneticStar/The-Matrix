@@ -21,7 +21,7 @@ public class Panel extends JPanel{
         // prints all Subjects in subject array
         for(Subject s: Main.subs) {
             g.setColor(s.getColor());
-            g.fillRect((int)s.getPrintPos().x() - 20, (int)s.getPrintPos().y() - 20, 40, 40);
+            g.fillRect(s.getPrintPos(this).x() - 20, s.getPrintPos(this).y() - 20, 40, 40);
         }
     }
     public void drawFood(Graphics g) {
@@ -29,7 +29,7 @@ public class Panel extends JPanel{
         // prints all Foods in Food array
         for(Food f : Main.foods) {
             g.setColor(f.getColor());
-            g.fillRect(f.getPrintPos().x() - 5, f.getPrintPos().y() - 5, 10, 10);
+            g.fillRect(f.getPrintPos(this).x() - 5, f.getPrintPos(this).y() - 5, 10, 10);
         }
     }
     public void drawWater(Graphics g) {
@@ -37,8 +37,7 @@ public class Panel extends JPanel{
         // prints all Waters in Water array
         for(Water w : Main.waters) {
             g.setColor(w.getColor());
-            g.fillRect(w.getPrintPos().x() - 5, w.getPrintPos().y() - 5, 10, 10);
+            g.fillRect(w.getPrintPos(this).x() - 5, w.getPrintPos(this).y() - 5, 10, 10);
         }
     }
 }
-

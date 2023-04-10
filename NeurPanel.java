@@ -74,7 +74,7 @@ public class NeurPanel extends JPanel implements ActionListener{
                     case "Motor": g.setColor(Color.blue);
                     break;
                 }
-                g.drawLine(n.getPrintPos().x() + 15, n.getPrintPos().y() + 15, s.getKey().getPrintPos().x() + 15, s.getKey().getPrintPos().y() + 15);
+                g.drawLine(n.getPrintPos(this).x() + 15, n.getPrintPos(this).y() + 15, s.getKey().getPrintPos(this).x() + 15, s.getKey().getPrintPos(this).y() + 15);
                 System.out.println(s.getKey());
             }
         }
@@ -98,18 +98,18 @@ public class NeurPanel extends JPanel implements ActionListener{
         g.setColor(Color.green);
         n.setPosX(5);
         n.setPosY(i);
-        g.drawOval(n.getPrintPos().x(), n.getPrintPos().y(), 30, 30);
+        g.drawOval(n.getPrintPos(this).x(), n.getPrintPos(this).y(), 30, 30);
     }
     public void sensorNeuron(Graphics g, int i, Neuron n) {
         g.setColor(Color.red);
         n.setPosX(2);
         n.setPosY(i);
-        g.drawOval(n.getPrintPos().x(), n.getPrintPos().y(), 30, 30);
+        g.drawOval(n.getPrintPos(this).x(), n.getPrintPos(this).y(), 30, 30);
     }
     public void motorNeuron(Graphics g, int i, Neuron n) {
         g.setColor(Color.blue);
         n.setPosX(8);
         n.setPosY(i);
-        g.drawOval(n.getPrintPos().x(), n.getPrintPos().y(), 30, 30);
+        g.drawOval(n.getPrintPos(this).x(), n.getPrintPos(this).y(), 30, 30);
     }
 }

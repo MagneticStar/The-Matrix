@@ -1,4 +1,6 @@
 import java.awt.Color;
+
+import javax.swing.JPanel;
 public class screenObject {
     private Coor position;
     private Color color;
@@ -43,9 +45,9 @@ public class screenObject {
         return color;
     }
 
-    public Coor getPrintPos() {
+    public Coor getPrintPos(JPanel panel) {
         Translation t = new Translation();
-        t.setMat(Frame.simPanel.getWidth()/10.0, Frame.simPanel.getHeight()/10.0);
+        t.setMat(panel.getWidth()/10.0, panel.getHeight()/10.0);
         int[] ans = t.translate(this.getPos().matrix());
         return new Coor(ans[0], ans[1]);
     }
