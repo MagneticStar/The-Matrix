@@ -107,11 +107,11 @@ public class Genome{
                         // Sets the prexisting empty neuron to this new neuron
                         for(Neuron sink : emptyNeurons.get(j).getSinks().keySet()){
                             neuron.addSink(sink, emptyNeurons.get(j).getSinks().get(sink));
-                            sink.replaceSink(sink, neuron);
+                            sink.replaceSource(emptyNeurons.get(j), neuron);
                         }
                         for(Neuron source : emptyNeurons.get(j).getSources()){
                             neuron.addSource(source);
-                            source.replaceSource(source, neuron);
+                            source.replaceSink(emptyNeurons.get(j), neuron);
                         }
                         emptyNeurons.remove(j);
                     }
