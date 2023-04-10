@@ -39,4 +39,13 @@ public class Neuron extends screenObject{
     public void addSink(Neuron neuron,int sinkWeight){
         this.sinks.put(neuron,sinkWeight);
     }
+
+    public void replaceSource(Neuron initial, Neuron replacement){
+        this.sources.set(this.sources.indexOf(initial),replacement);
+    }
+
+    public void replaceSink(Neuron initial, Neuron replacement){
+        this.sinks.put(replacement, this.sinks.get(initial));
+        this.sinks.remove(initial);
+    }
 }
