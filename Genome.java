@@ -71,10 +71,8 @@ public class Genome{
 
         for(int i=0; i<genomeLength; i++){
             Neuron neuron;
-            Neuron source;
-            Neuron sink;
             String DNASlice = DNA.substring(i*geneLength,(i+1)*geneLength);
-            
+
             // parses the DNA by splicing it using the format described above
             int neuronType = Integer.parseInt(DNASlice.substring(0,2),2);
             int neuronID = Integer.parseInt(DNASlice.substring(2,6),2);
@@ -84,61 +82,83 @@ public class Genome{
             int sinkID = Integer.parseInt(DNASlice.substring(12,16),2);
             int sinkWeight = Integer.parseInt(DNASlice.substring(16,geneLength),2);
 
+
             if(neuronType == 0 || neuronType == 2){
                 // Neuron is an internal neuron
                 neuron = new Internal(neuronID%2);
+                emptyNeurons.add(createSource(sourceType, sourceID, neuron));
+                emptyNeurons.add(createSink(sinkType, sinkID, sinkWeight, neuron));
             }
             else if(neuronType == 1){
                 // Neuron is a sensor neuron
                 neuron = new Sensor(subject,neuronID);
+                emptyNeurons.add(createSink(sinkType, sinkID, sinkWeight, neuron));
             }
             else{
                 // Neuron is a motor neuron
                 neuron = new Motor(neuronID);
+                emptyNeurons.add(createSource(sourceType, sourceID, neuron));
             }
-            
+
             if(emptyNeurons.size()>0){
                 for(int j=0; j<emptyNeurons.size();j++){
                     // Checks if an empty neuron is the same type of this new neuron
                     if(neuron.getClassType() == (emptyNeurons.get(j).getClassType())){
                         // Sets the prexisting empty neuron to this new neuron
-                        neuron = emptyNeurons.get(j);
+                        for(Neuron sink : emptyNeurons.get(j).getSinks().keySet()){
+                            neuron.addSink(sink, emptyNeurons.get(j).getSinks().get(sink));
+                            sink.replaceSink(sink, neuron);
+                        }
+                        for(Neuron source : emptyNeurons.get(j).getSources()){
+                            neuron.addSource(source);
+                            source.replaceSource(source, neuron);
+                        }
                         emptyNeurons.remove(j);
                     }
                 }
                 
             }
-
-            if(sourceType == 0){
-                // Source is an internal neuron
-                source = new Internal(sourceID);
-            }
-            else{
-                // Source is a sensor neuron
-                source = new Sensor(subject,sourceID);
-            }
-            neuron.addSource(source);
-            source.addSink(neuron,0);
-            emptyNeurons.add(source);
-
-            if(sinkType == 0){
-                // Sink is an internal neuron
-                sink = new Internal(sinkID);
-            }
-            else{
-                // Sink is a motor neuron
-                sink = new Motor(sinkID);
-            }
-            neuron.addSink(sink,sinkWeight);
-            source.addSource(neuron);
-            emptyNeurons.add(sink);
-
+            
+            
             neurons.add(neuron);
         }
-
+        // Converts the arraylist to an array
         this.neurons = new Neuron[neurons.size()];
         for (int i = 0; i < neurons.size(); i++) {
             this.neurons[i] = neurons.get(i);
         }
+    }
+
+    private Neuron createSource(int sourceType, int sourceID, Neuron neuron){
+        Neuron source;
+        
+        if(sourceType == 0){
+            // Source is an internal neuron
+            source = new Internal(sourceID);
+        }
+        else{
+            // Source is a sensor neuron
+            source = new Sensor(subject,sourceID);
+        }
+
+        neuron.addSource(source);
+        source.addSink(neuron,0);
+        return source;
+    }
+
+    private Neuron createSink(int sinkType, int sinkID, int sinkWeight, Neuron neuron){
+        Neuron sink;
+        if(sinkType == 0){
+            // Sink is an internal neuron
+            sink = new Internal(sinkID);
+        }
+        else{
+            // Sink is a motor neuron
+            sink = new Motor(sinkID);
+        }
+        neuron.addSink(sink,sinkWeight);
+        sink.addSource(neuron);
+        
+        return sink;
     }
 }

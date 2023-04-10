@@ -2,43 +2,34 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Map;
 
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
 public class NeurPanel extends JPanel implements ActionListener{
-    
-    
-    private static TextField searchBar;
+    private static JComboBox<String> searchDropDown;
     private static Button searchButton;
-    private static Label searchReply;
 
     public static void main(String[] args){
+        searchDropDown = new JComboBox<String>(Main.subNames);
+        searchDropDown.setSelectedIndex(0);
         searchButton = new Button("Find");
-        searchReply = new Label("");
         
-        NeurPanel nP = new NeurPanel();
-        // Adds an action listener to the button
-        searchButton.addActionListener(nP);
-        // creates a TextField object with 16 columns
-        searchBar = new TextField(16);
-        // creates a font object and sets the TextField font to the newly defined font object
-        Font searchBarFont = new Font("Serif",Font.BOLD,20);
-        searchBar.setFont(searchBarFont);
-
+        
+        // Adds an action listeners to the button and dropdown
         NeurPanel neuronPanel = Frame.neuronMapPanel;
+        searchDropDown.addActionListener(neuronPanel);
+        searchButton.addActionListener(neuronPanel);
 
-        neuronPanel.add(searchBar);
+        neuronPanel.add(searchDropDown);
         neuronPanel.add(searchButton);
-        neuronPanel.add(searchReply);
+        neuronPanel.repaint();
 
     }
 
     public void actionPerformed(ActionEvent e){
-        String s = e.getActionCommand();
-        if (s.equals("Find")){
-            searchReply.setText(searchBar.getText());
-
-            searchBar.setText("");
-        }
+        // JComboBox cb = (JComboBox)e.getSource();
+        // String petName = (String)cb.getSelectedItem();
+        // updateLabel(petName);
     }
 
     public NeurPanel() {
