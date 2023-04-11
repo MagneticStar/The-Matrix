@@ -104,7 +104,7 @@ public class Genome{
             if(emptyNeurons.size()>0){
                 for(int j=0; j<emptyNeurons.size();j++){
                     // Checks if an empty neuron is the same type of this new neuron
-                    if(neuron.getClass().equals(emptyNeurons.get(j).getClass())){
+                    if(neuron.getClassType() == (emptyNeurons.get(j).getClassType())){
                         // Sets the prexisting empty neuron to this new neuron
                         System.out.println("New Neuron");
                         for(Neuron sink : emptyNeurons.get(j).getSinks().keySet()){

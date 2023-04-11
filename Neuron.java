@@ -29,6 +29,7 @@ public class Neuron extends screenObject{
         return this.sinks;
     }
     public String getClassType() {
+    public String getClassType() {
         return type;
     }
 
