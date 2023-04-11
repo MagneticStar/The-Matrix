@@ -28,7 +28,7 @@ public class Neuron extends screenObject{
     public HashMap<Neuron,Integer> getSinks(){
         return this.sinks;
     }
-    public String getClassType() {
+    
     public String getClassType() {
         return type;
     }

@@ -1,5 +1,4 @@
 import java.awt.Color;
-import java.awt.FlowLayout;
 import java.util.Random;
 import java.util.ArrayList;
 
@@ -8,11 +7,13 @@ public class Genome{
     private final int geneLength = 32;
     private String DNA;
     private Subject subject;
+    // private int subjectIndex;
     private Neuron[] neurons;
     private Color color;
 
     public Genome(Subject subject){
         this.subject = subject;
+        // this.subjectIndex = Main.subs.size();
         generateDNA(); // sets this.DNA to a random binary String
         calculateColor(); // sets this.color to RGB values based on the content of this.DNA
         interpretDNA();
@@ -56,6 +57,11 @@ public class Genome{
     }
 
     private void interpretDNA(){
+
+        /////////////////////////////////////////
+        // INTERPRET // INTERPRET // INTERPRET //
+        /////////////////////////////////////////
+
         // Each gene of geneLength in DNA is a neuron.
 
         // Example DNA String
@@ -69,7 +75,7 @@ public class Genome{
 
         ArrayList<Neuron> emptyNeurons = new ArrayList<Neuron>(); // Contains neurons created as a byproduct that have yet to be initialized with values
         ArrayList<Neuron> neurons = new ArrayList<Neuron>();
-
+        // System.out.println("\n\nSubject "+subjectIndex);
         for(int i=0; i<genomeLength; i++){
             Neuron neuron;
             String DNASlice = DNA.substring(i*geneLength,(i+1)*geneLength);
@@ -100,35 +106,44 @@ public class Genome{
                 neuron = new Motor(neuronID);
                 emptyNeurons.add(createSource(sourceType, sourceID, neuron));
             }
-            
+            // System.out.println(neuronType+" "+neuron.getSources()+neuron.getSinks());
             if(emptyNeurons.size()>0){
                 for(int j=0; j<emptyNeurons.size();j++){
                     // Checks if an empty neuron is the same type of this new neuron
                     if(neuron.getClassType() == (emptyNeurons.get(j).getClassType())){
                         // Sets the prexisting empty neuron to this new neuron
-                        System.out.println("New Neuron");
                         for(Neuron sink : emptyNeurons.get(j).getSinks().keySet()){
-                            System.out.println(sink.getSources());
                             neuron.addSink(sink, emptyNeurons.get(j).getSinks().get(sink));
                             sink.replaceSource(emptyNeurons.get(j), neuron);
-                            System.out.println(sink.getSources());
                         }
-                        System.out.println("New Neuron");
                         for(Neuron source : emptyNeurons.get(j).getSources()){
-                            System.out.println(source.getSinks());
                             neuron.addSource(source);
                             source.replaceSink(emptyNeurons.get(j), neuron);
-                            System.out.println(source.getSinks());
                         }
                         emptyNeurons.remove(j);
                     }
                 }
                 
             }
-            
-            
+            // System.out.println(neuronType+" "+neuron.getSources()+neuron.getSinks());
             neurons.add(neuron);
         }
+
+        ////////////////////////////////////////////
+        // FILL EMPTY // FILL EMPTY // FILL EMPTY //
+        ////////////////////////////////////////////
+        
+        for(Neuron emptyNeuron:emptyNeurons){
+            if(emptyNeuron.getClassType().equals("Internal")){
+                for(Neuron neuron:neurons){
+                    if(neuron.getClassType().equals("Sensor")){
+                        continue;
+                    }
+                    emptyNeuron.addSink(neuron, geneLength);
+                }
+            }
+        }
+
         // Converts the arraylist to an array
         this.neurons = new Neuron[neurons.size()];
         for (int i = 0; i < neurons.size(); i++) {

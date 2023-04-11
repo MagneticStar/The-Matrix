@@ -1,14 +1,12 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Map;
-
-import java.util.Map;
-
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
-public class NeurPanel extends JPanel implements ItemListener{
+public class NeurPanel extends JPanel implements ActionListener{
     private static JComboBox<String> searchDropDown;
+    private static int currentlySelectedSubjectIndex = 0;
 
     public static void main(String[] args){
         searchDropDown = new JComboBox<String>(Main.subNames);
@@ -17,18 +15,18 @@ public class NeurPanel extends JPanel implements ItemListener{
         
         // Adds an action listeners to the dropdown
         NeurPanel neuronPanel = Frame.neuronMapPanel;
-        searchDropDown.addItemListener(neuronPanel);
+        searchDropDown.addActionListener(neuronPanel);
 
         neuronPanel.add(searchDropDown);
-        // neuronPanel.repaint();
+        neuronPanel.revalidate();
 
     }
 
-    public void itemStateChanged(ItemEvent e)
-    {
-        // if the combobox is changed
-        // drawNeuron(getGraphics(), Main.subs.get(Integer.parseInt(searchDropDown.getSelectedItem().substring((searchDropDown.getSelectedItem().indexOf(" "))))));
-        System.out.println(searchDropDown.getSelectedItem());
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        // Sets the neuron map panel to the neuron map of the selected subject. The string manipulation is to avoid searching for the index of the subject
+        currentlySelectedSubjectIndex = Integer.parseInt(searchDropDown.getSelectedItem().toString().substring(searchDropDown.getSelectedItem().toString().indexOf(" ")+1));
+        repaint();
     }
 
     public NeurPanel() {
@@ -39,7 +37,7 @@ public class NeurPanel extends JPanel implements ItemListener{
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         // Where all graphics are rendered
-        drawNeuron(g,Main.subs.get(0));
+        drawNeuron(g,Main.subs.get(currentlySelectedSubjectIndex));
     }
     public void drawNeuron(Graphics g, Subject subject) {
     
@@ -73,22 +71,22 @@ public class NeurPanel extends JPanel implements ItemListener{
                     break;
                 }
                 g.drawLine(n.getPrintPos(this).x() + 15, n.getPrintPos(this).y() + 15, s.getKey().getPrintPos(this).x() + 15, s.getKey().getPrintPos(this).y() + 15);
-                System.out.println(s.getKey());
+                // System.out.println(s.getKey());
             }
         }
-        // for (Neuron n : neurons) {
-        //     for (Neuron s : n.getSources()) {
-        //         switch (s.getClassType()) {
-        //             case "Internal": g.setColor(Color.green);
-        //             break;
-        //             case "Sensor": g.setColor(Color.red);
-        //             break;
-        //             case "Motor": g.setColor(Color.blue);
-        //             break;
-        //         }
-        //         g.drawLine(n.getPrintPos().x() + 15, n.getPrintPos().y() + 15, s.getPrintPos().x() + 15, s.getPrintPos().y() + 15);
-        //     }
-        // }
+        for (Neuron n : neurons) {
+            for (Neuron s : n.getSources()) {
+                switch (s.getClassType()) {
+                    case "Internal": g.setColor(Color.green);
+                    break;
+                    case "Sensor": g.setColor(Color.red);
+                    break;
+                    case "Motor": g.setColor(Color.blue);
+                    break;
+                }
+                g.drawLine(n.getPrintPos(this).x() + 15, n.getPrintPos(this).y() + 15, s.getPrintPos(this).x() + 15, s.getPrintPos(this).y() + 15);
+            }
+        }
         
     }
 
