@@ -5,20 +5,20 @@ import java.util.ArrayList;
 public class Neuron extends screenObject{
     private ArrayList<Neuron> sources = new ArrayList<Neuron>();
     private HashMap<Neuron,Integer> sinks = new HashMap<Neuron,Integer>();
-    private int type;
-    public Neuron(int type) {
+    private String type;
+    public Neuron(String type) {
         
         super(Color.white, new Coor(0, 0));
-        if (this instanceof Sensor) {
-            this.setPosX(50);
-            this.type = type;
-        }
-        if (this instanceof Internal) {
-            this.setPosX(100);
-        }
-        
-        if (this instanceof Motor) {
-            this.setPosX(150);
+        switch(type){
+            case "Sensor": this.setPosX(50);
+                           this.type = type;
+            break;
+            case "Internal": this.setPosX(100);
+                           this.type = type;
+            break;
+            case "Motor": this.setPosX(150);
+                           this.type = type;
+            break;
         }
     }
     public ArrayList<Neuron> getSources(){
@@ -28,7 +28,7 @@ public class Neuron extends screenObject{
     public HashMap<Neuron,Integer> getSinks(){
         return this.sinks;
     }
-    public int getClassType() {
+    public String getClassType() {
         return type;
     }
 

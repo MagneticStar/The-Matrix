@@ -3,7 +3,7 @@ public class Motor extends Neuron{
     private static int numberOfMotorMethods = 2; // Update this when creating new Motor methods
 
     public Motor(int methodID){
-        super(2);
+        super("Motor");
         switch(methodID%(numberOfMotorMethods+1)){
             case 0: this.motorMethod = Motor::move; break;
             case 1: this.motorMethod = Motor::turn; break;

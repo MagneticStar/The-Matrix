@@ -1,5 +1,7 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Map;
+
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
@@ -23,7 +25,8 @@ public class NeurPanel extends JPanel implements ItemListener{
     public void itemStateChanged(ItemEvent e)
     {
         // if the combobox is changed
-        drawNeuron(getGraphics(), Main.subs.get(searchDropDown.getSelectedItem().substring(searchDropDown.getSelectedItem().indexOf(" "))));
+        // drawNeuron(getGraphics(), Main.subs.get(Integer.parseInt(searchDropDown.getSelectedItem().substring((searchDropDown.getSelectedItem().indexOf(" "))))));
+        System.out.println(searchDropDown.getSelectedItem());
     }
 
     public NeurPanel() {
@@ -39,19 +42,6 @@ public class NeurPanel extends JPanel implements ItemListener{
     public void drawNeuron(Graphics g, Subject subject) {
     
         Neuron[] neurons = subject.getGenome().getNeurons();
-
-        for (Neuron n : neurons) {
-            switch(n.getClassType()) {
-                // Internal
-                case 0: internalNeuron(g);
-                // Sensor
-                case 1: sensorNeuron(g);
-                // Motor
-                case 2: motorNeuron(g);
-            }
-        }
-<<<<<<< Updated upstream
-=======
         for (Neuron n : neurons) {
             for (Map.Entry<Neuron, Integer> s : n.getSinks().entrySet()) {
                 switch (s.getKey().getClassType()) {
@@ -66,21 +56,6 @@ public class NeurPanel extends JPanel implements ItemListener{
                 // System.out.println(s.getKey());
             }
         }
-        // for (Neuron n : neurons) {
-        //     for (Neuron s : n.getSources()) {
-        //         switch (s.getClassType()) {
-        //             case "Internal": g.setColor(Color.green);
-        //             break;
-        //             case "Sensor": g.setColor(Color.red);
-        //             break;
-        //             case "Motor": g.setColor(Color.blue);
-        //             break;
-        //         }
-        //         g.drawLine(n.getPrintPos().x() + 15, n.getPrintPos().y() + 15, s.getPrintPos().x() + 15, s.getPrintPos().y() + 15);
-        //     }
-        // }
->>>>>>> Stashed changes
-        
     }
     public void internalNeuron(Graphics g) {
         g.setColor(Color.white);
