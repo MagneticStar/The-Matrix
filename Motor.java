@@ -4,7 +4,7 @@ public class Motor extends Neuron{
 
     public Motor(int methodID){
         super("Motor");
-        switch(methodID%(numberOfMotorMethods+1)){
+        switch(methodID%numberOfMotorMethods){
             case 0: this.motorMethod = Motor::move; break;
             case 1: this.motorMethod = Motor::turn; break;
         }
