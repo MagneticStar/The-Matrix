@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.util.Random;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class Genome{
     private final int genomeLength = 8;
@@ -10,7 +11,7 @@ public class Genome{
     private Subject subject;
     // private int subjectIndex;
     private Neuron[] neurons;
-    private ArrayList<Neuron> sensors;
+    private ArrayList<Neuron> sensors = new ArrayList<Neuron>();
     private ArrayList<Neuron> usefulNeurons;
     private Color color;
 
@@ -116,9 +117,9 @@ public class Genome{
                     // Checks if an empty neuron is the same type of this new neuron
                     if(neuron.getClassType() == (emptyNeurons.get(j).getClassType())){
                         // Sets the prexisting empty neuron to this new neuron
-                        for(Neuron sink : emptyNeurons.get(j).getSinks().keySet()){
-                            neuron.addSink(sink, rand.nextInt(0,(int)Math.pow(2, geneLength-16)));
-                            sink.replaceSource(emptyNeurons.get(j), neuron);
+                        for(Map.Entry<Neuron, Integer> sink : emptyNeurons.get(j).getSinks().entrySet()){
+                            neuron.addSink(sink.getKey(), rand.nextInt(0,(int)Math.pow(2, geneLength-16)));
+                            sink.getKey().replaceSource(emptyNeurons.get(j), neuron);
                         }
                         for(Neuron source : emptyNeurons.get(j).getSources()){
                             neuron.addSource(source);
@@ -165,8 +166,8 @@ public class Genome{
                 for(Neuron source:neuron.getSources()){
                     source.removeSink(neuron);
                 }
-                for(Neuron sink:neuron.getSinks().keySet()){
-                    sink.removeSource(neuron);
+                for(Map.Entry<Neuron, Integer> sink:neuron.getSinks().entrySet()){
+                    sink.getKey().removeSource(neuron);
                 }
             }
         }
@@ -183,8 +184,8 @@ public class Genome{
 
     private boolean iterateThroughNeuronChain(Neuron neuron){
         // Base case
-        System.out.println(neuron.getSinks().keySet().size());
-        if(neuron.getSinks().keySet().size()==0){
+        System.out.println(neuron.getSinks().entrySet().size());
+        if(neuron.getSinks().entrySet().size()==0){
             if(neuron.getClassType().equals("Motor")){
                 usefulNeurons.add(neuron);
                 return true;
@@ -193,8 +194,8 @@ public class Genome{
                 return false;
             }
         }
-        for(Neuron sink:neuron.getSinks().keySet()){
-            if(iterateThroughNeuronChain(sink)){
+        for(Map.Entry<Neuron, Integer> sink:neuron.getSinks().entrySet()){
+            if(iterateThroughNeuronChain(sink.getKey())){
                 usefulNeurons.add(neuron);
                 return true;
             }
