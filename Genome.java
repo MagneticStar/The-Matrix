@@ -14,6 +14,8 @@ public class Genome{
     private ArrayList<Neuron> sensors = new ArrayList<Neuron>();
     private ArrayList<Neuron> usefulNeurons;
     private Color color;
+    private int recursiveIterations;
+    public static ArrayList<Integer> recursiveIterationTotals = new ArrayList<Integer>();
 
     public Genome(Subject subject){
         this.subject = subject;
@@ -160,6 +162,7 @@ public class Genome{
         // Follow each neuron chain to find every chain that leads to a motor neuron. Any neurons not in those chains can then be pruned.
         for(Neuron sensor:sensors){
             iterateThroughNeuronChain(sensor);
+            recursiveIterationTotals.add(recursiveIterations);
         }
         for(Neuron neuron:neurons){
             if(!usefulNeurons.contains(neuron)){
@@ -184,17 +187,19 @@ public class Genome{
 
     private boolean iterateThroughNeuronChain(Neuron neuron){
         // Base case
-        System.out.println(neuron.getSinks().entrySet().size());
-        if(neuron.getSinks().entrySet().size()==1){
-            for(Map.Entry<Neuron, Integer> sink : neuron.getSinks().entrySet()){
-                if(sink.getKey()instanceof Motor){
-                    usefulNeurons.add(neuron);
-                    return true;
-                }
-                else{
-                    return false;
-                }
+        recursiveIterations++;
+        // System.out.println(neuron.getSinks().entrySet().size());
+        if(neuron.getSinks().entrySet().size()==0){
+            if(neuron instanceof Motor){
+                usefulNeurons.add(neuron);
+                return true;
             }
+            else{
+                return false;
+            }
+        }
+        else if(recursiveIterations > 16){
+            return false;
         }
         for(Map.Entry<Neuron, Integer> sink:neuron.getSinks().entrySet()){
             if(iterateThroughNeuronChain(sink.getKey())){
