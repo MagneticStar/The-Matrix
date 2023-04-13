@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class Sensor extends Neuron{
 
-    private static Subject subject = new Subject();
+    private static Subject subject;
     public SensorMethod sensorMethod; 
     private static int numberOfSensorMethods = 2; // Update this when creating new Sensor methods
     private Coor temp = new Coor();
@@ -13,7 +13,8 @@ public class Sensor extends Neuron{
     public Sensor(Subject s, int methodID) {
         super();
         subject = s;
-        switch(methodID%(numberOfSensorMethods+1)){
+        // methodID%(numberOfSensorMethods+1)
+        switch(0){
             case 0: this.sensorMethod = Sensor::detectFood; break;
             case 1: this.sensorMethod = Sensor::nearestWater; break;
         }
