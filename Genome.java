@@ -185,13 +185,15 @@ public class Genome{
     private boolean iterateThroughNeuronChain(Neuron neuron){
         // Base case
         System.out.println(neuron.getSinks().entrySet().size());
-        if(neuron.getSinks().entrySet().size()==0){
-            if(neuron.getClassType().equals("Motor")){
-                usefulNeurons.add(neuron);
-                return true;
-            }
-            else{
-                return false;
+        if(neuron.getSinks().entrySet().size()==1){
+            for(Map.Entry<Neuron, Integer> sink : neuron.getSinks().entrySet()){
+                if(sink.getKey()instanceof Motor){
+                    usefulNeurons.add(neuron);
+                    return true;
+                }
+                else{
+                    return false;
+                }
             }
         }
         for(Map.Entry<Neuron, Integer> sink:neuron.getSinks().entrySet()){

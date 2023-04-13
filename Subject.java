@@ -12,6 +12,10 @@ public class Subject extends screenObject{
         super(color, position);
         this.genome = new Genome(this);
     }
+    public Subject(Genome genome){
+        super();
+        this.genome = genome;
+    }
 
     // setters
     public void setGenome(Genome genome) {
