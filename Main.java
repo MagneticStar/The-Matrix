@@ -3,21 +3,21 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Map;
 
-import javax.swing.*;
+public class Main {
+   
 
-public class Main extends JFrame{
-    // ArrayList for all food
-    public static  ArrayList<Food> foods = new ArrayList<Food>();
-    // ArrayList for all water
-    public static  ArrayList<Water> waters = new ArrayList<Water>();
-    // ArrayList for all subjects
-    public static ArrayList<Subject> subs = new ArrayList<Subject>();
-    // Translation obj used to find scalers
-    public static Translation matCalc = new Translation();
+    // simFrame.add(simPanel);
+    //     simFrame.setVisible(true);
+
+    //     FlowLayout flowLayout = new FlowLayout(FlowLayout.LEADING);
+    //     neuronMapPanel.setLayout(flowLayout);
+    //     neuronMap.add(neuronMapPanel);
+    //     neuronMap.setVisible(true);
+    
     public static void main(String[] args) {
 
         
-        subs.add(new Subject(Color.yellow, new Coor(5, 5)));
+        Database.subs.add(new Subject(Color.yellow, new Coor(5, 5)));
         // subs.add(new Subject(Color.yellow, new Coor(0, 10)));
         // subs.add(new Subject(Color.yellow, new Coor(10, 0)));
         // subs.add(new Subject(Color.yellow, new Coor(10, 10)));
@@ -25,17 +25,14 @@ public class Main extends JFrame{
         foods.add(new Food(new Coor(7, 7)));
         // waters.add(new Water(new Coor(6, 8)));
 
-<<<<<<< Updated upstream
-=======
         // while(subs.size() < 10){
         //     subs.add(new Subject(Color.yellow, new Coor(100,100)));
         // }
-        subNames = new String[Main.subs.size()];
+        String[] subNames = new String[Main.subs.size()];
         for(int i=0; i<Main.subs.size(); i++){
             subNames[i] = String.format("Subject %04d",i);
         }
         
->>>>>>> Stashed changes
         Frame.main(args);
         NeurPanel.main(args);
 
