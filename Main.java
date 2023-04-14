@@ -24,24 +24,13 @@ public class Main{
         foods.add(new Food(new Coor(7, 3)));
         waters.add(new Water(new Coor(6, 8)));
 
-        while(subs.size() < 100000){
+        while(subs.size() < 1){
             subs.add(new Subject(Color.yellow, new Coor(100,100)));
         }
         subNames = new String[Main.subs.size()];
         for(int i=0; i<Main.subs.size(); i++){
             subNames[i] = String.format("Subject %04d",i);
         }
-        int recursiveIterationsAverage = 0;
-        int maxRecursiveIterations = 0;
-        for(int n:Genome.recursiveIterationTotals){
-            recursiveIterationsAverage+=n;
-            if(n>maxRecursiveIterations){
-                maxRecursiveIterations = n;
-            }
-        }
-        System.out.println(recursiveIterationsAverage/Genome.recursiveIterationTotals.size());
-        System.out.println(maxRecursiveIterations);
-        System.out.println(Genome.recursiveIterationTotals.size()+" "+subs.size());
         
         Frame.main(args);
         NeurPanel.main(args);

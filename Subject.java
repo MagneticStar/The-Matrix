@@ -20,6 +20,7 @@ public class Subject extends screenObject{
     // setters
     public void setGenome(Genome genome) {
         this.genome = genome;
+        this.genome.subject = this;
     }
 
     // getters

@@ -8,14 +8,14 @@ public class Genome{
     private final int geneLength = 32;
     private final Random rand = new Random();
     private String DNA;
-    private Subject subject;
-    // private int subjectIndex;
+    public Subject subject;
+    private Color color;
     private Neuron[] neurons;
     private ArrayList<Neuron> sensors = new ArrayList<Neuron>();
+    // Temp Vars
+    // private int subjectIndex;
     private ArrayList<Neuron> usefulNeurons;
-    private Color color;
-    private int recursiveIterations;
-    public static ArrayList<Integer> recursiveIterationTotals = new ArrayList<Integer>();
+    
 
     public Genome(Subject subject){
         this.subject = subject;
@@ -23,6 +23,19 @@ public class Genome{
         generateDNA(); // sets this.DNA to a random binary String
         calculateColor(); // sets this.color to RGB values based on the content of this.DNA
         interpretDNA();
+    }
+
+    public Genome(Subject subject, String DNA, ArrayList<Neuron> neurons){
+        this.subject = subject;
+        this.neurons = new Neuron[neurons.size()];
+        for (int i = 0; i < neurons.size(); i++) {
+            this.neurons[i] = neurons.get(i);
+            if(neurons.get(i).getClassType().equals("Sensor")){
+                this.sensors.add(neurons.get(i));
+            }
+        }
+        this.DNA = DNA;
+        calculateColor();
     }
 
     public Color getColor(){
@@ -83,6 +96,7 @@ public class Genome{
         ArrayList<Neuron> sensors = new ArrayList<Neuron>();
         // System.out.println("\n\nSubject "+subjectIndex);
         for(int i=0; i<genomeLength; i++){
+            Main.subs.add(new Subject(new Genome(this.subject,this.DNA,neurons)));
             Neuron neuron;
             String gene = DNA.substring(i*geneLength,(i+1)*geneLength);
 
@@ -135,7 +149,7 @@ public class Genome{
             // System.out.println(neuronType+" "+neuron.getSources()+neuron.getSinks());
             neurons.add(neuron);
         }
-
+        Main.subs.add(new Subject(new Genome(this.subject,this.DNA,neurons)));
         ////////////////////////////////////////////
         // FILL EMPTY // FILL EMPTY // FILL EMPTY //
         ////////////////////////////////////////////
@@ -152,18 +166,25 @@ public class Genome{
                 emptyNeuron.addSink(neurons.get(randomNeuronIndex), rand.nextInt(0,(int)Math.pow(2, geneLength-16)));
                 neurons.get(randomNeuronIndex).addSource(emptyNeuron);
             }
+            else if(emptyNeuron.getClassType().equals("Sensor")){
+                sensors.add(emptyNeuron);
+            }
             neurons.add(emptyNeuron);
         }
-
+        Main.subs.add(new Subject(new Genome(this.subject,this.DNA,neurons)));
+        // for(Neuron neuron : neurons){
+        //     System.out.println(findSourceSinkError(neuron));
+        // }
         /////////////////////////////////////////////////////
         // PRUNE USELESS // PRUNE USELESS // PRUNE USELESS //
         /////////////////////////////////////////////////////
+
         usefulNeurons = new ArrayList<Neuron>();
         // Follow each neuron chain to find every chain that leads to a motor neuron. Any neurons not in those chains can then be pruned.
         for(Neuron sensor:sensors){
-            iterateThroughNeuronChain(sensor);
-            recursiveIterationTotals.add(recursiveIterations);
+            iterateThroughNeuronChain(sensor,0);
         }
+        // Once all useful neurons are determined, prune the rest
         for(Neuron neuron:neurons){
             if(!usefulNeurons.contains(neuron)){
                 for(Neuron source:neuron.getSources()){
@@ -185,10 +206,8 @@ public class Genome{
         }
     }
 
-    private boolean iterateThroughNeuronChain(Neuron neuron){
+    private boolean iterateThroughNeuronChain(Neuron neuron, int recursiveIterations){
         // Base case
-        recursiveIterations++;
-        // System.out.println(neuron.getSinks().entrySet().size());
         if(neuron.getSinks().entrySet().size()==0){
             if(neuron instanceof Motor){
                 usefulNeurons.add(neuron);
@@ -202,7 +221,8 @@ public class Genome{
             return false;
         }
         for(Map.Entry<Neuron, Integer> sink:neuron.getSinks().entrySet()){
-            if(iterateThroughNeuronChain(sink.getKey())){
+            // System.out.println(neuron+" feeds "+sink.getKey());
+            if(iterateThroughNeuronChain(sink.getKey(),recursiveIterations+1)){
                 usefulNeurons.add(neuron);
                 return true;
             }
@@ -211,6 +231,15 @@ public class Genome{
             }
         }
         return false;
+    }
+
+    private boolean findSourceSinkError(Neuron neuron){
+        Boolean bool = false;
+        for(Map.Entry<Neuron, Integer> sink:neuron.getSinks().entrySet()){
+            bool = findSourceSinkError(sink.getKey());
+            bool = bool || sink.getKey().getSources().contains(neuron);
+        }
+        return bool;
     }
 
     private Neuron createSource(int sourceType, int sourceID, Neuron neuron){
