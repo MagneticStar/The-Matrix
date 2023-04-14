@@ -10,6 +10,6 @@ public class SimulationFrame extends JFrame{
         this.setDefaultCloseOperation(SimulationFrame.EXIT_ON_CLOSE);
         this.setResizable(true);
         this.setLocationRelativeTo(null);
-        this.setUndecorated(false);                       
+        
     }
 }
