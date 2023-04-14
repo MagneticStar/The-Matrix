@@ -1,6 +1,4 @@
 
-import java.awt.Color;
-import java.util.ArrayList;
 import java.util.Map;
 
 public class Main {
@@ -15,37 +13,22 @@ public class Main {
     //     neuronMap.setVisible(true);
     
     public static void main(String[] args) {
-
-        
-        Database.subs.add(new Subject(Color.yellow, new Coor(5, 5)));
-        // subs.add(new Subject(Color.yellow, new Coor(0, 10)));
-        // subs.add(new Subject(Color.yellow, new Coor(10, 0)));
-        // subs.add(new Subject(Color.yellow, new Coor(10, 10)));
-        // foods.add(new Food(new Coor(1, 3)));
-        foods.add(new Food(new Coor(7, 7)));
-        // waters.add(new Water(new Coor(6, 8)));
-
-        // while(subs.size() < 10){
-        //     subs.add(new Subject(Color.yellow, new Coor(100,100)));
-        // }
-        String[] subNames = new String[Main.subs.size()];
-        for(int i=0; i<Main.subs.size(); i++){
+        String[] subNames = new String[Database.creaturesList.size()];
+        for(int i=0; i<Database.creaturesList.size(); i++){
             subNames[i] = String.format("Subject %04d",i);
         }
         
-        Frame.main(args);
-        NeurPanel.main(args);
 
         // how many ticks
         for (int i = 0; i < 1; i++) {
-            tick(Frame.simPanel, i);
+            tick(Screens.simulationPanel, i);
         }
     }
 
-    public static void tick(Panel panel, int i) {
+    public static void tick(SimulationPanel panel, int i) {
 
-        for (Subject subject : subs) {
-            for (Neuron neuron: subject.getGenome().getNeurons()) {
+        for (Creature creature : Database.creaturesList) {
+            for (Neuron neuron: creature.getGenome().getNeurons()) {
                 System.out.println("Sensor");
                 if (neuron instanceof Sensor) {
                     for (Map.Entry<Neuron, Integer> sink : neuron.getSinks().entrySet()) {
@@ -54,7 +37,7 @@ public class Main {
                     }
                 }
             }
-            for (Neuron neuron: subject.getGenome().getNeurons()) {
+            for (Neuron neuron: creature.getGenome().getNeurons()) {
                 System.out.println("Internal");
                 if (neuron instanceof Internal) {
                     for (Map.Entry<Neuron, Integer> sink : neuron.getSinks().entrySet()) {
@@ -64,15 +47,15 @@ public class Main {
                     }   
                 }
             }
-            for (Neuron neuron: subject.getGenome().getNeurons()) {
+            for (Neuron neuron: creature.getGenome().getNeurons()) {
                 System.out.println("Motor");
                 if (neuron instanceof Motor) {
-                    ((Motor)neuron).motorMethod.invoke(subject, neuron.getValue());
+                    ((Motor)neuron).motorMethod.invoke(creature, neuron.getValue());
                     System.out.println(neuron.getValue());
                 }
             }
         }
-        System.out.println(subs.get(0).getPosX() + ", " + subs.get(0).getPosY());
+        System.out.println(Database.creaturesList.get(0).getPosX() + ", " + Database.creaturesList.get(0).getPosY());
         panel.repaint();
 
         // Make tick wait

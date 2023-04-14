@@ -1,14 +1,14 @@
 import java.awt.Color;
-public class screenObject {
+public class ScreenObject {
     private Coor position;
     private Color color;
 
-    public screenObject() {
+    public ScreenObject() {
         color = Color.WHITE;
         position = new Coor(0, 0);
     }
 
-    public screenObject(Color color, Coor position) {
+    public ScreenObject(Color color, Coor position) {
         this.position = position;
         this.color = color;
     }
@@ -41,12 +41,5 @@ public class screenObject {
     
     public Color getColor() {
         return color;
-    }
-
-    public Coor getPrintPos() {
-        Translation t = new Translation();
-        t.setMat(Frame.simPanel.getWidth()/10.0, Frame.simPanel.getHeight()/10.0);
-        int[] ans = t.translate(this.getPos().matrix());
-        return new Coor(ans[0], ans[1]);
     }
 }

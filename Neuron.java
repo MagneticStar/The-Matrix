@@ -2,7 +2,7 @@ import java.util.HashMap;
 import java.awt.Color;
 import java.util.ArrayList;
 
-public class Neuron extends screenObject{
+public class Neuron extends ScreenObject{
     private ArrayList<Neuron> sources = new ArrayList<Neuron>();
     private HashMap<Neuron,Integer> sinks = new HashMap<Neuron,Integer>();
     private String type;
@@ -55,5 +55,10 @@ public class Neuron extends screenObject{
     }
     public void setValue(double value) {
         this.value = value;
+    }
+    public Coor getPrintPos() {
+        Screens.brainWorldToScreen.setWorld(Screens.brainPanel.getWidth(), Screens.brainPanel.getHeight());
+        int[] ans = Screens.brainWorldToScreen.translate(this.getPos().matrix());
+        return new Coor(ans[0], ans[1]);
     }
 }

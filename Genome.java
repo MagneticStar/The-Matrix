@@ -6,11 +6,11 @@ public class Genome{
     private final int genomeLength = 8;
     private final int geneLength = 32;
     private String DNA;
-    private Subject subject;
+    private Creature subject;
     private Neuron[] neurons;
     private Color color;
 
-    public Genome(Subject subject){
+    public Genome(Creature subject){
         this.subject = subject;
         generateDNA(); // sets this.DNA to a random binary String
         calculateColor(); // sets this.color to RGB values based on the content of this.DNA

@@ -11,17 +11,17 @@ public class Motor extends Neuron{
     }
 
     public interface MotorMethod{
-        void invoke(Subject subject, double value);
+        void invoke(Creature subject, double value);
     }
 
     ////////////////////////////////////////////////////////
     // MOTOR METHODS // MOTOR METHODS // MOTOR METHODS //
     ////////////////////////////////////////////////////////
 
-    private static void upDown(Subject subject, double value){
+    private static void upDown(Creature subject, double value){
         subject.setPosY(subject.getPosY() + (int)(value - 0.5));
     }
-    private static void leftRight(Subject subject, double value){
+    private static void leftRight(Creature subject, double value){
         subject.setPosX(subject.getPosX() + (int)(value - 0.5));
     }
 }

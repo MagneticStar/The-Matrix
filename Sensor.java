@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class Sensor extends Neuron{
 
-    private static Subject subject;
+    private static Creature subject;
     public SensorMethod sensorMethod; 
     private static int numberOfSensorMethods = 2; // Update this when creating new Sensor methods
     private Coor temp = new Coor();
@@ -10,11 +10,10 @@ public class Sensor extends Neuron{
     private static int i;
     private static int j;
     
-    public Sensor(Subject s, int methodID) {
+    public Sensor(Creature s, int methodID) {
         super();
         subject = s;
-        // methodID%(numberOfSensorMethods+1)
-        switch(0){
+        switch(methodID%(numberOfSensorMethods)){
             case 0: this.sensorMethod = Sensor::detectFood; break;
             case 1: this.sensorMethod = Sensor::nearestWater; break;
         }
@@ -29,7 +28,7 @@ public class Sensor extends Neuron{
     ////////////////////////////////////////////////////////
 
     public static double detectFood(Coor coor) {
-        for (Food f: Main.foods) {
+        for (Food f: Database.foodsList) {
             if (f.getPos().equals(coor)) {
                 double d = distance(f);
                 if (d != -1.0) {
@@ -43,7 +42,7 @@ public class Sensor extends Neuron{
     }
 
     private static double nearestWater(Coor coor){
-        for (Water w: Main.waters) {
+        for (Water w: Database.watersList) {
             if (w.getPos().equals(coor)) {
                 double d = distance(w);
                 if (d != -1.0) {
@@ -61,7 +60,7 @@ public class Sensor extends Neuron{
 
 
     
-    public static double distance(screenObject obj) {
+    public static double distance(ScreenObject obj) {
         // using Pyth theorem
         try {
             return Math.sqrt(Math.pow(obj.getPos().x() - subject.getPos().x(), 2) + Math.pow(obj.getPos().y() - subject.getPos().y(), 2));

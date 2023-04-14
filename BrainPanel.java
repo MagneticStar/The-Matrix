@@ -4,7 +4,7 @@ import java.util.Map;
 
 import javax.swing.JPanel;
 
-public class NeurPanel extends JPanel implements ActionListener{
+public class BrainPanel extends JPanel implements ActionListener{
     
     
     private static TextField searchBar;
@@ -15,7 +15,7 @@ public class NeurPanel extends JPanel implements ActionListener{
         searchButton = new Button("Find");
         searchReply = new Label("");
         
-        NeurPanel nP = new NeurPanel();
+        BrainPanel nP = new BrainPanel();
         // Adds an action listener to the button
         searchButton.addActionListener(nP);
         // creates a TextField object with 16 columns
@@ -23,13 +23,6 @@ public class NeurPanel extends JPanel implements ActionListener{
         // creates a font object and sets the TextField font to the newly defined font object
         Font searchBarFont = new Font("Serif",Font.BOLD,20);
         searchBar.setFont(searchBarFont);
-
-        NeurPanel neuronPanel = Frame.neuronMapPanel;
-
-        neuronPanel.add(searchBar);
-        neuronPanel.add(searchButton);
-        neuronPanel.add(searchReply);
-
     }
 
     public void actionPerformed(ActionEvent e){
@@ -41,7 +34,7 @@ public class NeurPanel extends JPanel implements ActionListener{
         }
     }
 
-    public NeurPanel() {
+    public BrainPanel() {
         setBackground(Color.BLACK);
     }
     
@@ -53,7 +46,7 @@ public class NeurPanel extends JPanel implements ActionListener{
     }
     public void drawNeuron(Graphics g) {
         
-        Subject subject = Main.subs.get(0);
+        Creature subject = Database.creaturesList.get(0);
         Neuron[] neurons = subject.getGenome().getNeurons();
         int i = 1;
         
