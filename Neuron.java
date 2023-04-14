@@ -44,8 +44,6 @@ public class Neuron extends screenObject{
     public void addSink(Neuron neuron,int sinkWeight){
         this.sinks.put(neuron,sinkWeight);
     }
-<<<<<<< Updated upstream
-=======
 
     public void replaceSource(Neuron initial, Neuron replacement){
         this.sources.set(this.sources.indexOf(initial),replacement);
@@ -58,5 +56,4 @@ public class Neuron extends screenObject{
     public void setValue(double value) {
         this.value = value;
     }
->>>>>>> Stashed changes
 }
