@@ -45,6 +45,9 @@ public class Genome{
     public Neuron[] getNeurons() {
         return neurons;
     }
+    public ArrayList<Neuron> getSensors(){
+        return sensors;
+    }
 
     private void calculateColor(){
         // The color is calculated by splicing the DNA into three equal segments
@@ -77,10 +80,6 @@ public class Genome{
 
     private void interpretDNA(){
 
-        /////////////////////////////////////////
-        // INTERPRET // INTERPRET // INTERPRET //
-        /////////////////////////////////////////
-
         // Each gene of geneLength in DNA is a neuron.
 
         // Example DNA String
@@ -92,16 +91,22 @@ public class Genome{
         // Sink states which neuron this neuron feeds into.
         // Weight states how strong the connection of the sink is.
 
+        /////////////////////////////////////////
+        // INTERPRET // INTERPRET // INTERPRET //
+        /////////////////////////////////////////
+
         ArrayList<Neuron> emptyNeurons = new ArrayList<Neuron>(); // Contains neurons created as a byproduct that have yet to be initialized with values
         ArrayList<Neuron> neurons = new ArrayList<Neuron>();
         ArrayList<Neuron> sensors = new ArrayList<Neuron>();
-        // System.out.println("\n\nSubject "+subjectIndex);
-        for(int i=0; i<genomeLength; i++){
-            Main.subs.add(new Subject(new Genome(this.subject,this.DNA,neurons)));
-            Neuron neuron;
-            String gene = DNA.substring(i*geneLength,(i+1)*geneLength);
 
+        for(int i=0; i<genomeLength; i++){
+            // Debug
+            Main.subs.add(new Subject(new Genome(this.subject,this.DNA,neurons)));
+
+            Neuron neuron;
+            
             // parses the DNA by splicing it using the format described above
+            String gene = DNA.substring(i*geneLength,(i+1)*geneLength);
             int neuronType = Integer.parseInt(gene.substring(0,2),2);
             int neuronID = Integer.parseInt(gene.substring(2,6),2);
             int sourceType = Integer.parseInt(gene.substring(6,7),2);
@@ -110,7 +115,9 @@ public class Genome{
             int sinkID = Integer.parseInt(gene.substring(12,16),2);
             int sinkWeight = Integer.parseInt(gene.substring(16,geneLength),2);
 
+            // Debug
             System.out.println("");
+            
             if(neuronType <= 1){
                 // Neuron is an internal neuron
                 neuron = new Internal(neuronID%2);
@@ -133,7 +140,7 @@ public class Genome{
                 for(int j=0; j<emptyNeurons.size();j++){
                     // Checks if an empty neuron is the same type of this new neuron
                     if(neuron.getClassType() == (emptyNeurons.get(j).getClassType())){
-                        // Sets the prexisting empty neuron to this new neuron
+                        // Sets the prexisting empty neuron to this new neuron and carries over previous sources and sinks
                         for(Map.Entry<Neuron, Integer> sink : emptyNeurons.get(j).getSinks().entrySet()){
                             neuron.addSink(sink.getKey(), rand.nextInt(0,(int)Math.pow(2, geneLength-16)));
                             sink.getKey().replaceSource(emptyNeurons.get(j), neuron);
@@ -147,9 +154,12 @@ public class Genome{
                 }
             }
             neurons.add(neuron);
-            System.out.println(i+1 +" "+emptyNeurons.toString()+" "+neurons.toString());
+            System.out.println(i+1 +" "+neuron.getSources().toString()+" "+neuron.getSinks().keySet().toString());
         }
+
+        // Debug
         Main.subs.add(new Subject(new Genome(this.subject,this.DNA,neurons)));
+        
         ////////////////////////////////////////////
         // FILL EMPTY // FILL EMPTY // FILL EMPTY //
         ////////////////////////////////////////////
@@ -171,12 +181,14 @@ public class Genome{
             }
             neurons.add(emptyNeuron);
         }
+        // Debug
         Main.subs.add(new Subject(new Genome(this.subject,this.DNA,neurons)));
         // for(Neuron neuron : neurons){
         //     if(findSourceSinkError(neuron,false,0)){
         //         System.out.println("Uh Ohh");
         //     }
         // }
+
         /////////////////////////////////////////////////////
         // PRUNE USELESS // PRUNE USELESS // PRUNE USELESS //
         /////////////////////////////////////////////////////
@@ -237,6 +249,7 @@ public class Genome{
         return false;
     }
 
+    // Debug Function
     private boolean findSourceSinkError(Neuron neuron, Boolean bool,int recursiveIterations){
         if(recursiveIterations > 16){
             return false;

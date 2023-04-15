@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.Map;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
@@ -35,29 +36,50 @@ public class NeurPanel extends JPanel implements ActionListener{
     
     @Override
     public void paintComponent(Graphics g) {
+        Boolean drawAll = true;
         super.paintComponent(g);
         // Where all graphics are rendered
-        drawNeuron(g,Main.subs.get(currentlySelectedSubjectIndex));
+        if(currentlySelectedSubjectIndex == 10){
+            drawAll = false;
+        }
+        drawNeurons(g,Main.subs.get(currentlySelectedSubjectIndex),drawAll);
     }
-    public void drawNeuron(Graphics g, Subject subject) {
+    
+    public void drawNeurons(Graphics g, Subject subject, Boolean drawAll) {
     
         Neuron[] neurons = subject.getGenome().getNeurons();
+        ArrayList<Neuron> sensors = subject.getGenome().getSensors();
         int i = 1;
-        
-        for (Neuron n : neurons) {
-            switch(n.getClassType()) {
-                // Internal
-                case "Internal": internalNeuron(g, i, n);
+
+        if(drawAll){
+            int ic = 0;
+            int sc = 0;
+            int mc = 0;
+            for (Neuron n : neurons) {
+                switch(n.getClassType()) {
+                    // Internal
+                    case "Internal":
+                    internalNeuron(g,i,ic,n);
+                    ic++;
+                    break;
+                    // Sensor
+                    case "Sensor":
+                    sensorNeuron(g,i,sc,n);
+                    sc++;
+                    break;
+                    // Motor
+                    case "Motor":
+                    motorNeuron(g,i,mc,n);
+                    mc++;
+                    break;
+                }
                 i++;
-                break;
-                // Sensor
-                case "Sensor": sensorNeuron(g, i, n);
+            }
+        }
+        else{
+            for (Neuron sensor : sensors){
+                drawNeuronChain(g,sensor,0,i);
                 i++;
-                break;
-                // Motor
-                case "Motor": motorNeuron(g, i, n);
-                i++;
-                break;
             }
         }
         // Sinks
@@ -92,22 +114,65 @@ public class NeurPanel extends JPanel implements ActionListener{
         
     }
 
-    public void internalNeuron(Graphics g, int i, Neuron n) {
+    public void internalNeuron(Graphics g, int i, int nc, Neuron n) {
         g.setColor(Color.green);
-        n.setPosX(5);
-        n.setPosY(i);
+        n.setPosX(8+((nc+i)%2)*(int)Math.pow(-1,(nc+i)%4));
+        n.setPosY(i+(nc%3)*(int)Math.pow(-1,nc%4));
         g.drawOval(n.getPrintPos(this).x(), n.getPrintPos(this).y(), 20, 20);
     }
-    public void sensorNeuron(Graphics g, int i, Neuron n) {
+    public void sensorNeuron(Graphics g, int i, int nc, Neuron n) {
         g.setColor(Color.red);
-        n.setPosX(2);
-        n.setPosY(i);
+        n.setPosX(6+((nc+i)%2)*(int)Math.pow(-1,(nc+i)%4));
+        n.setPosY(i+(nc%3)*(int)Math.pow(-1,nc%4));
         g.drawOval(n.getPrintPos(this).x(), n.getPrintPos(this).y(), 20, 20);
     }
-    public void motorNeuron(Graphics g, int i, Neuron n) {
+    public void motorNeuron(Graphics g, int i, int nc, Neuron n) {
         g.setColor(Color.blue);
-        n.setPosX(8);
-        n.setPosY(i);
+        n.setPosX(12+((nc+i)%2)*(int)Math.pow(-1,(nc+i)%4));
+        n.setPosY(i+(nc%3)*(int)Math.pow(-1,nc%4));
         g.drawOval(n.getPrintPos(this).x(), n.getPrintPos(this).y(), 20, 20);
+    }
+
+    public void drawNeuron(Graphics g, Neuron n, int posX, int posY){
+        switch(n.getClassType()) {
+            // Internal
+            case "Internal":
+            n.setPosX(posX);
+            n.setPosY(posY);
+            g.setColor(Color.green);
+            g.drawOval(n.getPrintPos(this).x(), n.getPrintPos(this).y(), 20, 20);
+            break;
+            // Sensor
+            case "Sensor":
+            n.setPosX(posX);
+            n.setPosY(posY);
+            g.setColor(Color.red);
+            g.drawOval(n.getPrintPos(this).x(), n.getPrintPos(this).y(), 20, 20);
+            break;
+            // Motor
+            case "Motor":
+            n.setPosX(posX);
+            n.setPosY(posY);
+            g.setColor(Color.blue);
+            g.drawOval(n.getPrintPos(this).x(), n.getPrintPos(this).y(), 20, 20);
+            break;
+        }
+    }
+
+    public boolean drawNeuronChain(Graphics g, Neuron neuron, int chainIterations, int i){
+        if(chainIterations > 16){
+            return false;
+        }
+        for(Map.Entry<Neuron, Integer> sink : neuron.getSinks().entrySet()){
+            if(drawNeuronChain(g, sink.getKey(), chainIterations+1, i)){
+                drawNeuron(g, neuron, chainIterations+1, i+2);
+                return true;
+            }
+        }
+        if(neuron.getClassType().equals("Motor")){
+            drawNeuron(g, neuron, chainIterations+1, i+2);
+            return true;
+        }
+        return false;
     }
 }
