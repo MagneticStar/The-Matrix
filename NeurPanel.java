@@ -76,19 +76,19 @@ public class NeurPanel extends JPanel implements ActionListener{
             }
         }
         //Sources
-        // for (Neuron n : neurons) {
-        //     for (Neuron s : n.getSources()) {
-        //         switch (s.getClassType()) {
-        //             case "Internal": g.setColor(Color.green);
-        //             break;
-        //             case "Sensor": g.setColor(Color.red);
-        //             break;
-        //             case "Motor": g.setColor(Color.blue);
-        //             break;
-        //         }
-        //         g.drawLine(n.getPrintPos(this).x() + 10, n.getPrintPos(this).y() + 10, s.getPrintPos(this).x() + 10, s.getPrintPos(this).y() + 10);
-        //     }
-        // }
+        for (Neuron n : neurons) {
+            for (Neuron s : n.getSources()) {
+                switch (s.getClassType()) {
+                    case "Internal": g.setColor(Color.green);
+                    break;
+                    case "Sensor": g.setColor(Color.red);
+                    break;
+                    case "Motor": g.setColor(Color.blue);
+                    break;
+                }
+                g.drawLine(n.getPrintPos(this).x() + 10, n.getPrintPos(this).y() + 10, s.getPrintPos(this).x() + 10, s.getPrintPos(this).y() + 10);
+            }
+        }
         
     }
 

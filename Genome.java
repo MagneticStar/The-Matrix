@@ -109,14 +109,14 @@ public class Genome{
             int sinkID = Integer.parseInt(gene.substring(12,16),2);
             int sinkWeight = Integer.parseInt(gene.substring(16,geneLength),2);
 
-
-            if(neuronType == 0 || neuronType == 2){
+            System.out.println("");
+            if(neuronType <= 1){
                 // Neuron is an internal neuron
                 neuron = new Internal(neuronID%2);
                 emptyNeurons.add(createSource(sourceType, sourceID, neuron));
                 emptyNeurons.add(createSink(sinkType, sinkID, sinkWeight, neuron));
             }
-            else if(neuronType == 1){
+            else if(neuronType == 2){
                 // Neuron is a sensor neuron
                 neuron = new Sensor(subject,neuronID);
                 emptyNeurons.add(createSink(sinkType, sinkID, sinkWeight, neuron));
@@ -127,6 +127,7 @@ public class Genome{
                 neuron = new Motor(neuronID);
                 emptyNeurons.add(createSource(sourceType, sourceID, neuron));
             }
+            
             // System.out.println(neuronType+" "+neuron.getSources()+neuron.getSinks());
             if(emptyNeurons.size()>0){
                 for(int j=0; j<emptyNeurons.size();j++){
@@ -144,8 +145,8 @@ public class Genome{
                         emptyNeurons.remove(j);
                     }
                 }
-                
             }
+            System.out.println(neuronType +" "+emptyNeurons.toString());
             // System.out.println(neuronType+" "+neuron.getSources()+neuron.getSinks());
             neurons.add(neuron);
         }
