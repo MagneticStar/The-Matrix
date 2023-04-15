@@ -15,6 +15,7 @@ public class Genome{
     // Temp Vars
     // private int subjectIndex;
     private ArrayList<Neuron> usefulNeurons;
+    public ArrayList<Integer> recursiveIterationTotals = new ArrayList<Integer>();
     
 
     public Genome(Subject subject){
@@ -128,7 +129,6 @@ public class Genome{
                 emptyNeurons.add(createSource(sourceType, sourceID, neuron));
             }
             
-            // System.out.println(neuronType+" "+neuron.getSources()+neuron.getSinks());
             if(emptyNeurons.size()>0){
                 for(int j=0; j<emptyNeurons.size();j++){
                     // Checks if an empty neuron is the same type of this new neuron
@@ -146,9 +146,8 @@ public class Genome{
                     }
                 }
             }
-            System.out.println(neuronType +" "+emptyNeurons.toString());
-            // System.out.println(neuronType+" "+neuron.getSources()+neuron.getSinks());
             neurons.add(neuron);
+            System.out.println(i+1 +" "+emptyNeurons.toString()+" "+neurons.toString());
         }
         Main.subs.add(new Subject(new Genome(this.subject,this.DNA,neurons)));
         ////////////////////////////////////////////
@@ -174,7 +173,9 @@ public class Genome{
         }
         Main.subs.add(new Subject(new Genome(this.subject,this.DNA,neurons)));
         // for(Neuron neuron : neurons){
-        //     System.out.println(findSourceSinkError(neuron));
+        //     if(findSourceSinkError(neuron,false,0)){
+        //         System.out.println("Uh Ohh");
+        //     }
         // }
         /////////////////////////////////////////////////////
         // PRUNE USELESS // PRUNE USELESS // PRUNE USELESS //
@@ -212,9 +213,11 @@ public class Genome{
         if(neuron.getSinks().entrySet().size()==0){
             if(neuron instanceof Motor){
                 usefulNeurons.add(neuron);
+                recursiveIterationTotals.add(recursiveIterations);
                 return true;
             }
             else{
+                recursiveIterationTotals.add(recursiveIterations);
                 return false;
             }
         }
@@ -234,25 +237,30 @@ public class Genome{
         return false;
     }
 
-    private boolean findSourceSinkError(Neuron neuron){
-        Boolean bool = false;
+    private boolean findSourceSinkError(Neuron neuron, Boolean bool,int recursiveIterations){
+        if(recursiveIterations > 16){
+            return false;
+        }
         for(Map.Entry<Neuron, Integer> sink:neuron.getSinks().entrySet()){
-            bool = findSourceSinkError(sink.getKey());
-            bool = bool || sink.getKey().getSources().contains(neuron);
+            bool = findSourceSinkError(sink.getKey(), bool, recursiveIterations+1);
+            bool = bool || !sink.getKey().getSources().contains(neuron);
         }
         return bool;
     }
 
     private Neuron createSource(int sourceType, int sourceID, Neuron neuron){
         Neuron source;
-        
+        // System.out.print("Creating source: ");
         if(sourceType == 0){
+            
             // Source is an internal neuron
             source = new Internal(sourceID);
+            // System.out.println("Internal");
         }
         else{
             // Source is a sensor neuron
             source = new Sensor(subject,sourceID);
+            // System.out.println("Sensor");
         }
 
         neuron.addSource(source);
@@ -262,13 +270,16 @@ public class Genome{
 
     private Neuron createSink(int sinkType, int sinkID, int sinkWeight, Neuron neuron){
         Neuron sink;
+        // System.out.print("Creating sink: ");
         if(sinkType == 0){
             // Sink is an internal neuron
             sink = new Internal(sinkID);
+            // System.out.println("Internal");
         }
         else{
             // Sink is a motor neuron
             sink = new Motor(sinkID);
+            // System.out.println("Motor");
         }
         neuron.addSink(sink,sinkWeight);
         sink.addSource(neuron);
