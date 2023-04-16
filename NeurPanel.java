@@ -42,7 +42,7 @@ public class NeurPanel extends JPanel implements ActionListener{
         if(currentlySelectedSubjectIndex == 10){
             drawAll = false;
         }
-        drawNeurons(g,Main.subs.get(currentlySelectedSubjectIndex),drawAll);
+        drawNeurons(g,Main.subs.get(currentlySelectedSubjectIndex),true);
     }
     
     public void drawNeurons(Graphics g, Subject subject, Boolean drawAll) {

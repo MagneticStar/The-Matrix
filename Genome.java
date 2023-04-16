@@ -13,14 +13,13 @@ public class Genome{
     private Neuron[] neurons;
     private ArrayList<Neuron> sensors = new ArrayList<Neuron>();
     // Temp Vars
-    // private int subjectIndex;
     private ArrayList<Neuron> usefulNeurons;
-    public ArrayList<Integer> recursiveIterationTotals = new ArrayList<Integer>();
+    // Debug Vars
+    public ArrayList<Integer> neuronChainLengths = new ArrayList<Integer>();
     
 
     public Genome(Subject subject){
         this.subject = subject;
-        // this.subjectIndex = Main.subs.size();
         generateDNA(); // sets this.DNA to a random binary String
         calculateColor(); // sets this.color to RGB values based on the content of this.DNA
         interpretDNA();
@@ -195,9 +194,7 @@ public class Genome{
 
         usefulNeurons = new ArrayList<Neuron>();
         // Follow each neuron chain to find every chain that leads to a motor neuron. Any neurons not in those chains can then be pruned.
-        for(Neuron sensor:sensors){
-            iterateThroughNeuronChain(sensor,0);
-        }
+        findNeuronChains(sensors,0);
         // Once all useful neurons are determined, prune the rest
         for(Neuron neuron:neurons){
             if(!usefulNeurons.contains(neuron)){
@@ -219,34 +216,27 @@ public class Genome{
             }
         }
     }
-
-    private boolean iterateThroughNeuronChain(Neuron neuron, int recursiveIterations){
-        // Base case
-        if(neuron.getSinks().entrySet().size()==0){
-            if(neuron instanceof Motor){
-                usefulNeurons.add(neuron);
-                recursiveIterationTotals.add(recursiveIterations);
-                return true;
-            }
-            else{
-                recursiveIterationTotals.add(recursiveIterations);
-                return false;
-            }
-        }
-        else if(recursiveIterations > 16){
+    private boolean findNeuronChains(ArrayList<Neuron> neurons, int neuronChainLength){
+        boolean foundMotorNeuron = false;
+        // Base Case
+        if(neuronChainLength > 16){
+            // Neuron chain is a loop
             return false;
         }
-        for(Map.Entry<Neuron, Integer> sink:neuron.getSinks().entrySet()){
-            // System.out.println(neuron+" feeds "+sink.getKey());
-            if(iterateThroughNeuronChain(sink.getKey(),recursiveIterations+1)){
-                usefulNeurons.add(neuron);
-                return true;
+        for(Neuron neuron : neurons){
+            if(neuron instanceof Motor){
+                foundMotorNeuron = true;
+                neuronChainLengths.add(neuronChainLength);
             }
             else{
-                return false;
+                foundMotorNeuron = findNeuronChains(new ArrayList<Neuron>(neuron.getSinks().keySet()), neuronChainLength+1) || foundMotorNeuron;
+            }
+
+            if(foundMotorNeuron){
+                usefulNeurons.add(neuron);
             }
         }
-        return false;
+        return foundMotorNeuron;
     }
 
     // Debug Function
