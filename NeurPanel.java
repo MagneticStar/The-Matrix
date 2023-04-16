@@ -81,6 +81,12 @@ public class NeurPanel extends JPanel implements ActionListener{
                 drawNeuronChain(g,sensor,0,i);
                 i++;
             }
+            for(Neuron neuron : neurons){
+                if(neuron instanceof Internal && neuron.getPosX() == 100){
+                    drawNeuronChain(g, neuron, 0, i);
+                    i++;
+                }
+            }
         }
         // Sinks
         for (Neuron n : neurons) {
@@ -117,19 +123,19 @@ public class NeurPanel extends JPanel implements ActionListener{
     public void internalNeuron(Graphics g, int i, int nc, Neuron n) {
         g.setColor(Color.green);
         n.setPosX(8+((nc+i)%2)*(int)Math.pow(-1,(nc+i)%4));
-        n.setPosY(i+(nc%3)*(int)Math.pow(-1,nc%4));
+        n.setPosY(i);
         g.drawOval(n.getPrintPos(this).x(), n.getPrintPos(this).y(), 20, 20);
     }
     public void sensorNeuron(Graphics g, int i, int nc, Neuron n) {
         g.setColor(Color.red);
         n.setPosX(6+((nc+i)%2)*(int)Math.pow(-1,(nc+i)%4));
-        n.setPosY(i+(nc%3)*(int)Math.pow(-1,nc%4));
+        n.setPosY(i);
         g.drawOval(n.getPrintPos(this).x(), n.getPrintPos(this).y(), 20, 20);
     }
     public void motorNeuron(Graphics g, int i, int nc, Neuron n) {
         g.setColor(Color.blue);
         n.setPosX(12+((nc+i)%2)*(int)Math.pow(-1,(nc+i)%4));
-        n.setPosY(i+(nc%3)*(int)Math.pow(-1,nc%4));
+        n.setPosY(i);
         g.drawOval(n.getPrintPos(this).x(), n.getPrintPos(this).y(), 20, 20);
     }
 
@@ -160,19 +166,20 @@ public class NeurPanel extends JPanel implements ActionListener{
     }
 
     public boolean drawNeuronChain(Graphics g, Neuron neuron, int chainIterations, int i){
+        Boolean foundMotorNeuron = false;
         if(chainIterations > 16){
             return false;
         }
         for(Map.Entry<Neuron, Integer> sink : neuron.getSinks().entrySet()){
-            if(drawNeuronChain(g, sink.getKey(), chainIterations+1, i)){
-                drawNeuron(g, neuron, chainIterations+1, i+2);
-                return true;
-            }
+            foundMotorNeuron = drawNeuronChain(g, sink.getKey(), chainIterations+1, i) || foundMotorNeuron;
         }
-        if(neuron.getClassType().equals("Motor")){
+        if(foundMotorNeuron){
+            drawNeuron(g, neuron, chainIterations+1, i+2);
+        }
+        else if(neuron instanceof Motor){
             drawNeuron(g, neuron, chainIterations+1, i+2);
             return true;
         }
-        return false;
+        return foundMotorNeuron;
     }
 }

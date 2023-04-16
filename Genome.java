@@ -153,7 +153,7 @@ public class Genome{
                 }
             }
             neurons.add(neuron);
-            System.out.println(i+1 +" "+neuron.getSources().toString()+" "+neuron.getSinks().keySet().toString());
+            System.out.println(i+1 +" "+neurons.toString()+" "+emptyNeurons.toString());
         }
 
         // Debug
