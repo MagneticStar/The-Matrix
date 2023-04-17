@@ -13,7 +13,7 @@ public class Genome{
     private Neuron[] neurons;
     private ArrayList<Neuron> sensors = new ArrayList<Neuron>();
     // Temp Vars
-    private ArrayList<Neuron> usefulNeurons;
+    private ArrayList<Neuron> inNeuronChain;
     // Debug Vars
     public ArrayList<Integer> neuronChainLengths = new ArrayList<Integer>();
     
@@ -192,12 +192,12 @@ public class Genome{
         // PRUNE USELESS // PRUNE USELESS // PRUNE USELESS //
         /////////////////////////////////////////////////////
 
-        usefulNeurons = new ArrayList<Neuron>();
-        // Follow each neuron chain to find every chain that leads to a motor neuron. Any neurons not in those chains can then be pruned.
-        findNeuronChains(sensors,0);
+        inNeuronChain = new ArrayList<Neuron>();
+        // Follow each neuron chain to find every chain that leads to a motor neuron. Any neurons not in those chains can then be pruned. We pass in 1 as the chain length because the sensor is included in the length of the chain.
+        findNeuronChains(sensors,1);
         // Once all useful neurons are determined, prune the rest
         for(Neuron neuron:neurons){
-            if(!usefulNeurons.contains(neuron)){
+            if(!inNeuronChain.contains(neuron)){
                 for(Neuron source:neuron.getSources()){
                     source.removeSink(neuron);
                 }
@@ -208,34 +208,34 @@ public class Genome{
         }
 
         // Converts the arraylist to an array
-        this.neurons = new Neuron[usefulNeurons.size()];
-        for (int i = 0; i < usefulNeurons.size(); i++) {
-            this.neurons[i] = usefulNeurons.get(i);
-            if(usefulNeurons.get(i).getClassType().equals("Sensor")){
-                this.sensors.add(usefulNeurons.get(i));
+        this.neurons = new Neuron[inNeuronChain.size()];
+        for (int i = 0; i < inNeuronChain.size(); i++) {
+            this.neurons[i] = inNeuronChain.get(i);
+            if(inNeuronChain.get(i).getClassType().equals("Sensor")){
+                this.sensors.add(inNeuronChain.get(i));
             }
         }
     }
-    private boolean findNeuronChains(ArrayList<Neuron> neurons, int neuronChainLength){
-        boolean foundMotorNeuron = false;
+    private boolean findNeuronChains(ArrayList<Neuron> __neurons__, int neuronChainLength){
+        Boolean foundMotorNeuron = false;
         // Base Case
-        if(neuronChainLength > 16){
+        if(neuronChainLength > genomeLength*2){
             // Neuron chain is a loop
             return false;
         }
-        for(Neuron neuron : neurons){
+        for(Neuron neuron : __neurons__){
             if(neuron instanceof Motor){
                 foundMotorNeuron = true;
-                neuronChainLengths.add(neuronChainLength);
+                inNeuronChain.add(neuron);
             }
             else{
-                foundMotorNeuron = findNeuronChains(new ArrayList<Neuron>(neuron.getSinks().keySet()), neuronChainLength+1) || foundMotorNeuron;
-            }
-
-            if(foundMotorNeuron){
-                usefulNeurons.add(neuron);
+                if(findNeuronChains(new ArrayList<Neuron>(neuron.getSinks().keySet()), neuronChainLength+1)){
+                    inNeuronChain.add(neuron);
+                    foundMotorNeuron = true;
+                }
             }
         }
+        // Base Case 2 (finished iterating through list)
         return foundMotorNeuron;
     }
 
