@@ -1,5 +1,11 @@
 import java.awt.Color;
+<<<<<<< HEAD
 public class screenObject {
+=======
+
+import javax.swing.JPanel;
+public abstract class screenObject {
+>>>>>>> 429301190a3d5a229253084f5c82d739d3b7cef3
     private Coor position;
     private Color color;
 
