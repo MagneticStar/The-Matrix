@@ -11,7 +11,7 @@ public class Sensor extends Neuron{
     private static int j;
     
     public Sensor(Creature s, int methodID) {
-        super();
+        super("Sensor");
         subject = s;
         switch(methodID%(numberOfSensorMethods)){
             case 0: this.sensorMethod = Sensor::detectFood; break;

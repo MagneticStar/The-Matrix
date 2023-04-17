@@ -13,7 +13,7 @@ public class BrainPanel extends JPanel implements ActionListener{
     private static Label searchReply;
 
     public static void main(String[] args){
-        searchDropDown = new JComboBox<String>(Main.subNames);
+        // searchDropDown = new JComboBox<String>(Screens.subNames);
         searchDropDown.setSelectedIndex(0);
         
         
@@ -131,4 +131,4 @@ public class BrainPanel extends JPanel implements ActionListener{
         g.drawOval(n.getPrintPos().x(), n.getPrintPos().y(), 20, 20);
     }
 }
-}
+
