@@ -1,6 +1,5 @@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
 import java.util.Map;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
@@ -36,12 +35,8 @@ public class NeurPanel extends JPanel implements ActionListener{
     
     @Override
     public void paintComponent(Graphics g) {
-        Boolean drawAll = true;
         super.paintComponent(g);
         // Where all graphics are rendered
-        if(currentlySelectedSubjectIndex == 10){
-            drawAll = false;
-        }
         drawNeurons(g,Main.subs.get(currentlySelectedSubjectIndex));
     }
     
