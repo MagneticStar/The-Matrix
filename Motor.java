@@ -1,28 +1,27 @@
 public class Motor extends Neuron{
+
     public MotorMethod motorMethod;
     private static int numberOfMotorMethods = 2; // Update this when creating new Motor methods
-
     public Motor(int methodID){
-        super("Motor");
-        switch(methodID%numberOfMotorMethods){
-            case 0: this.motorMethod = Motor::move; break;
-            case 1: this.motorMethod = Motor::turn; break;
+        super();
+        switch(methodID%(numberOfMotorMethods)){
+            case 0: this.motorMethod = Motor::upDown; break;
+            case 1: this.motorMethod = Motor::leftRight; break;
         }
     }
 
     public interface MotorMethod{
-        void invoke(Subject subject);
+        void invoke(Creature subject, double value);
     }
 
     ////////////////////////////////////////////////////////
     // MOTOR METHODS // MOTOR METHODS // MOTOR METHODS //
     ////////////////////////////////////////////////////////
 
-    private static void move(Subject subject){
-        // Needs implementation
+    private static void upDown(Creature subject, double value){
+        subject.setPosY(subject.getPosY() + (int)(value - 0.5));
     }
-
-    private static void turn(Subject subject){
-        // Needs implementation
+    private static void leftRight(Creature subject, double value){
+        subject.setPosX(subject.getPosX() + (int)(value - 0.5));
     }
 }

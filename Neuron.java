@@ -2,11 +2,16 @@ import java.util.HashMap;
 import java.awt.Color;
 import java.util.ArrayList;
 
-public class Neuron extends screenObject{
+public class Neuron extends ScreenObject{
     private ArrayList<Neuron> sources = new ArrayList<Neuron>();
     private HashMap<Neuron,Integer> sinks = new HashMap<Neuron,Integer>();
     private String type;
+    private double value;
     public Neuron(String type) {
+    
+
+
+    
         
         super(Color.white, new Coor(0, 0));
         switch(type){
@@ -32,6 +37,9 @@ public class Neuron extends screenObject{
     public String getClassType() {
         return type;
     }
+    public double getValue() {
+        return value;
+    }
 
     public void addSource(Neuron neuron){
         this.sources.add(neuron);
@@ -56,5 +64,13 @@ public class Neuron extends screenObject{
     public void replaceSink(Neuron initial, Neuron replacement){
         this.sinks.put(replacement, this.sinks.get(initial));
         this.sinks.remove(initial);
+    }
+    public void setValue(double value) {
+        this.value = value;
+    }
+    public Coor getPrintPos() {
+        Screens.brainWorldToScreen.setWorld(Screens.brainPanel.getWidth(), Screens.brainPanel.getHeight());
+        int[] ans = Screens.brainWorldToScreen.translate(this.getPos().matrix());
+        return new Coor(ans[0], ans[1]);
     }
 }

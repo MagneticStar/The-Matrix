@@ -9,7 +9,7 @@ public class Genome{
     private final int geneLength = 32;
     private final Random rand = new Random();
     private String DNA;
-    public Subject subject;
+    public Creature subject;
     private Color color;
     private Neuron[] neurons;
     private ArrayList<Neuron> sensors = new ArrayList<Neuron>();
@@ -17,14 +17,14 @@ public class Genome{
     // public ArrayList<Integer> neuronChainLengths = new ArrayList<Integer>();
     
 
-    public Genome(Subject subject){
+    public Genome(Creature subject){
         this.subject = subject;
         generateDNA(); // sets this.DNA to a random binary String
         calculateColor(); // sets this.color to RGB values based on the content of this.DNA
         interpretDNA();
     }
 
-    public Genome(Subject subject, String DNA, ArrayList<Neuron> neurons){
+    public Genome(Creature subject, String DNA, ArrayList<Neuron> neurons){
         this.subject = subject;
         this.neurons = new Neuron[neurons.size()];
         for (int i = 0; i < neurons.size(); i++) {

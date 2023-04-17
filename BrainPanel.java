@@ -4,22 +4,34 @@ import java.util.Map;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
-public class NeurPanel extends JPanel implements ActionListener{
+public class BrainPanel extends JPanel implements ActionListener{
+    
     private static JComboBox<String> searchDropDown;
     private static int currentlySelectedSubjectIndex = 0;
+    private static TextField searchBar;
+    private static Button searchButton;
+    private static Label searchReply;
 
     public static void main(String[] args){
         searchDropDown = new JComboBox<String>(Main.subNames);
         searchDropDown.setSelectedIndex(0);
         
         
-        // Adds an action listeners to the dropdown
-        NeurPanel neuronPanel = Frame.neuronMapPanel;
-        searchDropDown.addActionListener(neuronPanel);
+       
 
-        neuronPanel.add(searchDropDown);
-        neuronPanel.revalidate();
+        
+        BrainPanel nP = new BrainPanel();
+        // from main
+        nP.add(searchDropDown);
+        nP.revalidate();
 
+        // Adds an action listener to the button
+        searchDropDown.addActionListener(nP);
+        // creates a TextField object with 16 columns
+        searchBar = new TextField(16);
+        // creates a font object and sets the TextField font to the newly defined font object
+        Font searchBarFont = new Font("Serif",Font.BOLD,20);
+        searchBar.setFont(searchBarFont);
     }
 
     @Override
@@ -29,7 +41,7 @@ public class NeurPanel extends JPanel implements ActionListener{
         repaint();
     }
 
-    public NeurPanel() {
+    public BrainPanel() {
         setBackground(Color.BLACK);
     }
     
@@ -37,11 +49,11 @@ public class NeurPanel extends JPanel implements ActionListener{
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         // Where all graphics are rendered
-        drawNeurons(g,Main.subs.get(currentlySelectedSubjectIndex));
+        drawNeuron(g);
     }
-    
-    public void drawNeurons(Graphics g, Subject subject) {
-    
+    public void drawNeuron(Graphics g) {
+        
+        Creature subject = Database.creaturesList.get(currentlySelectedSubjectIndex);
         Neuron[] neurons = subject.getGenome().getNeurons();
         int i = 1;
         int ic = 0;
@@ -79,7 +91,7 @@ public class NeurPanel extends JPanel implements ActionListener{
                     case "Motor": g.setColor(Color.blue);
                     break;
                 }
-                g.drawLine(n.getPrintPos(this).x() + 10, n.getPrintPos(this).y() + 10, s.getKey().getPrintPos(this).x() + 10, s.getKey().getPrintPos(this).y() + 10);
+                g.drawLine(n.getPrintPos().x() + 10, n.getPrintPos().y() + 10, s.getKey().getPrintPos().x() + 10, s.getKey().getPrintPos().y() + 10);
                 // System.out.println(s.getKey());
             }
         }
@@ -94,7 +106,7 @@ public class NeurPanel extends JPanel implements ActionListener{
                     case "Motor": g.setColor(Color.blue);
                     break;
                 }
-                g.drawLine(n.getPrintPos(this).x() + 10, n.getPrintPos(this).y() + 10, s.getPrintPos(this).x() + 10, s.getPrintPos(this).y() + 10);
+                g.drawLine(n.getPrintPos().x() + 10, n.getPrintPos().y() + 10, s.getPrintPos().x() + 10, s.getPrintPos().y() + 10);
             }
         }
         
@@ -104,18 +116,19 @@ public class NeurPanel extends JPanel implements ActionListener{
         g.setColor(Color.green);
         n.setPosX(8+((nc+i)%2)*(int)Math.pow(-1,(nc+i)%4));
         n.setPosY(i);
-        g.drawOval(n.getPrintPos(this).x(), n.getPrintPos(this).y(), 20, 20);
+        g.drawOval(n.getPrintPos().x(), n.getPrintPos().y(), 20, 20);
     }
     public void sensorNeuron(Graphics g, int i, int nc, Neuron n) {
         g.setColor(Color.red);
         n.setPosX(6+((nc+i)%2)*(int)Math.pow(-1,(nc+i)%4));
         n.setPosY(i);
-        g.drawOval(n.getPrintPos(this).x(), n.getPrintPos(this).y(), 20, 20);
+        g.drawOval(n.getPrintPos().x(), n.getPrintPos().y(), 20, 20);
     }
     public void motorNeuron(Graphics g, int i, int nc, Neuron n) {
         g.setColor(Color.blue);
         n.setPosX(12+((nc+i)%2)*(int)Math.pow(-1,(nc+i)%4));
         n.setPosY(i);
-        g.drawOval(n.getPrintPos(this).x(), n.getPrintPos(this).y(), 20, 20);
+        g.drawOval(n.getPrintPos().x(), n.getPrintPos().y(), 20, 20);
     }
+}
 }
