@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.util.Random;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Map;
 
 public class Genome{
@@ -12,10 +13,8 @@ public class Genome{
     private Color color;
     private Neuron[] neurons;
     private ArrayList<Neuron> sensors = new ArrayList<Neuron>();
-    // Temp Vars
-    private ArrayList<Neuron> inNeuronChain;
     // Debug Vars
-    public ArrayList<Integer> neuronChainLengths = new ArrayList<Integer>();
+    // public ArrayList<Integer> neuronChainLengths = new ArrayList<Integer>();
     
 
     public Genome(Subject subject){
@@ -120,39 +119,26 @@ public class Genome{
             if(neuronType <= 1){
                 // Neuron is an internal neuron
                 neuron = new Internal(neuronID%2);
+                replaceEmptyNeuron(neuron, emptyNeurons);
                 emptyNeurons.add(createSource(sourceType, sourceID, neuron));
                 emptyNeurons.add(createSink(sinkType, sinkID, sinkWeight, neuron));
             }
             else if(neuronType == 2){
                 // Neuron is a sensor neuron
                 neuron = new Sensor(subject,neuronID);
-                emptyNeurons.add(createSink(sinkType, sinkID, sinkWeight, neuron));
                 sensors.add(neuron);
+                replaceEmptyNeuron(neuron, emptyNeurons);
+                emptyNeurons.add(createSink(sinkType, sinkID, sinkWeight, neuron));
             }
             else{
                 // Neuron is a motor neuron
                 neuron = new Motor(neuronID);
+                replaceEmptyNeuron(neuron, emptyNeurons);
                 emptyNeurons.add(createSource(sourceType, sourceID, neuron));
             }
-            
-            if(emptyNeurons.size()>0){
-                for(int j=0; j<emptyNeurons.size();j++){
-                    // Checks if an empty neuron is the same type of this new neuron
-                    if(neuron.getClassType() == (emptyNeurons.get(j).getClassType())){
-                        // Sets the prexisting empty neuron to this new neuron and carries over previous sources and sinks
-                        for(Map.Entry<Neuron, Integer> sink : emptyNeurons.get(j).getSinks().entrySet()){
-                            neuron.addSink(sink.getKey(), rand.nextInt(0,(int)Math.pow(2, geneLength-16)));
-                            sink.getKey().replaceSource(emptyNeurons.get(j), neuron);
-                        }
-                        for(Neuron source : emptyNeurons.get(j).getSources()){
-                            neuron.addSource(source);
-                            source.replaceSink(emptyNeurons.get(j), neuron);
-                        }
-                        emptyNeurons.remove(j);
-                    }
-                }
-            }
+
             neurons.add(neuron);
+            // Debug
             System.out.println(i+1 +" "+neurons.toString()+" "+emptyNeurons.toString());
         }
 
@@ -192,9 +178,21 @@ public class Genome{
         // PRUNE USELESS // PRUNE USELESS // PRUNE USELESS //
         /////////////////////////////////////////////////////
 
-        inNeuronChain = new ArrayList<Neuron>();
+        ArrayList<Neuron> inNeuronChain = new ArrayList<Neuron>();
         // Follow each neuron chain to find every chain that leads to a motor neuron. Any neurons not in those chains can then be pruned. We pass in 1 as the chain length because the sensor is included in the length of the chain.
-        findNeuronChains(sensors,1);
+        for(Neuron sensor : sensors){
+            // Debug
+            // System.out.println("New Sensor: "+sensor.toString());
+            
+            inNeuronChain.addAll(findNeuronChain(sensor,new ArrayList<Neuron>()));
+
+            // Debug
+            System.out.println(inNeuronChain.toString());
+        }
+        // We pass the created arraylist through a hashset to remove duplicates
+        HashSet<Neuron> duplicateFilter = new HashSet<Neuron>(inNeuronChain);
+        inNeuronChain.clear();
+        inNeuronChain.addAll(duplicateFilter);
         // Once all useful neurons are determined, prune the rest
         for(Neuron neuron:neurons){
             if(!inNeuronChain.contains(neuron)){
@@ -216,27 +214,33 @@ public class Genome{
             }
         }
     }
-    private boolean findNeuronChains(ArrayList<Neuron> __neurons__, int neuronChainLength){
-        Boolean foundMotorNeuron = false;
-        // Base Case
-        if(neuronChainLength > genomeLength*2){
-            // Neuron chain is a loop
-            return false;
+    // Note: Both elses are redundant but I think it adds clarity
+    private ArrayList<Neuron> findNeuronChain(Neuron neuron, ArrayList<Neuron> thisChain){
+        ArrayList<Neuron> completeChain = new ArrayList<Neuron>();
+
+        // Base Case 1
+        if(thisChain.contains(neuron)){
+            // neuron chain is a loop (returns empty loop)
+            return completeChain;
         }
-        for(Neuron neuron : __neurons__){
-            if(neuron instanceof Motor){
-                foundMotorNeuron = true;
-                inNeuronChain.add(neuron);
-            }
-            else{
-                if(findNeuronChains(new ArrayList<Neuron>(neuron.getSinks().keySet()), neuronChainLength+1)){
-                    inNeuronChain.add(neuron);
-                    foundMotorNeuron = true;
-                }
-            }
+        else{
+            thisChain.add(neuron);
         }
-        // Base Case 2 (finished iterating through list)
-        return foundMotorNeuron;
+
+        for(Neuron sink : new ArrayList<Neuron>(neuron.getSinks().keySet())){
+            completeChain.addAll(findNeuronChain(sink, thisChain));
+        }
+        // Debug
+        // System.out.println(thisChain.toString()+" "+completeChain.toString());
+
+        // Base Case 2 (above loop won't run if basecase 2 is true)
+        if(neuron instanceof Motor){
+            return thisChain;
+        }
+        else{
+            
+            return completeChain;
+        }  
     }
 
     // Debug Function
@@ -288,5 +292,25 @@ public class Genome{
         sink.addSource(neuron);
         
         return sink;
+    }
+
+    private ArrayList<Neuron> replaceEmptyNeuron(Neuron newNeuron, ArrayList<Neuron> emptyNeurons){
+        for(int j=0; j<emptyNeurons.size();j++){
+            // Checks if an empty neuron is the same type of this new neuron
+            if(newNeuron.getClassType().equals(emptyNeurons.get(j).getClassType())){
+                // Deletes the prexisting empty neuron and adds its sources and sinks to this new neuron
+                for(Neuron sink : new ArrayList<Neuron>(emptyNeurons.get(j).getSinks().keySet())){
+                    newNeuron.addSink(sink, rand.nextInt(0,(int)Math.pow(2, geneLength-16)));
+                    sink.replaceSource(emptyNeurons.get(j), newNeuron);
+                }
+                for(Neuron source : emptyNeurons.get(j).getSources()){
+                    newNeuron.addSource(source);
+                    source.replaceSink(emptyNeurons.get(j), newNeuron);
+                }
+                emptyNeurons.remove(j);
+                break;
+            }
+        }
+        return emptyNeurons;
     }
 }

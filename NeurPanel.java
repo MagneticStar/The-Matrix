@@ -42,52 +42,37 @@ public class NeurPanel extends JPanel implements ActionListener{
         if(currentlySelectedSubjectIndex == 10){
             drawAll = false;
         }
-        drawNeurons(g,Main.subs.get(currentlySelectedSubjectIndex),true);
+        drawNeurons(g,Main.subs.get(currentlySelectedSubjectIndex));
     }
     
-    public void drawNeurons(Graphics g, Subject subject, Boolean drawAll) {
+    public void drawNeurons(Graphics g, Subject subject) {
     
         Neuron[] neurons = subject.getGenome().getNeurons();
-        ArrayList<Neuron> sensors = subject.getGenome().getSensors();
         int i = 1;
-
-        if(drawAll){
-            int ic = 0;
-            int sc = 0;
-            int mc = 0;
-            for (Neuron n : neurons) {
-                switch(n.getClassType()) {
-                    // Internal
-                    case "Internal":
-                    internalNeuron(g,i,ic,n);
-                    ic++;
-                    break;
-                    // Sensor
-                    case "Sensor":
-                    sensorNeuron(g,i,sc,n);
-                    sc++;
-                    break;
-                    // Motor
-                    case "Motor":
-                    motorNeuron(g,i,mc,n);
-                    mc++;
-                    break;
-                }
-                i++;
+        int ic = 0;
+        int sc = 0;
+        int mc = 0;
+        for (Neuron n : neurons) {
+            switch(n.getClassType()) {
+                // Internal
+                case "Internal":
+                internalNeuron(g,i,ic,n);
+                ic++;
+                break;
+                // Sensor
+                case "Sensor":
+                sensorNeuron(g,i,sc,n);
+                sc++;
+                break;
+                // Motor
+                case "Motor":
+                motorNeuron(g,i,mc,n);
+                mc++;
+                break;
             }
+            i++;
         }
-        else{
-            for (Neuron sensor : sensors){
-                drawNeuronChain(g,sensor,0,i);
-                i++;
-            }
-            for(Neuron neuron : neurons){
-                if(neuron instanceof Internal && neuron.getPosX() == 100){
-                    drawNeuronChain(g, neuron, 0, i);
-                    i++;
-                }
-            }
-        }
+        
         // Sinks
         for (Neuron n : neurons) {
             for (Map.Entry<Neuron, Integer> s : n.getSinks().entrySet()) {
@@ -137,49 +122,5 @@ public class NeurPanel extends JPanel implements ActionListener{
         n.setPosX(12+((nc+i)%2)*(int)Math.pow(-1,(nc+i)%4));
         n.setPosY(i);
         g.drawOval(n.getPrintPos(this).x(), n.getPrintPos(this).y(), 20, 20);
-    }
-
-    public void drawNeuron(Graphics g, Neuron n, int posX, int posY){
-        switch(n.getClassType()) {
-            // Internal
-            case "Internal":
-            n.setPosX(posX);
-            n.setPosY(posY);
-            g.setColor(Color.green);
-            g.drawOval(n.getPrintPos(this).x(), n.getPrintPos(this).y(), 20, 20);
-            break;
-            // Sensor
-            case "Sensor":
-            n.setPosX(posX);
-            n.setPosY(posY);
-            g.setColor(Color.red);
-            g.drawOval(n.getPrintPos(this).x(), n.getPrintPos(this).y(), 20, 20);
-            break;
-            // Motor
-            case "Motor":
-            n.setPosX(posX);
-            n.setPosY(posY);
-            g.setColor(Color.blue);
-            g.drawOval(n.getPrintPos(this).x(), n.getPrintPos(this).y(), 20, 20);
-            break;
-        }
-    }
-
-    public boolean drawNeuronChain(Graphics g, Neuron neuron, int chainIterations, int i){
-        Boolean foundMotorNeuron = false;
-        if(chainIterations > 16){
-            return false;
-        }
-        for(Map.Entry<Neuron, Integer> sink : neuron.getSinks().entrySet()){
-            foundMotorNeuron = drawNeuronChain(g, sink.getKey(), chainIterations+1, i) || foundMotorNeuron;
-        }
-        if(foundMotorNeuron){
-            drawNeuron(g, neuron, chainIterations+1, i+2);
-        }
-        else if(neuron instanceof Motor){
-            drawNeuron(g, neuron, chainIterations+1, i+2);
-            return true;
-        }
-        return foundMotorNeuron;
     }
 }
