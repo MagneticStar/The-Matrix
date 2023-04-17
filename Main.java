@@ -14,11 +14,8 @@ public class Main {
     
     public static void main(String[] args) {
         Database.creaturesList.add(new Creature());
-        String[] subNames = new String[Database.creaturesList.size()];
-        for(int i=0; i<Database.creaturesList.size(); i++){
-            subNames[i] = String.format("Subject %04d",i);
-        }
-        Screens.main(args);
+        
+        Screens.createScreens();
 
         // how many ticks
         for (int i = 0; i < 1; i++) {
