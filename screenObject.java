@@ -47,7 +47,7 @@ public abstract class screenObject {
 
     public Coor getPrintPos(JPanel panel) {
         Translation t = new Translation();
-        t.setMat(panel.getWidth()/15.0, panel.getHeight()/15.0);
+        t.setMat(panel.getWidth()/30, panel.getHeight()/20);
         int[] ans = t.translate(this.getPos().matrix());
         return new Coor(ans[0], ans[1]);
     }
