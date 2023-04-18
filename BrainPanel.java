@@ -69,8 +69,6 @@ public class BrainPanel extends JPanel implements ActionListener{
                 switch (s.getKey().getClassType()) {
                     case "Internal": g.setColor(Color.green);
                     break;
-                    case "Sensor": g.setColor(Color.red);
-                    break;
                     case "Motor": g.setColor(Color.blue);
                     break;
                 }
@@ -78,15 +76,13 @@ public class BrainPanel extends JPanel implements ActionListener{
                 // System.out.println(s.getKey());
             }
         }
-        //Sources
+        // Sources
         for (Neuron n : neurons) {
             for (Neuron s : n.getSources()) {
                 switch (s.getClassType()) {
-                    case "Internal": g.setColor(Color.green);
+                    case "Internal": g.setColor(Color.magenta);
                     break;
                     case "Sensor": g.setColor(Color.red);
-                    break;
-                    case "Motor": g.setColor(Color.blue);
                     break;
                 }
                 g.drawLine(n.getPrintPos().x() + 10, n.getPrintPos().y() + 10, s.getPrintPos().x() + 10, s.getPrintPos().y() + 10);
@@ -97,19 +93,19 @@ public class BrainPanel extends JPanel implements ActionListener{
 
     public void internalNeuron(Graphics g, int i, int nc, Neuron n) {
         g.setColor(Color.green);
-        n.setPosX(8+((nc+i)%2)*(int)Math.pow(-1,(nc+i)%4));
+        n.setPosX(15+((nc+i)%4)*(int)Math.pow(-1,(nc+i)%3));
         n.setPosY(i);
         g.drawOval(n.getPrintPos().x(), n.getPrintPos().y(), 20, 20);
     }
     public void sensorNeuron(Graphics g, int i, int nc, Neuron n) {
         g.setColor(Color.red);
-        n.setPosX(6+((nc+i)%2)*(int)Math.pow(-1,(nc+i)%4));
+        n.setPosX(8+((nc+i)%3)*(int)Math.pow(-1,(nc+i)%3));
         n.setPosY(i);
         g.drawOval(n.getPrintPos().x(), n.getPrintPos().y(), 20, 20);
     }
     public void motorNeuron(Graphics g, int i, int nc, Neuron n) {
         g.setColor(Color.blue);
-        n.setPosX(12+((nc+i)%2)*(int)Math.pow(-1,(nc+i)%4));
+        n.setPosX(22+((nc+i)%3)*(int)Math.pow(-1,(nc+i)%3));
         n.setPosY(i);
         g.drawOval(n.getPrintPos().x(), n.getPrintPos().y(), 20, 20);
     }

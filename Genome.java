@@ -151,15 +151,53 @@ public class Genome{
         
         for(Neuron emptyNeuron:emptyNeurons){
             // Empty sensors and motors are valid and simply need to be added to the list, only internals need extra
-            if(emptyNeuron.getClassType().equals("Internal")){
-                // Get a random neuron that isnt a sensor
-                int randomNeuronIndex = rand.nextInt(0,neurons.size());
-                while(neurons.get(randomNeuronIndex).getClassType().equals("Sensor")){
-                    randomNeuronIndex = rand.nextInt(0,neurons.size());
+            if(emptyNeuron instanceof Internal){
+                // Debug
+                // System.out.println("Empty "+emptyNeuron.toString());
+                // System.out.print("Sources:");
+                // for(Neuron source : emptyNeuron.getSources()){
+                //     System.out.print(" ["+source.toString()+","+new ArrayList<Neuron>(source.getSinks().keySet()).toString()+"]");
+                // }
+                // System.out.println();
+                // System.out.print("Sinks:");
+                // for(Neuron sink : new ArrayList<>(emptyNeuron.getSinks().keySet())){
+                //     System.out.print(" ["+sink.toString()+","+sink.getSources().toString()+"]");
+                // }
+                // System.out.println();
+
+                if(emptyNeuron.getSources().size() == 0){
+                    // Get a random neuron that isnt a motor
+                    Neuron randomNeuron = neurons.get(rand.nextInt(neurons.size()));
+                    while(randomNeuron instanceof Motor){
+                        randomNeuron = neurons.get(rand.nextInt(neurons.size()));
+                    }
+                    // Complete the incomplete internal neuron by giving it a valid source
+                    emptyNeuron.addSource(randomNeuron);
+                    randomNeuron.addSink(emptyNeuron, rand.nextInt(0,(int)Math.pow(2, 16)));
                 }
-                // Complete the incomplete internal neuron by giving it a valid sink
-                emptyNeuron.addSink(neurons.get(randomNeuronIndex), rand.nextInt(0,(int)Math.pow(2, geneLength-16)));
-                neurons.get(randomNeuronIndex).addSource(emptyNeuron);
+                else{
+                    // Get a random neuron that isnt a sensor
+                    Neuron randomNeuron = neurons.get(rand.nextInt(neurons.size()));
+                    while(randomNeuron instanceof Sensor){
+                        randomNeuron = neurons.get(rand.nextInt(neurons.size()));
+                    }
+                    // Complete the incomplete internal neuron by giving it a valid sink (with a random sinkweight)
+                    emptyNeuron.addSink(randomNeuron, rand.nextInt(0,(int)Math.pow(2, 16)));
+                    randomNeuron.addSource(emptyNeuron);
+                }
+
+                // Debug
+                // System.out.println("Complete "+emptyNeuron.toString());
+                // System.out.print("Sources:");
+                // for(Neuron source : emptyNeuron.getSources()){
+                //     System.out.print(" ["+source.toString()+","+new ArrayList<Neuron>(source.getSinks().keySet()).toString()+"]");
+                // }
+                // System.out.println();
+                // System.out.print("Sinks:");
+                // for(Neuron sink : new ArrayList<>(emptyNeuron.getSinks().keySet())){
+                //     System.out.print(" ["+sink.toString()+","+sink.getSources().toString()+"]");
+                // }
+                // System.out.println();
             }
             else if(emptyNeuron.getClassType().equals("Sensor")){
                 sensors.add(emptyNeuron);
@@ -173,6 +211,27 @@ public class Genome{
         //         System.out.println("Uh Ohh");
         //     }
         // }
+        for(Neuron neuron : neurons){
+            String toPrint = "";
+            Boolean print = false;
+            toPrint+="Subject "+Main.subs.size()+":\n";
+            toPrint+="Neuron "+neuron.toString()+":\n";
+            toPrint+="Sources:\n";
+            for(Neuron source : neuron.getSources()){
+                toPrint+=(" ["+source.toString()+","+new ArrayList<Neuron>(source.getSinks().keySet()).toString()+"]");
+                print = !new ArrayList<Neuron>(source.getSinks().keySet()).contains(neuron);
+            }
+            toPrint+=("\n");
+            toPrint+=("Sinks:\n");
+            for(Neuron sink : new ArrayList<Neuron>(neuron.getSinks().keySet())){
+                toPrint+=(" ["+sink.toString()+","+sink.getSources().toString()+"]");
+                print = !sink.getSources().contains(neuron);
+            }
+            toPrint+=("\n");
+            if(print){
+                System.out.println(toPrint);
+            }
+        }
 
         /////////////////////////////////////////////////////
         // PRUNE USELESS // PRUNE USELESS // PRUNE USELESS //
@@ -243,18 +302,6 @@ public class Genome{
         }  
     }
 
-    // Debug Function
-    private boolean findSourceSinkError(Neuron neuron, Boolean bool,int recursiveIterations){
-        if(recursiveIterations > 16){
-            return false;
-        }
-        for(Map.Entry<Neuron, Integer> sink:neuron.getSinks().entrySet()){
-            bool = findSourceSinkError(sink.getKey(), bool, recursiveIterations+1);
-            bool = bool || !sink.getKey().getSources().contains(neuron);
-        }
-        return bool;
-    }
-
     private Neuron createSource(int sourceType, int sourceID, Neuron neuron){
         Neuron source;
         // System.out.print("Creating source: ");
@@ -300,6 +347,7 @@ public class Genome{
             if(newNeuron.getClassType().equals(emptyNeurons.get(j).getClassType())){
                 // Debug
                 // System.out.println("\nOld Sinks: "+new ArrayList<Neuron>(emptyNeurons.get(j).getSinks().keySet()).toString()+"\nOld Sources: "+emptyNeurons.get(j).getSources().toString());
+                
                 // Deletes the prexisting empty neuron and adds its sources and sinks to this new neuron
                 for(Neuron sink : new ArrayList<Neuron>(emptyNeurons.get(j).getSinks().keySet())){
                     newNeuron.addSink(sink, rand.nextInt(0,(int)Math.pow(2, geneLength-16)));
@@ -310,8 +358,10 @@ public class Genome{
                     source.replaceSink(emptyNeurons.get(j), newNeuron);
                 }
                 emptyNeurons.remove(j);
+
                 // Debug
                 // System.out.println("\nNew Sinks: "+new ArrayList<Neuron>(newNeuron.getSinks().keySet()).toString()+"\nNew Sources: "+newNeuron.getSources().toString());
+                
                 break;
             }
         }
