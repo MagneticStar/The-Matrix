@@ -214,7 +214,7 @@ public class Genome{
         for(Neuron neuron : neurons){
             String toPrint = "";
             Boolean print = false;
-            toPrint+="Subject "+Main.subs.size()+":\n";
+            toPrint+="Subject "+Database.creaturesList.size()+":\n";
             toPrint+="Neuron "+neuron.toString()+":\n";
             toPrint+="Sources:\n";
             for(Neuron source : neuron.getSources()){

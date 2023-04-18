@@ -6,7 +6,7 @@ public class Screens {
     
     public static BrainFrame brainFrame = new BrainFrame();
     public static BrainPanel brainPanel = new BrainPanel();
-    public static Translation brainWorldToScreen = new Translation(15);
+    public static Translation brainWorldToScreen = new Translation(30);
     public static String[] subNames = new String[Database.creaturesList.size()];
     public static void createScreens() {
         simulationFrame.add(simulationPanel);         
