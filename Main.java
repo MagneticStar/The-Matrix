@@ -24,7 +24,7 @@ public class Main{
         foods.add(new Food(new Coor(7, 3)));
         waters.add(new Water(new Coor(6, 8)));
 
-        while(subs.size() < 1){
+        while(subs.size() < 1000){
             subs.add(new Subject(Color.yellow, new Coor(100,100)));
         }
         subNames = new String[Main.subs.size()];

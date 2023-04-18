@@ -99,7 +99,7 @@ public class Genome{
 
         for(int i=0; i<genomeLength; i++){
             // Debug
-            Main.subs.add(new Subject(new Genome(this.subject,this.DNA,neurons)));
+            // Main.subs.add(new Subject(new Genome(this.subject,this.DNA,neurons)));
 
             Neuron neuron;
             
@@ -143,7 +143,7 @@ public class Genome{
         }
 
         // Debug
-        Main.subs.add(new Subject(new Genome(this.subject,this.DNA,neurons)));
+        // Main.subs.add(new Subject(new Genome(this.subject,this.DNA,neurons)));
         
         ////////////////////////////////////////////
         // FILL EMPTY // FILL EMPTY // FILL EMPTY //
@@ -151,28 +151,53 @@ public class Genome{
         
         for(Neuron emptyNeuron:emptyNeurons){
             // Empty sensors and motors are valid and simply need to be added to the list, only internals need extra
-            if(emptyNeuron.getClassType().equals("Internal")){
+            if(emptyNeuron instanceof Internal){
                 // Debug
-                System.out.println("Empty "+emptyNeuron.toString());
-                System.out.print("Sources:");
-                for(Neuron source : emptyNeuron.getSources()){
-                    System.out.print(" ["+source.toString()+","+new ArrayList<Neuron>(source.getSinks().keySet()).toString()+"]");
-                }
-                System.out.println();
-                System.out.print("Sinks:");
-                for(Neuron sink : new ArrayList<>(emptyNeuron.getSinks().keySet())){
-                    System.out.print(" ["+sink.toString()+","+sink.getSources().toString()+"]");
-                }
-                System.out.println();
+                // System.out.println("Empty "+emptyNeuron.toString());
+                // System.out.print("Sources:");
+                // for(Neuron source : emptyNeuron.getSources()){
+                //     System.out.print(" ["+source.toString()+","+new ArrayList<Neuron>(source.getSinks().keySet()).toString()+"]");
+                // }
+                // System.out.println();
+                // System.out.print("Sinks:");
+                // for(Neuron sink : new ArrayList<>(emptyNeuron.getSinks().keySet())){
+                //     System.out.print(" ["+sink.toString()+","+sink.getSources().toString()+"]");
+                // }
+                // System.out.println();
 
-                // Get a random neuron that isnt a sensor
-                Neuron randomNeuron = neurons.get(rand.nextInt(neurons.size()));
-                while(randomNeuron instanceof Sensor){
-                    randomNeuron = neurons.get(rand.nextInt(neurons.size()));
+                if(emptyNeuron.getSources().size() == 0){
+                    // Get a random neuron that isnt a motor
+                    Neuron randomNeuron = neurons.get(rand.nextInt(neurons.size()));
+                    while(randomNeuron instanceof Motor){
+                        randomNeuron = neurons.get(rand.nextInt(neurons.size()));
+                    }
+                    // Complete the incomplete internal neuron by giving it a valid source
+                    emptyNeuron.addSource(randomNeuron);
+                    randomNeuron.addSink(emptyNeuron, rand.nextInt(0,(int)Math.pow(2, 16)));
                 }
-                // Complete the incomplete internal neuron by giving it a valid sink
-                emptyNeuron.addSink(randomNeuron, rand.nextInt(0,(int)Math.pow(2, geneLength-16)));
-                randomNeuron.addSource(emptyNeuron);
+                else{
+                    // Get a random neuron that isnt a sensor
+                    Neuron randomNeuron = neurons.get(rand.nextInt(neurons.size()));
+                    while(randomNeuron instanceof Sensor){
+                        randomNeuron = neurons.get(rand.nextInt(neurons.size()));
+                    }
+                    // Complete the incomplete internal neuron by giving it a valid sink (with a random sinkweight)
+                    emptyNeuron.addSink(randomNeuron, rand.nextInt(0,(int)Math.pow(2, 16)));
+                    randomNeuron.addSource(emptyNeuron);
+                }
+
+                // Debug
+                // System.out.println("Complete "+emptyNeuron.toString());
+                // System.out.print("Sources:");
+                // for(Neuron source : emptyNeuron.getSources()){
+                //     System.out.print(" ["+source.toString()+","+new ArrayList<Neuron>(source.getSinks().keySet()).toString()+"]");
+                // }
+                // System.out.println();
+                // System.out.print("Sinks:");
+                // for(Neuron sink : new ArrayList<>(emptyNeuron.getSinks().keySet())){
+                //     System.out.print(" ["+sink.toString()+","+sink.getSources().toString()+"]");
+                // }
+                // System.out.println();
             }
             else if(emptyNeuron.getClassType().equals("Sensor")){
                 sensors.add(emptyNeuron);
@@ -180,12 +205,28 @@ public class Genome{
             neurons.add(emptyNeuron);
         }
         // Debug
-        Main.subs.add(new Subject(new Genome(this.subject,this.DNA,neurons)));
-        // for(Neuron neuron : neurons){
-        //     if(findSourceSinkError(neuron,false,0)){
-        //         System.out.println("Uh Ohh");
-        //     }
-        // }
+        // Main.subs.add(new Subject(new Genome(this.subject,this.DNA,neurons)));
+        for(Neuron neuron : neurons){
+            String toPrint = "";
+            Boolean print = false;
+            toPrint+="Subject "+Main.subs.size()+":\n";
+            toPrint+="Neuron "+neuron.toString()+":\n";
+            toPrint+="Sources:\n";
+            for(Neuron source : neuron.getSources()){
+                toPrint+=(" ["+source.toString()+","+new ArrayList<Neuron>(source.getSinks().keySet()).toString()+"]");
+                print = !new ArrayList<Neuron>(source.getSinks().keySet()).contains(neuron);
+            }
+            toPrint+=("\n");
+            toPrint+=("Sinks:\n");
+            for(Neuron sink : new ArrayList<Neuron>(neuron.getSinks().keySet())){
+                toPrint+=(" ["+sink.toString()+","+sink.getSources().toString()+"]");
+                print = !sink.getSources().contains(neuron);
+            }
+            toPrint+=("\n");
+            if(print){
+                System.out.println(toPrint);
+            }
+        }
 
         /////////////////////////////////////////////////////
         // PRUNE USELESS // PRUNE USELESS // PRUNE USELESS //
@@ -254,18 +295,6 @@ public class Genome{
             
             return completeChain;
         }  
-    }
-
-    // Debug Function
-    private boolean findSourceSinkError(Neuron neuron, Boolean bool,int recursiveIterations){
-        if(recursiveIterations > 16){
-            return false;
-        }
-        for(Map.Entry<Neuron, Integer> sink:neuron.getSinks().entrySet()){
-            bool = findSourceSinkError(sink.getKey(), bool, recursiveIterations+1);
-            bool = bool || !sink.getKey().getSources().contains(neuron);
-        }
-        return bool;
     }
 
     private Neuron createSource(int sourceType, int sourceID, Neuron neuron){
