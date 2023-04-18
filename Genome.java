@@ -114,7 +114,7 @@ public class Genome{
             int sinkWeight = Integer.parseInt(gene.substring(16,geneLength),2);
 
             // Debug
-            System.out.println("");
+            // System.out.println("");
             
             if(neuronType <= 1){
                 // Neuron is an internal neuron
@@ -139,7 +139,7 @@ public class Genome{
 
             neurons.add(neuron);
             // Debug
-            System.out.println(i+1 +" "+neurons.toString()+" "+emptyNeurons.toString());
+            // System.out.println(i+1 +" "+neurons.toString()+" "+emptyNeurons.toString());
         }
 
         // Debug
@@ -187,7 +187,7 @@ public class Genome{
             inNeuronChain.addAll(findNeuronChain(sensor,new ArrayList<Neuron>()));
 
             // Debug
-            System.out.println(inNeuronChain.toString());
+            // System.out.println(inNeuronChain.toString());
         }
         // We pass the created arraylist through a hashset to remove duplicates
         HashSet<Neuron> duplicateFilter = new HashSet<Neuron>(inNeuronChain);
@@ -299,7 +299,7 @@ public class Genome{
             // Checks if an empty neuron is the same type of this new neuron
             if(newNeuron.getClassType().equals(emptyNeurons.get(j).getClassType())){
                 // Debug
-                System.out.println("\nOld Sinks: "+new ArrayList<Neuron>(emptyNeurons.get(j).getSinks().keySet()).toString()+"\nOld Sources: "+emptyNeurons.get(j).getSources().toString());
+                // System.out.println("\nOld Sinks: "+new ArrayList<Neuron>(emptyNeurons.get(j).getSinks().keySet()).toString()+"\nOld Sources: "+emptyNeurons.get(j).getSources().toString());
                 // Deletes the prexisting empty neuron and adds its sources and sinks to this new neuron
                 for(Neuron sink : new ArrayList<Neuron>(emptyNeurons.get(j).getSinks().keySet())){
                     newNeuron.addSink(sink, rand.nextInt(0,(int)Math.pow(2, geneLength-16)));
@@ -311,7 +311,7 @@ public class Genome{
                 }
                 emptyNeurons.remove(j);
                 // Debug
-                System.out.println("\nNew Sinks: "+new ArrayList<Neuron>(newNeuron.getSinks().keySet()).toString()+"\nNew Sources: "+newNeuron.getSources().toString());
+                // System.out.println("\nNew Sinks: "+new ArrayList<Neuron>(newNeuron.getSinks().keySet()).toString()+"\nNew Sources: "+newNeuron.getSources().toString());
                 break;
             }
         }

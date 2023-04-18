@@ -13,10 +13,12 @@ public class Main {
     //     neuronMap.setVisible(true);
     
     public static void main(String[] args) {
+        for (int i = 0; i < 10; i++) {
         Database.creaturesList.add(new Creature());
-        
+        }
+        Database.foodsList.add(new Food(new Coor(5, 5)));
         Screens.createScreens();
-
+        BrainPanel.selectionBox();
         // how many ticks
         for (int i = 0; i < 1; i++) {
             tick(Screens.simulationPanel, i);
@@ -27,29 +29,29 @@ public class Main {
 
         for (Creature creature : Database.creaturesList) {
             for (Neuron neuron: creature.getGenome().getNeurons()) {
-                System.out.println("Sensor");
+                // System.out.println("Sensor");
                 if (neuron instanceof Sensor) {
                     for (Map.Entry<Neuron, Integer> sink : neuron.getSinks().entrySet()) {
                         sink.getKey().setValue((((Sensor)neuron).search()));
-                        System.out.println(((Sensor)neuron).search());
+                        // System.out.println(((Sensor)neuron).search());
                     }
                 }
             }
             for (Neuron neuron: creature.getGenome().getNeurons()) {
-                System.out.println("Internal");
+                // System.out.println("Internal");
                 if (neuron instanceof Internal) {
                     for (Map.Entry<Neuron, Integer> sink : neuron.getSinks().entrySet()) {
                         // the getValue needs to change so that internal neurons can affect things
                         sink.getKey().setValue((((Internal)neuron).getValue()));
-                        System.out.println(((Internal)neuron).getValue());
+                        // System.out.println(((Internal)neuron).getValue());
                     }   
                 }
             }
             for (Neuron neuron: creature.getGenome().getNeurons()) {
-                System.out.println("Motor");
+                // System.out.println("Motor");
                 if (neuron instanceof Motor) {
                     ((Motor)neuron).motorMethod.invoke(creature, neuron.getValue());
-                    System.out.println(neuron.getValue());
+                    // System.out.println(neuron.getValue());
                 }
             }
         }

@@ -8,30 +8,13 @@ public class BrainPanel extends JPanel implements ActionListener{
     
     private static JComboBox<String> searchDropDown;
     private static int currentlySelectedSubjectIndex = 0;
-    private static TextField searchBar;
-    private static Button searchButton;
-    private static Label searchReply;
 
-    public static void main(String[] args){
-        // searchDropDown = new JComboBox<String>(Screens.subNames);
-        searchDropDown.setSelectedIndex(0);
-        
-        
-       
-
-        
-        BrainPanel nP = new BrainPanel();
-        // from main
-        nP.add(searchDropDown);
-        nP.revalidate();
-
-        // Adds an action listener to the button
-        searchDropDown.addActionListener(nP);
-        // creates a TextField object with 16 columns
-        searchBar = new TextField(16);
-        // creates a font object and sets the TextField font to the newly defined font object
-        Font searchBarFont = new Font("Serif",Font.BOLD,20);
-        searchBar.setFont(searchBarFont);
+    public static void selectionBox(){
+        searchDropDown = new JComboBox<String>(Screens.subNames);
+        searchDropDown.setSelectedIndex(0); 
+        searchDropDown.addActionListener(Screens.brainPanel);
+        Screens.brainPanel.add(searchDropDown);
+        Screens.brainPanel.revalidate();
     }
 
     @Override
