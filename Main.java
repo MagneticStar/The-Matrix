@@ -1,4 +1,5 @@
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class Main {
@@ -26,34 +27,8 @@ public class Main {
     }
 
     public static void tick(SimulationPanel panel, int i) {
-
-        for (Creature creature : Database.creaturesList) {
-            for (Neuron neuron: creature.getGenome().getNeurons()) {
-                // System.out.println("Sensor");
-                if (neuron instanceof Sensor) {
-                    for (Map.Entry<Neuron, Integer> sink : neuron.getSinks().entrySet()) {
-                        sink.getKey().setValue((((Sensor)neuron).search()));
-                        // System.out.println(((Sensor)neuron).search());
-                    }
-                }
-            }
-            for (Neuron neuron: creature.getGenome().getNeurons()) {
-                // System.out.println("Internal");
-                if (neuron instanceof Internal) {
-                    for (Map.Entry<Neuron, Integer> sink : neuron.getSinks().entrySet()) {
-                        // the getValue needs to change so that internal neurons can affect things
-                        sink.getKey().setValue((((Internal)neuron).getValue()));
-                        // System.out.println(((Internal)neuron).getValue());
-                    }   
-                }
-            }
-            for (Neuron neuron: creature.getGenome().getNeurons()) {
-                // System.out.println("Motor");
-                if (neuron instanceof Motor) {
-                    ((Motor)neuron).motorMethod.invoke(creature, neuron.getValue());
-                    // System.out.println(neuron.getValue());
-                }
-            }
+        for(Creature creature : Database.creaturesList){
+            determineNeuronActivation(creature).motorMethod.invoke(creature, 1);
         }
         panel.repaint();
 
@@ -62,6 +37,39 @@ public class Main {
             Thread.sleep(100);
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+    }
+
+    private static Motor determineNeuronActivation(Creature creature){
+        for(Sensor sensor : creature.getGenome().getSensors()){
+            sensor.addValue(sensor.sensorMethod.invoke(sensor.getPos()));
+            iterateThroughNeuronChain(sensor);
+        }
+
+        ArrayList<Motor> motors = creature.getGenome().getMotors();
+        Motor highestValueMotor = motors.get(0);
+        for(int i = 1; i<motors.size(); i++){
+            if(highestValueMotor.getMaxValue() < motors.get(i).getMaxValue()){
+                highestValueMotor = motors.get(i);
+            }
+        }
+        
+        return highestValueMotor;
+
+    }
+
+    private static void iterateThroughNeuronChain(Neuron neuron){
+        for(Neuron sink : new ArrayList<Neuron>(neuron.getSinks().keySet())){
+            double sum = 0;
+            for(double value : neuron.getValues()){
+                sum+= value;
+            }
+
+            sink.addValue(sum);
+
+            if(sink instanceof Internal && sink.getSources().size() == sink.getValues().size()){
+                iterateThroughNeuronChain(sink);
+            }
         }
     }
     

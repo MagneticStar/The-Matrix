@@ -5,14 +5,15 @@ import java.util.HashSet;
 import java.util.Map;
 
 public class Genome{
-    private final int genomeLength = 8;
+    private final int genomeLength = 16;
     private final int geneLength = 32;
     private final Random rand = new Random();
     private String DNA;
     public Creature subject;
     private Color color;
     private Neuron[] neurons;
-    private ArrayList<Neuron> sensors = new ArrayList<Neuron>();
+    private ArrayList<Sensor> sensors = new ArrayList<Sensor>();
+    private ArrayList<Motor> motors = new ArrayList<Motor>();
     // Debug Vars
     // public ArrayList<Integer> neuronChainLengths = new ArrayList<Integer>();
     
@@ -30,7 +31,7 @@ public class Genome{
         for (int i = 0; i < neurons.size(); i++) {
             this.neurons[i] = neurons.get(i);
             if(neurons.get(i).getClassType().equals("Sensor")){
-                this.sensors.add(neurons.get(i));
+                this.sensors.add((Sensor)neurons.get(i));
             }
         }
         this.DNA = DNA;
@@ -41,10 +42,13 @@ public class Genome{
         return this.color;
     }
     public Neuron[] getNeurons() {
-        return neurons;
+        return this.neurons;
     }
-    public ArrayList<Neuron> getSensors(){
-        return sensors;
+    public ArrayList<Sensor> getSensors(){
+        return this.sensors;
+    }
+    public ArrayList<Motor> getMotors(){
+        return this.motors;
     }
 
     private void calculateColor(){
@@ -268,8 +272,11 @@ public class Genome{
         this.neurons = new Neuron[inNeuronChain.size()];
         for (int i = 0; i < inNeuronChain.size(); i++) {
             this.neurons[i] = inNeuronChain.get(i);
-            if(inNeuronChain.get(i).getClassType().equals("Sensor")){
-                this.sensors.add(inNeuronChain.get(i));
+            if(inNeuronChain.get(i) instanceof Sensor){
+                this.sensors.add((Sensor) inNeuronChain.get(i));
+            }
+            else if(inNeuronChain.get(i) instanceof Motor){
+                this.motors.add((Motor) inNeuronChain.get(i));
             }
         }
     }
@@ -350,7 +357,7 @@ public class Genome{
                 
                 // Deletes the prexisting empty neuron and adds its sources and sinks to this new neuron
                 for(Neuron sink : new ArrayList<Neuron>(emptyNeurons.get(j).getSinks().keySet())){
-                    newNeuron.addSink(sink, rand.nextInt(0,(int)Math.pow(2, geneLength-16)));
+                    newNeuron.addSink(sink, rand.nextInt(0,(int)Math.pow(2, 16)));
                     sink.replaceSource(emptyNeurons.get(j), newNeuron);
                 }
                 for(Neuron source : emptyNeurons.get(j).getSources()){

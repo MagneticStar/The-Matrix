@@ -10,6 +10,16 @@ public class Motor extends Neuron{
         }
     }
 
+    public double getMaxValue(){
+        double maxValue = -1000000000;
+        for(double value : super.getValues()){
+            if(maxValue<value){
+                maxValue = value;
+            }
+        }
+        return maxValue;
+    }
+
     public interface MotorMethod{
         void invoke(Creature subject, double value);
     }
