@@ -1,12 +1,14 @@
 public class Motor extends Neuron{
 
     public MotorMethod motorMethod;
-    private static int numberOfMotorMethods = 2; // Update this when creating new Motor methods
+    private static int numberOfMotorMethods = 4; // Update this when creating new Motor methods
     public Motor(int methodID){
         super("Motor");
         switch(methodID%(numberOfMotorMethods)){
-            case 0: this.motorMethod = Motor::upDown; break;
-            case 1: this.motorMethod = Motor::leftRight; break;
+            case 0: this.motorMethod = Motor::MoveUp; break;
+            case 1: this.motorMethod = Motor::MoveDown; break;
+            case 2: this.motorMethod = Motor::MoveRight; break;
+            case 3: this.motorMethod = Motor::MoveLeft; break;
         }
     }
 
@@ -21,17 +23,23 @@ public class Motor extends Neuron{
     }
 
     public interface MotorMethod{
-        void invoke(Creature subject, double value);
+        void invoke(Creature subject);
     }
 
     ////////////////////////////////////////////////////////
     // MOTOR METHODS // MOTOR METHODS // MOTOR METHODS //
     ////////////////////////////////////////////////////////
 
-    private static void upDown(Creature subject, double value){
-        subject.setPosY(subject.getPosY() + (int)(value - 0.5));
+    private static void MoveUp(Creature creature){
+        creature.setPosY(creature.getPosY() + 1);
     }
-    private static void leftRight(Creature subject, double value){
-        subject.setPosX(subject.getPosX() + (int)(value - 0.5));
+    private static void MoveDown(Creature creature){
+        creature.setPosY(creature.getPosY() - 1);
+    }
+    private static void MoveLeft(Creature creature){
+        creature.setPosX(creature.getPosX() - 1);
+    }
+    private static void MoveRight(Creature creature){
+        creature.setPosX(creature.getPosX() + 1);
     }
 }

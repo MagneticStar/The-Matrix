@@ -28,8 +28,7 @@ public class Main {
 
     public static void tick(SimulationPanel panel, int i) {
         for(Creature creature : Database.creaturesList){
-            Motor activatedMotor = determineNeuronActivation(creature);
-            activatedMotor.motorMethod.invoke(creature, activatedMotor.getMaxValue());
+            determineNeuronActivation(creature).motorMethod.invoke(creature);
         }
         panel.repaint();
 
@@ -72,7 +71,7 @@ public class Main {
             }
 
             // Debug
-            System.out.println(sink.toString()+" "+sink.getValues().size()+"/"+sink.getSources().size());
+            // System.out.println(sink.toString()+" "+sink.getValues().size()+"/"+sink.getSources().size());
         }
     }
     

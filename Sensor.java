@@ -65,10 +65,6 @@ public class Sensor extends Neuron{
     ////////////////////////////////////////////////////////
     // SENSOR METHOD ASSISTORS // SENSOR METHOD ASSISTORS // 
     ////////////////////////////////////////////////////////
-
-    public static double direction(ScreenObject obj) {
-        if (obj.)
-    }
     
     public static double distance(ScreenObject obj) {
         // using Pyth theorem
