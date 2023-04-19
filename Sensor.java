@@ -4,7 +4,7 @@ public class Sensor extends Neuron{
 
     private static Creature subject;
     public SensorMethod sensorMethod; 
-    private static int numberOfSensorMethods = 4; // Update this when creating new Sensor methods
+    private static int numberOfSensorMethods = 6; // Update this when creating new Sensor methods
     private Coor temp = new Coor();
     private ArrayList<Double> arr= new ArrayList<Double>();
     private static int i;
