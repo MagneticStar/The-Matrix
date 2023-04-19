@@ -16,8 +16,10 @@ public class Sensor extends Neuron{
         switch(methodID%(numberOfSensorMethods)){
             case 0: this.sensorMethod = Sensor::detectFood; break;
             case 1: this.sensorMethod = Sensor::nearestWater; break;
-            case 2: this.sensorMethod = Sensor::detectFoodDirection; break;
-            case 3: this.sensorMethod = Sensor::detectWaterDirection; break;
+            case 2: this.sensorMethod = Sensor::detectFoodXDirection; break;
+            case 3: this.sensorMethod = Sensor::detectWaterXDirection; break;
+            case 4: this.sensorMethod = Sensor::detectFoodYDirection; break;
+            case 5: this.sensorMethod = Sensor::detectWaterYDirection; break;
         }
     }
 
@@ -56,18 +58,82 @@ public class Sensor extends Neuron{
         return -1.0;
     }
 
-    private static double detectFoodDirection (Coor coor) {
-        return 1.0;
+    private static double detectFoodXDirection (Coor coor) {
+        for (Food f: Database.foodsList) {
+            if (f.getPos().equals(coor)) {
+                return directionX(f);
+            }
+            // if no food nearby
+            return 0.0;
+        }
+        // if no food exist
+        return 0.0;
     }
-    private static double detectWaterDirection (Coor coor) {
-        return 1.0;
+
+    private static double detectFoodYDirection (Coor coor) {
+        for (Food f: Database.foodsList) {
+            if (f.getPos().equals(coor)) {
+                return directionY(f);
+            }
+            // if no food nearby
+            return 0.0;
+        }
+        // if no food exist
+        return 0.0;
+    }
+    private static double detectWaterXDirection (Coor coor) {
+        for (Water w: Database.watersList) {
+            if (w.getPos().equals(coor)) {
+                return directionX(w);
+            }
+            // if no water nearby
+            return 0.0;
+        }
+        // if no water exist
+        return 0.0;
+    }
+    private static double detectWaterYDirection (Coor coor) {
+        for (Water w: Database.watersList) {
+            if (w.getPos().equals(coor)) {
+                return directionY(w);
+            }
+            // if no water nearby
+            return 0.0;
+        }
+        // if no water exist
+        return 0.0;
     }
     ////////////////////////////////////////////////////////
     // SENSOR METHOD ASSISTORS // SENSOR METHOD ASSISTORS // 
     ////////////////////////////////////////////////////////
 
-    public static double direction(ScreenObject obj) {
-        if (obj.)
+    public static double directionX(ScreenObject obj) {
+        // left
+        if (obj.getPosX() < subject.getPosX()) {
+            return -1.0;
+        }
+        // right
+        else if (obj.getPosX() > subject.getPosX()) {
+            return 1.0;
+        }
+        // same
+        else {
+            return 0.0;
+        }
+    }
+    public static double directionY(ScreenObject obj) {
+        // down
+        if (obj.getPosY() < subject.getPosY()) {
+            return -1.0;
+        }
+        // up
+        else if (obj.getPosY() > subject.getPosY()) {
+            return 1.0;
+        }
+        // same
+        else {
+            return 0.0;
+        }
     }
     
     public static double distance(ScreenObject obj) {
