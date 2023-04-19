@@ -2,6 +2,7 @@
 import java.awt.Color;
 import java.util.ArrayList;
 
+<<<<<<< Updated upstream
 public class Main{
     // ArrayList for all food
     public static  ArrayList<Food> foods = new ArrayList<Food>();
@@ -13,6 +14,21 @@ public class Main{
     public static String[] subNames = new String[1];
     // Translation obj used to find scalers
     public static Translation matCalc = new Translation();
+=======
+public class Main {
+    public static int stepCount = 0;
+    public static int generationLength = 1;
+   
+
+    // simFrame.add(simPanel);
+    //     simFrame.setVisible(true);
+
+    //     FlowLayout flowLayout = new FlowLayout(FlowLayout.LEADING);
+    //     neuronMapPanel.setLayout(flowLayout);
+    //     neuronMap.add(neuronMapPanel);
+    //     neuronMap.setVisible(true);
+    
+>>>>>>> Stashed changes
     public static void main(String[] args) {
 
         
@@ -36,8 +52,14 @@ public class Main{
         NeurPanel.main(args);
         
         // how many ticks
+<<<<<<< Updated upstream
         for (int i = 0; i < 5; i++) {
             tick(Frame.simPanel, i);
+=======
+        for (int i = 0; i < generationLength; i++) {
+            tick(Screens.simulationPanel, i);
+            stepCount++;
+>>>>>>> Stashed changes
         }
     }
 

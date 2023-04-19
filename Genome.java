@@ -8,6 +8,7 @@ public class Genome{
     private final int genomeLength = 8;
     private final int geneLength = 32;
     private final Random rand = new Random();
+    private final int oscillatorPeriod = rand.nextInt(0,100);
     private String DNA;
     public Subject subject;
     private Color color;
@@ -45,6 +46,9 @@ public class Genome{
     }
     public ArrayList<Neuron> getSensors(){
         return sensors;
+    }
+    public int getOscillatorPeriod(){
+        return this.oscillatorPeriod;
     }
 
     private void calculateColor(){
