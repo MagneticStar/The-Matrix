@@ -4,7 +4,7 @@ public class Sensor extends Neuron{
 
     private static Creature subject;
     public SensorMethod sensorMethod; 
-    private static int numberOfSensorMethods = 2; // Update this when creating new Sensor methods
+    private static int numberOfSensorMethods = 4; // Update this when creating new Sensor methods
     private Coor temp = new Coor();
     private ArrayList<Double> arr= new ArrayList<Double>();
     private static int i;
@@ -16,6 +16,8 @@ public class Sensor extends Neuron{
         switch(methodID%(numberOfSensorMethods)){
             case 0: this.sensorMethod = Sensor::detectFood; break;
             case 1: this.sensorMethod = Sensor::nearestWater; break;
+            case 2: this.sensorMethod = Sensor::detectFoodDirection; break;
+            case 3: this.sensorMethod = Sensor::detectWaterDirection; break;
         }
     }
 
@@ -54,11 +56,19 @@ public class Sensor extends Neuron{
         return -1.0;
     }
 
+    private static double detectFoodDirection (Coor coor) {
+        return 1.0;
+    }
+    private static double detectWaterDirection (Coor coor) {
+        return 1.0;
+    }
     ////////////////////////////////////////////////////////
     // SENSOR METHOD ASSISTORS // SENSOR METHOD ASSISTORS // 
     ////////////////////////////////////////////////////////
 
-
+    public static double direction(ScreenObject obj) {
+        if (obj.)
+    }
     
     public static double distance(ScreenObject obj) {
         // using Pyth theorem
@@ -106,6 +116,7 @@ public class Sensor extends Neuron{
       }
       return -1.0;
     }
+
     public boolean rlNext(){
         if(j < i){
             temp.setX(subject.getPos().x()+i);temp.setY(subject.getPos().y()+j); // Right Above
