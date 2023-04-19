@@ -14,10 +14,10 @@ public class Main {
     //     neuronMap.setVisible(true);
     
     public static void main(String[] args) {
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 1; i++) {
         Database.creaturesList.add(new Creature());
         }
-        Database.foodsList.add(new Food(new Coor(5, 5)));
+        Database.foodsList.add(new Food(new Coor(10, 5)));
         Screens.createScreens();
         BrainPanel.selectionBox();
         // how many ticks
@@ -28,7 +28,8 @@ public class Main {
 
     public static void tick(SimulationPanel panel, int i) {
         for(Creature creature : Database.creaturesList){
-            determineNeuronActivation(creature).motorMethod.invoke(creature, 1);
+            Motor activatedMotor = determineNeuronActivation(creature);
+            activatedMotor.motorMethod.invoke(creature, activatedMotor.getMaxValue());
         }
         panel.repaint();
 
@@ -55,7 +56,6 @@ public class Main {
         }
         
         return highestValueMotor;
-
     }
 
     private static void iterateThroughNeuronChain(Neuron neuron){
@@ -70,6 +70,9 @@ public class Main {
             if(sink instanceof Internal && sink.getSources().size() == sink.getValues().size()){
                 iterateThroughNeuronChain(sink);
             }
+
+            // Debug
+            System.out.println(sink.toString()+" "+sink.getValues().size()+"/"+sink.getSources().size());
         }
     }
     
