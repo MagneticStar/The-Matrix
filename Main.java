@@ -1,6 +1,5 @@
 
 import java.util.ArrayList;
-import java.util.Map;
 
 public class Main {
    
@@ -28,12 +27,7 @@ public class Main {
 
     public static void tick(SimulationPanel panel, int i) {
         for(Creature creature : Database.creaturesList){
-<<<<<<< Updated upstream
             determineNeuronActivation(creature).motorMethod.invoke(creature);
-=======
-            
-            determineNeuronActivation(creature).motorMethod.invoke(creature, determineNeuronActivation(creature).getMaxValue());
->>>>>>> Stashed changes
         }
         panel.repaint();
 
