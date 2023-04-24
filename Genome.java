@@ -1,19 +1,21 @@
 import java.awt.Color;
 import java.util.Random;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map;
 
 public class Genome{
-    private final int genomeLength = 16;
-    private final int geneLength = 32;
-    private final Random rand = new Random();
+    private static final int genomeLength = 16;
+    private static final int geneLength = 32;
+    private static final Random rand = new Random();
     private String DNA;
     public Creature subject;
     private Color color;
     private Neuron[] neurons;
     private ArrayList<Sensor> sensors = new ArrayList<Sensor>();
     private ArrayList<Motor> motors = new ArrayList<Motor>();
+    private ArrayList<Internal> internals = new ArrayList<Internal>();
     // Debug Vars
     // public ArrayList<Integer> neuronChainLengths = new ArrayList<Integer>();
     
@@ -21,7 +23,6 @@ public class Genome{
     public Genome(Creature subject){
         this.subject = subject;
         generateDNA(); // sets this.DNA to a random binary String
-        calculateColor(); // sets this.color to RGB values based on the content of this.DNA
         interpretDNA();
     }
 
@@ -35,11 +36,13 @@ public class Genome{
             }
         }
         this.DNA = DNA;
-        calculateColor();
     }
 
     public Color getColor(){
         return this.color;
+    }
+    public void setColor(Color color){
+        this.color = color;
     }
     public Neuron[] getNeurons() {
         return this.neurons;
@@ -50,20 +53,54 @@ public class Genome{
     public ArrayList<Motor> getMotors(){
         return this.motors;
     }
+    public ArrayList<Internal> getInternals(){
+        return this.internals;
+    }
 
-    private void calculateColor(){
-        // The color is calculated by splicing the DNA into three equal segments
-        // (in cases where the length is not divisible by 3, the last 1 or 2 bits are dropped)
-        // then that binary string is converted to a number and it's range is reduced from
-        // 0-2^segmentLength to 0-256 based on it's position within the first range
+    public static void calculateColor(){
+        int[][] neuronCoordinates = new int[Database.creatureCount][3];
+        int[] averageNeuronCoordinate = {0,0,0};
+        int[] coordinateDistanceRange = new int[3];
+        int[] lowestNeuronCoordinate = {genomeLength,genomeLength,genomeLength};
+        int[] highestNeuronCoordinate = {genomeLength,genomeLength,genomeLength};
 
-        // int segmentLength = (DNA.length()-DNA.length()%3)/3;
-        // int segmentOne = (int) (Integer.parseInt(DNA.substring(0, segmentLength+1),2)/(Math.pow(2,segmentLength)));
-        // int segmentTwo = (int) (Integer.parseInt(DNA.substring(segmentLength+1, segmentLength*2+1),2)/(Math.pow(2,segmentLength)));
-        // int segmentThree = (int) (Integer.parseInt(DNA.substring(segmentLength*2+1, segmentLength*3+1),2)/(Math.pow(2,segmentLength)));
+        for(int i=0; i<Database.creaturesList.size(); i++){
+            int[] neuronListLengths = {Database.creaturesList.get(i).getGenome().getSensors().size(),Database.creaturesList.get(i).getGenome().getInternals().size(),Database.creaturesList.get(i).getGenome().getMotors().size()};
+            for(int j = 0; j<3; j++){
+                neuronCoordinates[i][j] = neuronListLengths[j];
+                averageNeuronCoordinate[j]+=neuronCoordinates[i][j];
+                
+                if(neuronCoordinates[i][j] > highestNeuronCoordinate[j]){
+                    highestNeuronCoordinate[j] = neuronCoordinates[i][j];
+                }
+                else if(neuronCoordinates[i][j] < lowestNeuronCoordinate[j]){
+                    lowestNeuronCoordinate[j] = neuronCoordinates[i][j];
+                }
+            }
+        }
 
-        // color = new Color(segmentOne,segmentTwo,segmentThree);
-        color = Color.yellow;
+        for(int i=0; i<3; i++){
+            averageNeuronCoordinate[i] = averageNeuronCoordinate[i]/Database.creatureCount;
+            coordinateDistanceRange[i] = highestNeuronCoordinate[i]-lowestNeuronCoordinate[i];
+        }
+
+        for(int i=0; i<Database.creaturesList.size(); i++){
+            int[] rgb = new int[3];
+            for(int j =0; j<3; j++){
+                rgb[j] = (int) (256*(Math.abs(averageNeuronCoordinate[j]-neuronCoordinates[i][j])/(double)coordinateDistanceRange[j]));
+                
+                // Debug
+                // System.out.print(rgb[j]+" ");
+            }
+            
+            // Debug
+            // System.out.println();
+
+            Database.creaturesList.get(i).getGenome().setColor(new Color(rgb[0],rgb[1],rgb[2]));
+            Database.creaturesList.get(i).setColor(Database.creaturesList.get(i).getGenome().getColor());
+        }
+            
+
     }
 
     private void generateDNA(){
@@ -277,6 +314,9 @@ public class Genome{
             }
             else if(inNeuronChain.get(i) instanceof Motor){
                 this.motors.add((Motor) inNeuronChain.get(i));
+            }
+            else{
+                this.internals.add((Internal) inNeuronChain.get(i));
             }
         }
     }

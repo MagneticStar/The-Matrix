@@ -13,9 +13,12 @@ public class Main {
     //     neuronMap.setVisible(true);
     
     public static void main(String[] args) {
-        for (int i = 0; i < 1; i++) {
+        // Create creatureCount creatures
+        for (int i = 0; i < Database.creatureCount; i++) {
         Database.creaturesList.add(new Creature());
         }
+        Genome.calculateColor();
+
         Database.foodsList.add(new Food(new Coor(10, 5)));
         Screens.createScreens();
         BrainPanel.selectionBox();

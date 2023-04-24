@@ -20,6 +20,7 @@ public class Sensor extends Neuron{
             case 3: this.sensorMethod = Sensor::detectWaterXDirection; break;
             case 4: this.sensorMethod = Sensor::detectFoodYDirection; break;
             case 5: this.sensorMethod = Sensor::detectWaterYDirection; break;
+            // The case number + 1 should be equal to numberOfSensorMethods!
         }
     }
 
