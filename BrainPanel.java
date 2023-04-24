@@ -2,36 +2,27 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Map;
 
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
 public class BrainPanel extends JPanel implements ActionListener{
     
-    
-    private static TextField searchBar;
-    private static Button searchButton;
-    private static Label searchReply;
+    private static JComboBox<String> searchDropDown;
+    private static int currentlySelectedSubjectIndex = 0;
 
-    public static void main(String[] args){
-        searchButton = new Button("Find");
-        searchReply = new Label("");
-        
-        BrainPanel nP = new BrainPanel();
-        // Adds an action listener to the button
-        searchButton.addActionListener(nP);
-        // creates a TextField object with 16 columns
-        searchBar = new TextField(16);
-        // creates a font object and sets the TextField font to the newly defined font object
-        Font searchBarFont = new Font("Serif",Font.BOLD,20);
-        searchBar.setFont(searchBarFont);
+    public static void selectionBox(){
+        searchDropDown = new JComboBox<String>(Screens.subNames);
+        searchDropDown.setSelectedIndex(0); 
+        searchDropDown.addActionListener(Screens.brainPanel);
+        Screens.brainPanel.add(searchDropDown);
+        Screens.brainPanel.revalidate();
     }
 
-    public void actionPerformed(ActionEvent e){
-        String s = e.getActionCommand();
-        if (s.equals("Find")){
-            searchReply.setText(searchBar.getText());
-
-            searchBar.setText("");
-        }
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        // Sets the neuron map panel to the neuron map of the selected subject. The string manipulation is to avoid searching for the index of the subject
+        currentlySelectedSubjectIndex = Integer.parseInt(searchDropDown.getSelectedItem().toString().substring(searchDropDown.getSelectedItem().toString().indexOf(" ")+1));
+        repaint();
     }
 
     public BrainPanel() {

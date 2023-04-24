@@ -1,9 +1,11 @@
 public class Translation {
     private double[][] transMat = new double[2][2];
-    private double worldSize;
+    private double worldSizeX;
+    private double worldSizeY;
     // constructors
-    public Translation(double worldSize) {
-        this.worldSize = worldSize;
+    public Translation(double worldSizeX, double worldSizeY) {
+        this.worldSizeX = worldSizeX;
+        this.worldSizeY = worldSizeY;
     }
     public Translation(double[][] m) {
         transMat = m;
@@ -15,8 +17,8 @@ public class Translation {
         transMat[1][1] = yScaler;
     }
     public void setWorld(double xScaler, double yScaler) {
-        transMat[0][0] = xScaler/worldSize;
-        transMat[1][1] = yScaler/worldSize;
+        transMat[0][0] = xScaler/worldSizeX;
+        transMat[1][1] = yScaler/worldSizeY;
     }
     // getters
     public double[][] getMat() {

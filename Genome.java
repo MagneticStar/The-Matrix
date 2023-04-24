@@ -3,7 +3,7 @@ import java.util.Random;
 import java.util.ArrayList;
 
 public class Genome{
-    private final int genomeLength = 8;
+    private final int genomeLength = 256;
     private final int geneLength = 32;
     private String DNA;
     private Creature subject;

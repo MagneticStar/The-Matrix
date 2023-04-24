@@ -1,5 +1,9 @@
 
-import java.util.Map;
+import java.awt.Color;
+import java.util.ArrayList;
+
+import javax.swing.JFrame;
+
 
 public class Main {
    
@@ -13,10 +17,29 @@ public class Main {
     //     neuronMap.setVisible(true);
     
     public static void main(String[] args) {
-        Database.creaturesList.add(new Creature());
         
-        Screens.createScreens();
+        for (int i = 0; i < 20; i++) {
+        Database.creaturesList.add(new Creature());
+        }
 
+        Database.foodsList.add(new Food(new Coor(45, 45)));
+        Database.foodsList.add(new Food(new Coor(70, 70)));
+        Database.foodsList.add(new Food(new Coor(20, 70)));
+        Database.foodsList.add(new Food(new Coor(70, 20)));
+        Database.watersList.add(new Water(new Coor(55, 59)));
+
+
+        
+
+
+
+        Screens.createScreens();
+        
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         // how many ticks
         for (int i = 0; i < 1; i++) {
             tick(Screens.simulationPanel, i);
@@ -24,34 +47,8 @@ public class Main {
     }
 
     public static void tick(SimulationPanel panel, int i) {
-
-        for (Creature creature : Database.creaturesList) {
-            for (Neuron neuron: creature.getGenome().getNeurons()) {
-                System.out.println("Sensor");
-                if (neuron instanceof Sensor) {
-                    for (Map.Entry<Neuron, Integer> sink : neuron.getSinks().entrySet()) {
-                        sink.getKey().setValue((((Sensor)neuron).search()));
-                        System.out.println(((Sensor)neuron).search());
-                    }
-                }
-            }
-            for (Neuron neuron: creature.getGenome().getNeurons()) {
-                System.out.println("Internal");
-                if (neuron instanceof Internal) {
-                    for (Map.Entry<Neuron, Integer> sink : neuron.getSinks().entrySet()) {
-                        // the getValue needs to change so that internal neurons can affect things
-                        sink.getKey().setValue((((Internal)neuron).getValue()));
-                        System.out.println(((Internal)neuron).getValue());
-                    }   
-                }
-            }
-            for (Neuron neuron: creature.getGenome().getNeurons()) {
-                System.out.println("Motor");
-                if (neuron instanceof Motor) {
-                    ((Motor)neuron).motorMethod.invoke(creature, neuron.getValue());
-                    System.out.println(neuron.getValue());
-                }
-            }
+        for(Creature creature : Database.creaturesList){
+            determineNeuronActivation(creature).motorMethod.invoke(creature);
         }
         panel.repaint();
 
@@ -60,6 +57,41 @@ public class Main {
             Thread.sleep(100);
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+    }
+
+    private static Motor determineNeuronActivation(Creature creature){
+        for(Sensor sensor : creature.getGenome().getSensors()){
+            sensor.addValue(sensor.sensorMethod.invoke(creature));
+            iterateThroughNeuronChain(sensor);
+        }
+
+        ArrayList<Motor> motors = creature.getGenome().getMotors();
+        Motor highestValueMotor = motors.get(0);
+        for(int i = 1; i<motors.size(); i++){
+            if(highestValueMotor.getMaxValue() < motors.get(i).getMaxValue()){
+                highestValueMotor = motors.get(i);
+            }
+        }
+        
+        return highestValueMotor;
+    }
+
+    private static void iterateThroughNeuronChain(Neuron neuron){
+        for(Neuron sink : new ArrayList<Neuron>(neuron.getSinks().keySet())){
+            double sum = 0;
+            for(double value : neuron.getValues()){
+                sum+= value;
+            }
+
+            sink.addValue(sum);
+
+            if(sink instanceof Internal && sink.getSources().size() == sink.getValues().size()){
+                iterateThroughNeuronChain(sink);
+            }
+
+            // Debug
+            // System.out.println(sink.toString()+" "+sink.getValues().size()+"/"+sink.getSources().size());
         }
     }
     
