@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
+import java.util.ArrayList;
 
 public class Main {
    
@@ -17,31 +18,21 @@ public class Main {
     //     neuronMap.setVisible(true);
     
     public static void main(String[] args) {
-        
-        for (int i = 0; i < 20; i++) {
-        Database.creaturesList.add(new Creature());
-        }
-
+    
         Database.foodsList.add(new Food(new Coor(45, 45)));
         Database.foodsList.add(new Food(new Coor(70, 70)));
         Database.foodsList.add(new Food(new Coor(20, 70)));
         Database.foodsList.add(new Food(new Coor(70, 20)));
         Database.watersList.add(new Water(new Coor(55, 59)));
-
-
-        
-
-
-
+        // Create creatureCount creatures
+        for (int i = 0; i < Database.creatureCount; i++) {
+        Database.creaturesList.add(new Creature());
+        }
+        Genome.calculateColor();
         Screens.createScreens();
         
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         // how many ticks
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 10; i++) {
             tick(Screens.simulationPanel, i);
         }
     }

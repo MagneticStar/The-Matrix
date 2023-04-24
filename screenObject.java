@@ -1,5 +1,5 @@
 import java.awt.Color;
-public class ScreenObject {
+class ScreenObject {
     private Coor position;
     private Color color;
 

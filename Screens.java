@@ -22,7 +22,7 @@ public class Screens {
         FlowLayout flowLayout = new FlowLayout(FlowLayout.LEADING);
         brainPanel.setLayout(flowLayout);
         for(int i=0; i<Database.creaturesList.size(); i++){
-            subNames[i] = String.format("Subject %04d",i);
+            subNames[i] = String.format("Creature %04d",i);
         }
         brainPanel.selectionBox();
         
