@@ -95,6 +95,12 @@ public class Genome{
                 System.out.println(256.0 / (Math.abs(averageNeuronCoordinate[j]-highestNeuronCoordinateEVER)/(double)coordinateDistanceRange[j]));
                 // Debug
                 // System.out.println(10*(averageNeuronCoordinate[j]-neuronCoordinates[i][j])/(double)coordinateDistanceRange[j] * 10);
+<<<<<<< Updated upstream
+=======
+                // Two print statements because one of the variables may be undefined
+                // System.out.print("("+multiplier +" "+distance*multiplier);
+                // System.out.println(", "+distance+" "+distance*3+")");
+>>>>>>> Stashed changes
             }
             
             // Debug
