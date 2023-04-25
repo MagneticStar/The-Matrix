@@ -91,23 +91,25 @@ public class Genome{
         }
 
         // Debug
-        System.out.println(coordinateDistanceMax[0]+ "," + coordinateDistanceMax[1] + "," + coordinateDistanceMax[2]);
-        System.out.println(averageNeuronCoordinate[0]+ "," + averageNeuronCoordinate[1] + "," + averageNeuronCoordinate[2]);
+        // System.out.println(coordinateDistanceMax[0]+ "," + coordinateDistanceMax[1] + "," + coordinateDistanceMax[2]);
+        // System.out.println(averageNeuronCoordinate[0]+ "," + averageNeuronCoordinate[1] + "," + averageNeuronCoordinate[2]);
 
         for(int i=0; i<Database.creaturesList.size(); i++){
             int[] rgb = new int[3];
             for(int j =0; j<3; j++){
+                double distance = (Math.abs(averageNeuronCoordinate[j]-neuronCoordinates[i][j])/(double)coordinateDistanceMax[j]); //JACKSON
                 // double multiplier = 256.0 / (Math.abs(averageNeuronCoordinate[j]-highestNeuronCoordinateEVER)/(double)coordinateDistanceRange[j]); //JOEY
+                double multiplier = 255 / (Math.abs(averageNeuronCoordinate[j]-neuronCoordinates[i][j])/(double)coordinateDistanceMax[j]); //JACKSON
                 // rgb[j] = (int) (((800*Math.abs(averageNeuronCoordinate[j]-neuronCoordinates[i][j])/(double)coordinateDistanceRange[j]))); //JOEY
-                rgb[j] = (int) (256*(Math.abs(averageNeuronCoordinate[j]-neuronCoordinates[i][j])/(double)coordinateDistanceMax[j])); //JACKSON
+                rgb[j] = (int) (255*(distance*3)); //JACKSON
                 
                 // Debug
                 // System.out.println(10*(averageNeuronCoordinate[j]-neuronCoordinates[i][j])/(double)coordinateDistanceRange[j] * 10);
-                // System.out.println(256.0 / (Math.abs(averageNeuronCoordinate[j]-highestNeuronCoordinateEVER)/(double)coordinateDistanceRange[j]));
+                System.out.println("("+multiplier +" "+distance*multiplier+", "+distance+" "+distance*3+")");
             }
             
             // Debug
-            // System.out.println(rgb[0]+ "," + rgb[1] + "," + rgb[2]);
+            System.out.println("("+rgb[0]+ ", " + rgb[1] + ", " + rgb[2]+")");
 
             Database.creaturesList.get(i).getGenome().setColor(new Color(Math.min(rgb[0],255), Math.min(rgb[1],255),Math.min(rgb[2],255)));
             Database.creaturesList.get(i).setColor(Database.creaturesList.get(i).getGenome().getColor());

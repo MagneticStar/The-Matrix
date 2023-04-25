@@ -32,7 +32,7 @@ public class Main {
         Screens.createScreens();
         
         // how many ticks
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 20; i++) {
             tick(Screens.simulationPanel, i);
         }
     }
@@ -45,7 +45,7 @@ public class Main {
 
         // Make tick wait
         try {
-            Thread.sleep(1000);
+            Thread.sleep(200);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
