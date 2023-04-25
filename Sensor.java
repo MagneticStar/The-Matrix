@@ -109,19 +109,12 @@ public class Sensor extends Neuron{
     }
     
     private static double detectWaterYDirection (Creature creature) {
-<<<<<<< Updated upstream
-        for (Coor coor : search(creature)) {
-            for (Water w: Database.watersList) {
-                if (w.getPos().equals(coor)) {
-                    return directionY(w, creature);
-=======
         for(int i=0; i<searchDepth; i++){
             for (Coor coor : search(i,creature.getPos())) {
                 for (Water w: Database.watersList) {
                     if (w.getPos().equals(coor)) {
                         return directionY(w,creature);
                     }
->>>>>>> Stashed changes
                 }
             }
         }
