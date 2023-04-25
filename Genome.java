@@ -60,11 +60,13 @@ public class Genome{
     public static void calculateColor(){
         int[][] neuronCoordinates = new int[Database.creatureCount][3];
         int[] averageNeuronCoordinate = {0,0,0};
-        int[] coordinateDistanceRange = new int[3];
+        int[] coordinateDistanceMax = new int[3]; //JACKSON
+        // int[] coordinateDistanceRange = new int[3]; //JOEY
+        // int highestNeuronCoordinateEVER = 0; //JOEY
         int[] lowestNeuronCoordinate = {genomeLength,genomeLength,genomeLength};
         int[] highestNeuronCoordinate = {genomeLength,genomeLength,genomeLength};
-        int highestNeuronCoordinateEVER = 0;
-        for(int i=0; i<Database.creaturesList.size(); i++){
+        
+        for(int i=0; i<Database.creatureCount; i++){
             int[] neuronListLengths = {Database.creaturesList.get(i).getGenome().getSensors().size(),Database.creaturesList.get(i).getGenome().getInternals().size(),Database.creaturesList.get(i).getGenome().getMotors().size()};
             for(int j = 0; j<3; j++){
                 neuronCoordinates[i][j] = neuronListLengths[j];
@@ -76,31 +78,42 @@ public class Genome{
                 else if(neuronCoordinates[i][j] < lowestNeuronCoordinate[j]){
                     lowestNeuronCoordinate[j] = neuronCoordinates[i][j];
                 }
-                if (neuronCoordinates[i][j] > highestNeuronCoordinateEVER) {
-                    highestNeuronCoordinateEVER = neuronCoordinates[i][j];
-                }
+                // if (neuronCoordinates[i][j] > highestNeuronCoordinateEVER) { //JOEY
+                //     highestNeuronCoordinateEVER = neuronCoordinates[i][j];
+                // }
             }
         }
 
         for(int i=0; i<3; i++){
-            averageNeuronCoordinate[i] = averageNeuronCoordinate[i]/Database.creaturesList.size();
-            coordinateDistanceRange[i] = highestNeuronCoordinate[i]-lowestNeuronCoordinate[i];
+            averageNeuronCoordinate[i] = averageNeuronCoordinate[i]/Database.creatureCount; 
+            // coordinateDistanceRange[i] = highestNeuronCoordinate[i]-lowestNeuronCoordinate[i]; //JOEY
+            coordinateDistanceMax[i] = ((highestNeuronCoordinate[i]-averageNeuronCoordinate[i])+(averageNeuronCoordinate[i]-lowestNeuronCoordinate[i]))/2; //JACKSON
         }
+
+        // Debug
+        // System.out.println(coordinateDistanceMax[0]+ "," + coordinateDistanceMax[1] + "," + coordinateDistanceMax[2]);
+        // System.out.println(averageNeuronCoordinate[0]+ "," + averageNeuronCoordinate[1] + "," + averageNeuronCoordinate[2]);
 
         for(int i=0; i<Database.creaturesList.size(); i++){
             int[] rgb = new int[3];
             for(int j =0; j<3; j++){
-                double multiplier = 255.0 / (Math.abs(averageNeuronCoordinate[j]-highestNeuronCoordinateEVER)/(double)coordinateDistanceRange[j]);
-                rgb[j] = (int) (((multiplier*(Math.abs(averageNeuronCoordinate[j]-neuronCoordinates[i][j]))/(double)coordinateDistanceRange[j])));
-                // System.out.println(255.0 / (Math.abs(averageNeuronCoordinate[j]-highestNeuronCoordinateEVER)/(double)coordinateDistanceRange[j]));
+                double distance = (Math.abs(averageNeuronCoordinate[j]-neuronCoordinates[i][j])/(double)coordinateDistanceMax[j]); //JACKSON
+                // double multiplier = 256.0 / (Math.abs(averageNeuronCoordinate[j]-highestNeuronCoordinateEVER)/(double)coordinateDistanceRange[j]); //JOEY
+                // double multiplier = 255 / (Math.abs(averageNeuronCoordinate[j]-neuronCoordinates[i][j])/(double)coordinateDistanceMax[j]); //JACKSON
+                // rgb[j] = (int) (((800*Math.abs(averageNeuronCoordinate[j]-neuronCoordinates[i][j])/(double)coordinateDistanceRange[j]))); //JOEY
+                rgb[j] = (int) (255*(distance*3)); //JACKSON
+                
                 // Debug
                 // System.out.println(10*(averageNeuronCoordinate[j]-neuronCoordinates[i][j])/(double)coordinateDistanceRange[j] * 10);
+                // Two print statements because one of the variables may be undefined
+                // System.out.print("("+multiplier +" "+distance*multiplier);
+                System.out.println(", "+distance+" "+distance*3+")");
             }
             
             // Debug
             // System.out.println(rgb[0]+ "," + rgb[1] + "," + rgb[2]);
 
-            Database.creaturesList.get(i).getGenome().setColor(new Color(rgb[0], rgb[1],rgb[2]));
+            Database.creaturesList.get(i).getGenome().setColor(new Color(Math.min(rgb[0],255), Math.min(rgb[1],255),Math.min(rgb[2],255)));
             Database.creaturesList.get(i).setColor(Database.creaturesList.get(i).getGenome().getColor());
         }
             
