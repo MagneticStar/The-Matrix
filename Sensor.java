@@ -123,6 +123,7 @@ public class Sensor extends Neuron{
         
         return 0.0;
     }
+    
     private static double detectWaterYDirection (Creature creature) {
         if(Database.watersList.size() == 0){
             // means no water nearby
