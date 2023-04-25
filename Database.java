@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.util.ArrayList;
 
 public class Database {
@@ -7,7 +8,11 @@ public class Database {
      public static ArrayList<Creature> creaturesList = new ArrayList<Creature>();
 
      // Params
-     public static int creatureCount = 100;
+     public final static int creatureCount = 100;
+     public final static int worldSize = 100;
+     public final static int brainScreenSizeX = 30;
+     public final static int brainScreenSizeY = 500;
+     public final static Color simulationScreenColor = Color.white;
      
 
 }

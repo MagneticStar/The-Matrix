@@ -1,10 +1,10 @@
 import java.awt.*;
-import javax.swing.JPanel;  
+import javax.swing.JPanel;
 
 public class SimulationPanel extends JPanel{
 
     public SimulationPanel() {
-        setBackground(Color.black);
+        setBackground(Database.simulationScreenColor);
     }
     
     @Override

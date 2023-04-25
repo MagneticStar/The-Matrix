@@ -1,9 +1,3 @@
-
-import java.awt.Color;
-import java.util.ArrayList;
-
-import javax.swing.JFrame;
-
 import java.util.ArrayList;
 
 public class Main {

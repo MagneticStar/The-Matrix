@@ -107,7 +107,7 @@ public class Genome{
                 // System.out.println(10*(averageNeuronCoordinate[j]-neuronCoordinates[i][j])/(double)coordinateDistanceRange[j] * 10);
                 // Two print statements because one of the variables may be undefined
                 // System.out.print("("+multiplier +" "+distance*multiplier);
-                System.out.println(", "+distance+" "+distance*3+")");
+                // System.out.println(", "+distance+" "+distance*3+")");
             }
             
             // Debug
