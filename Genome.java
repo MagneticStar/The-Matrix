@@ -76,7 +76,7 @@ public class Genome{
                 else if(neuronCoordinates[i][j] < lowestNeuronCoordinate[j]){
                     lowestNeuronCoordinate[j] = neuronCoordinates[i][j];
                 }
-                if (neuronCoordinates[i][j] < highestNeuronCoordinateEVER) {
+                if (neuronCoordinates[i][j] > highestNeuronCoordinateEVER) {
                     highestNeuronCoordinateEVER = neuronCoordinates[i][j];
                 }
             }
@@ -92,15 +92,16 @@ public class Genome{
             for(int j =0; j<3; j++){
                 double multiplier = 256.0 / (Math.abs(averageNeuronCoordinate[j]-highestNeuronCoordinateEVER)/(double)coordinateDistanceRange[j]);
                 rgb[j] = (int) (((800*Math.abs(averageNeuronCoordinate[j]-neuronCoordinates[i][j])/(double)coordinateDistanceRange[j])));
-                System.out.println(256.0 / (Math.abs(averageNeuronCoordinate[j]-highestNeuronCoordinateEVER)/(double)coordinateDistanceRange[j]));
+                
                 // Debug
                 // System.out.println(10*(averageNeuronCoordinate[j]-neuronCoordinates[i][j])/(double)coordinateDistanceRange[j] * 10);
+                // System.out.println(256.0 / (Math.abs(averageNeuronCoordinate[j]-highestNeuronCoordinateEVER)/(double)coordinateDistanceRange[j]));
             }
             
             // Debug
             System.out.println(rgb[0]+ "," + rgb[1] + "," + rgb[2]);
 
-            Database.creaturesList.get(i).getGenome().setColor(new Color(rgb[0], rgb[1],rgb[2]));
+            Database.creaturesList.get(i).getGenome().setColor(new Color(Math.min(rgb[0],255), Math.min(rgb[1],255),Math.min(rgb[2],255)));
             Database.creaturesList.get(i).setColor(Database.creaturesList.get(i).getGenome().getColor());
         }
             
