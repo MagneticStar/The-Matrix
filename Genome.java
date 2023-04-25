@@ -99,13 +99,15 @@ public class Genome{
             for(int j =0; j<3; j++){
                 double distance = (Math.abs(averageNeuronCoordinate[j]-neuronCoordinates[i][j])/(double)coordinateDistanceMax[j]); //JACKSON
                 // double multiplier = 256.0 / (Math.abs(averageNeuronCoordinate[j]-highestNeuronCoordinateEVER)/(double)coordinateDistanceRange[j]); //JOEY
-                double multiplier = 255 / (Math.abs(averageNeuronCoordinate[j]-neuronCoordinates[i][j])/(double)coordinateDistanceMax[j]); //JACKSON
+                // double multiplier = 255 / (Math.abs(averageNeuronCoordinate[j]-neuronCoordinates[i][j])/(double)coordinateDistanceMax[j]); //JACKSON
                 // rgb[j] = (int) (((800*Math.abs(averageNeuronCoordinate[j]-neuronCoordinates[i][j])/(double)coordinateDistanceRange[j]))); //JOEY
                 rgb[j] = (int) (255*(distance*3)); //JACKSON
                 
                 // Debug
                 // System.out.println(10*(averageNeuronCoordinate[j]-neuronCoordinates[i][j])/(double)coordinateDistanceRange[j] * 10);
-                System.out.println("("+multiplier +" "+distance*multiplier+", "+distance+" "+distance*3+")");
+                // Two print statements because one of the variables may be undefined
+                // System.out.print("("+multiplier +" "+distance*multiplier);
+                System.out.println(", "+distance+" "+distance*3+")");
             }
             
             // Debug
