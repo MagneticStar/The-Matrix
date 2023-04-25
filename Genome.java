@@ -140,7 +140,7 @@ public class Genome{
 
         for(int i=0; i<genomeLength; i++){
             // Debug
-            Database.creaturesList.add(new Creature(new Genome(this.subject,this.DNA,neurons)));
+            // Database.creaturesList.add(new Creature(new Genome(this.subject,this.DNA,neurons)));
 
             Neuron neuron;
             
@@ -184,7 +184,7 @@ public class Genome{
         }
 
         // Debug
-        Database.creaturesList.add(new Creature(new Genome(this.subject,this.DNA,neurons)));
+        // Database.creaturesList.add(new Creature(new Genome(this.subject,this.DNA,neurons)));
         
         ////////////////////////////////////////////
         // FILL EMPTY // FILL EMPTY // FILL EMPTY //
@@ -246,7 +246,7 @@ public class Genome{
             neurons.add(emptyNeuron);
         }
         // Debug
-        Database.creaturesList.add(new Creature(new Genome(this.subject,this.DNA,neurons)));
+        // Database.creaturesList.add(new Creature(new Genome(this.subject,this.DNA,neurons)));
         // for(Neuron neuron : neurons){
         //     if(findSourceSinkError(neuron,false,0)){
         //         System.out.println("Uh Ohh");
