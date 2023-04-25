@@ -20,19 +20,29 @@ public class Main {
     public static void main(String[] args) {
     
         Database.foodsList.add(new Food(new Coor(45, 45)));
+        Database.foodsList.add(new Food(new Coor(52, 48)));
+        Database.foodsList.add(new Food(new Coor(50, 40)));
         Database.foodsList.add(new Food(new Coor(70, 70)));
         Database.foodsList.add(new Food(new Coor(20, 70)));
+        Database.foodsList.add(new Food(new Coor(90, 55)));
+        Database.watersList.add(new Water(new Coor(90, 45)));
         Database.foodsList.add(new Food(new Coor(70, 20)));
         Database.watersList.add(new Water(new Coor(55, 59)));
+        Database.watersList.add(new Water(new Coor(50, 50)));
         // Create creatureCount creatures
         for (int i = 0; i < Database.creatureCount; i++) {
         Database.creaturesList.add(new Creature());
         }
         Genome.calculateColor();
         Screens.createScreens();
-        
+
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         // how many ticks
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 30; i++) {
             tick(Screens.simulationPanel, i);
         }
     }
@@ -45,7 +55,7 @@ public class Main {
 
         // Make tick wait
         try {
-            Thread.sleep(1000);
+            Thread.sleep(100);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -58,13 +68,19 @@ public class Main {
         }
 
         ArrayList<Motor> motors = creature.getGenome().getMotors();
+        
         Motor highestValueMotor = motors.get(0);
+        
         for(int i = 1; i<motors.size(); i++){
             if(highestValueMotor.getMaxValue() < motors.get(i).getMaxValue()){
                 highestValueMotor = motors.get(i);
             }
         }
-        
+        // System.out.println(highestValueMotor.getMaxValue());
+        //loop throughneurons and clear values list
+        for (Motor motor : motors) {
+            motor.clearValues();
+        }
         return highestValueMotor;
     }
 
