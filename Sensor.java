@@ -5,6 +5,7 @@ public class Sensor extends Neuron{
 
     public SensorMethod sensorMethod; 
     private static int numberOfSensorMethods = 6; // Update this when creating new Sensor methods
+    private static int searchDepth = 25;
     
     
     
@@ -127,10 +128,6 @@ public class Sensor extends Neuron{
         // if no water exist
         return 0.0;
     }
-<<<<<<< Updated upstream
-=======
-    
->>>>>>> Stashed changes
     ////////////////////////////////////////////////////////
     // SENSOR METHOD ASSISTORS // SENSOR METHOD ASSISTORS // 
     ////////////////////////////////////////////////////////
@@ -173,58 +170,39 @@ public class Sensor extends Neuron{
         }    
     }
 
-    public static ArrayList<Coor> search(Creature creature) {
+    public static ArrayList<Coor> search(int i, Coor center) {
         Coor temp = new Coor();
         ArrayList<Coor> arr= new ArrayList<Coor>();
-        // Search logic
-    for(int i=1;i<10;i++){
-        
-        temp.setX(creature.getPos().x());temp.setY(creature.getPos().y()+i); // Above
-        arr.add(temp); 
-        temp.setX(creature.getPos().x()+i);temp.setY(creature.getPos().y()); // Right
-        arr.add(temp);
-        temp.setX(creature.getPos().x()-i);temp.setY(creature.getPos().y()); // Left
-        arr.add(temp);  
-        temp.setX(creature.getPos().x());temp.setY(creature.getPos().y()-i); // Below
-        
-        int j = 1;
-        while(abNext(creature, i, j, arr) || rlNext(creature, i , j, arr)){
-          j++;
-        }
-      }
-      // ??
-      return arr;
-    }
 
-    public static boolean rlNext(Creature creature, int i, int j, ArrayList<Coor> arr){
-        Coor temp = new Coor();
-        if(j < i){
-            temp.setX(creature.getPos().x()+i);temp.setY(creature.getPos().y()+j); // Right Above
+        // Search logic
+        temp.setX(center.x());temp.setY(center.y()+i); // Above
+        arr.add(temp); 
+        temp.setX(center.x()+i);temp.setY(center.y()); // Right
+        arr.add(temp);
+        temp.setX(center.x()-i);temp.setY(center.y()); // Left
+        arr.add(temp);  
+        temp.setX(center.x());temp.setY(center.y()-i); // Below
+        
+        for(int j=1; j<i+1;j++){
+            temp.setX(center.x()+j);temp.setY(center.y()+i); // Above right
             arr.add(temp);  
-            temp.setX(creature.getPos().x()+i);temp.setY(creature.getPos().y()-j); // Right Below
+            temp.setX(center.x()-j);temp.setY(center.y()+i); // Above Left
             arr.add(temp);  
-            temp.setX(creature.getPos().x()-i);temp.setY(creature.getPos().y()+j); // Left Above
+            temp.setX(center.x()+j);temp.setY(center.y()-i); // Below Right
             arr.add(temp);  
-            temp.setX(creature.getPos().x()-i);temp.setY(creature.getPos().y()-j); // Left Below
-            arr.add(temp);  
-            return true;
+            temp.setX(center.x()-j);temp.setY(center.y()-i); // Below Left
+            arr.add(temp);
+            if(j < i){
+                temp.setX(center.x()+i);temp.setY(center.y()+j); // Right Above
+                arr.add(temp);  
+                temp.setX(center.x()+i);temp.setY(center.y()-j); // Right Below
+                arr.add(temp);  
+                temp.setX(center.x()-i);temp.setY(center.y()+j); // Left Above
+                arr.add(temp);  
+                temp.setX(center.x()-i);temp.setY(center.y()-j); // Left Below
+                arr.add(temp); 
+            }
         }
-        return false;
-    }
-    
-    public static boolean abNext(Creature creature, int i, int j, ArrayList<Coor> arr){
-        Coor temp = new Coor();
-        if(j < i+1){
-          temp.setX(creature.getPos().x()+j);temp.setY(creature.getPos().y()+i); // Above right
-          arr.add(temp);  
-          temp.setX(creature.getPos().x()-j);temp.setY(creature.getPos().y()+i); // Above Left
-          arr.add(temp);  
-          temp.setX(creature.getPos().x()+j);temp.setY(creature.getPos().y()-i); // Below Right
-          arr.add(temp);  
-          temp.setX(creature.getPos().x()-j);temp.setY(creature.getPos().y()-i); // Below Left
-          arr.add(temp);  
-          return true;
-        }
-        return false;
-    }    
+      return arr;
+    } 
 }

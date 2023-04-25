@@ -4,7 +4,7 @@ import javax.swing.JPanel;
 public class SimulationPanel extends JPanel{
 
     public SimulationPanel() {
-        setBackground(Color.BLACK);
+        setBackground(Color.black);
     }
     
     @Override

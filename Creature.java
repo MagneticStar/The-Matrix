@@ -13,6 +13,11 @@ public class Creature extends ScreenObject{
         this.genome = new Genome(this);
     }
 
+    public Creature(Genome genome){
+        super();
+        this.genome = genome;
+    }
+
     // setters
     public void setGenome(Genome genome) {
         this.genome = genome;

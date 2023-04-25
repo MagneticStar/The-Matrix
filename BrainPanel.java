@@ -96,19 +96,19 @@ public class BrainPanel extends JPanel {
     public void internalNeuron(Graphics g, int i, int nc, Neuron n) {
         g.setColor(Color.green);
         n.setPosX(15+((nc+i)%4)*(int)Math.pow(-1,(nc+i)%3));
-        n.setPosY(i);
+        n.setPosY(i+35);
         g.drawOval(n.getPrintPos().x(), n.getPrintPos().y(), 20, 20);
     }
     public void sensorNeuron(Graphics g, int i, int nc, Neuron n) {
         g.setColor(Color.red);
         n.setPosX(8+((nc+i)%3)*(int)Math.pow(-1,(nc+i)%3));
-        n.setPosY(i);
+        n.setPosY(i+35);
         g.drawOval(n.getPrintPos().x(), n.getPrintPos().y(), 20, 20);
     }
     public void motorNeuron(Graphics g, int i, int nc, Neuron n) {
         g.setColor(Color.blue);
         n.setPosX(22+((nc+i)%3)*(int)Math.pow(-1,(nc+i)%3));
-        n.setPosY(i);
+        n.setPosY(i+35);
         g.drawOval(n.getPrintPos().x(), n.getPrintPos().y(), 20, 20);
     }
 }

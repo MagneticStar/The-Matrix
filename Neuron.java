@@ -41,6 +41,9 @@ public abstract class Neuron extends ScreenObject{
     public void addValue(Double value) {
         this.values.add(value);
     }
+    public void clearValues() {
+            values.clear();
+    }
 
     public void addSource(Neuron neuron){
         this.sources.add(neuron);
