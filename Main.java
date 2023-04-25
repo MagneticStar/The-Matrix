@@ -1,4 +1,9 @@
 
+import java.awt.Color;
+import java.util.ArrayList;
+
+import javax.swing.JFrame;
+
 import java.util.ArrayList;
 
 public class Main {
@@ -13,15 +18,19 @@ public class Main {
     //     neuronMap.setVisible(true);
     
     public static void main(String[] args) {
+    
+        Database.foodsList.add(new Food(new Coor(45, 45)));
+        Database.foodsList.add(new Food(new Coor(70, 70)));
+        Database.foodsList.add(new Food(new Coor(20, 70)));
+        Database.foodsList.add(new Food(new Coor(70, 20)));
+        Database.watersList.add(new Water(new Coor(55, 59)));
         // Create creatureCount creatures
         for (int i = 0; i < Database.creatureCount; i++) {
         Database.creaturesList.add(new Creature());
         }
         Genome.calculateColor();
-
-        Database.foodsList.add(new Food(new Coor(10, 5)));
         Screens.createScreens();
-        BrainPanel.selectionBox();
+        
         // how many ticks
         for (int i = 0; i < 10; i++) {
             tick(Screens.simulationPanel, i);
@@ -36,7 +45,7 @@ public class Main {
 
         // Make tick wait
         try {
-            Thread.sleep(100);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -44,7 +53,7 @@ public class Main {
 
     private static Motor determineNeuronActivation(Creature creature){
         for(Sensor sensor : creature.getGenome().getSensors()){
-            sensor.addValue(sensor.sensorMethod.invoke(sensor.getPos()));
+            sensor.addValue(sensor.sensorMethod.invoke(creature));
             iterateThroughNeuronChain(sensor);
         }
 

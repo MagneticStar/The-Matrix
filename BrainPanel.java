@@ -4,25 +4,27 @@ import java.util.Map;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
-public class BrainPanel extends JPanel implements ActionListener{
+public class BrainPanel extends JPanel {
     
-    private static JComboBox<String> searchDropDown;
-    private static int currentlySelectedSubjectIndex = 0;
+    private JComboBox<String> searchDropDown;
+    private int currentlySelectedSubjectIndex = 0;
 
-    public static void selectionBox(){
+    public void selectionBox(){
         searchDropDown = new JComboBox<String>(Screens.subNames);
         searchDropDown.setSelectedIndex(0); 
-        searchDropDown.addActionListener(Screens.brainPanel);
-        Screens.brainPanel.add(searchDropDown);
-        Screens.brainPanel.revalidate();
-    }
-
-    @Override
+        searchDropDown.addActionListener(new ActionListener() {
+            @Override
     public void actionPerformed(ActionEvent e) {
         // Sets the neuron map panel to the neuron map of the selected subject. The string manipulation is to avoid searching for the index of the subject
         currentlySelectedSubjectIndex = Integer.parseInt(searchDropDown.getSelectedItem().toString().substring(searchDropDown.getSelectedItem().toString().indexOf(" ")+1));
         repaint();
     }
+        });
+        Screens.brainPanel.add(searchDropDown);
+        Screens.brainPanel.revalidate();
+    }
+
+    
 
     public BrainPanel() {
         setBackground(Color.BLACK);

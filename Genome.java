@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 
 public class Genome{
-    private static final int genomeLength = 16;
+    private static final int genomeLength = 256;
     private static final int geneLength = 32;
     private static final Random rand = new Random();
     private String DNA;
@@ -63,7 +63,7 @@ public class Genome{
         int[] coordinateDistanceRange = new int[3];
         int[] lowestNeuronCoordinate = {genomeLength,genomeLength,genomeLength};
         int[] highestNeuronCoordinate = {genomeLength,genomeLength,genomeLength};
-
+        int highestNeuronCoordinateEVER = 0;
         for(int i=0; i<Database.creaturesList.size(); i++){
             int[] neuronListLengths = {Database.creaturesList.get(i).getGenome().getSensors().size(),Database.creaturesList.get(i).getGenome().getInternals().size(),Database.creaturesList.get(i).getGenome().getMotors().size()};
             for(int j = 0; j<3; j++){
@@ -76,27 +76,31 @@ public class Genome{
                 else if(neuronCoordinates[i][j] < lowestNeuronCoordinate[j]){
                     lowestNeuronCoordinate[j] = neuronCoordinates[i][j];
                 }
+                if (neuronCoordinates[i][j] < highestNeuronCoordinateEVER) {
+                    highestNeuronCoordinateEVER = neuronCoordinates[i][j];
+                }
             }
         }
 
         for(int i=0; i<3; i++){
-            averageNeuronCoordinate[i] = averageNeuronCoordinate[i]/Database.creatureCount;
+            averageNeuronCoordinate[i] = averageNeuronCoordinate[i]/Database.creaturesList.size();
             coordinateDistanceRange[i] = highestNeuronCoordinate[i]-lowestNeuronCoordinate[i];
         }
 
         for(int i=0; i<Database.creaturesList.size(); i++){
             int[] rgb = new int[3];
             for(int j =0; j<3; j++){
-                rgb[j] = (int) (256*(Math.abs(averageNeuronCoordinate[j]-neuronCoordinates[i][j])/(double)coordinateDistanceRange[j]));
-                
+                double multiplier = 256.0 / (Math.abs(averageNeuronCoordinate[j]-highestNeuronCoordinateEVER)/(double)coordinateDistanceRange[j]);
+                rgb[j] = (int) (((800*Math.abs(averageNeuronCoordinate[j]-neuronCoordinates[i][j])/(double)coordinateDistanceRange[j])));
+                System.out.println(256.0 / (Math.abs(averageNeuronCoordinate[j]-highestNeuronCoordinateEVER)/(double)coordinateDistanceRange[j]));
                 // Debug
-                // System.out.print(rgb[j]+" ");
+                // System.out.println(10*(averageNeuronCoordinate[j]-neuronCoordinates[i][j])/(double)coordinateDistanceRange[j] * 10);
             }
             
             // Debug
-            // System.out.println();
+            System.out.println(rgb[0]+ "," + rgb[1] + "," + rgb[2]);
 
-            Database.creaturesList.get(i).getGenome().setColor(new Color(rgb[0],rgb[1],rgb[2]));
+            Database.creaturesList.get(i).getGenome().setColor(new Color(rgb[0], rgb[1],rgb[2]));
             Database.creaturesList.get(i).setColor(Database.creaturesList.get(i).getGenome().getColor());
         }
             

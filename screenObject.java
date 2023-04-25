@@ -5,7 +5,7 @@ class ScreenObject {
 
     public ScreenObject() {
         color = Color.WHITE;
-        position = new Coor(15, 15);
+        position = new Coor(50, 50);
     }
 
     public ScreenObject(Color color, Coor position) {
