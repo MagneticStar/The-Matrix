@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 
+
 public class Main {
    
 
@@ -36,7 +37,7 @@ public class Main {
             e.printStackTrace();
         }
         // how many ticks
-        for (int i = 0; i < Database.generationLength; i++) {
+        for (int i = 0; i < 30; i++) {
             tick(Screens.simulationPanel, i);
         }
     }
@@ -61,17 +62,19 @@ public class Main {
             iterateThroughNeuronChain(sensor);
         }
 
-        Motor highestValueMotor = new Motor(0);
+        ArrayList<Motor> motors = creature.getGenome().getMotors();
         
-        for(Motor motor : creature.getGenome().getMotors()){
-            if(highestValueMotor.getMaxValue() < motor.getMaxValue()){
-                highestValueMotor = motor;
+        Motor highestValueMotor = motors.get(0);
+        
+        for(int i = 1; i<motors.size(); i++){
+            if(highestValueMotor.getMaxValue() < motors.get(i).getMaxValue()){
+                highestValueMotor = motors.get(i);
             }
         }
         // System.out.println(highestValueMotor.getMaxValue());
-        // Clears the information from this step from the neuron's memory
-        for (Neuron neuron : creature.getGenome().getSensors()) {
-            neuron.clearValues();
+        //loop throughneurons and clear values list
+        for (Motor motor : motors) {
+            motor.clearValues();
         }
         return highestValueMotor;
     }
