@@ -22,8 +22,8 @@ public class Database {
           public static ArrayList<Coor> creatureCoordinates;
      
           // Brain Screen
-          public final static int brainScreenSizeX = 30;
-          public final static int brainScreenSizeY = 500;
+          public static int brainScreenSizeX = 30;
+          public static int brainScreenSizeY = 500;
 
           // Visuals
           public final static Color simulationScreenColor = Color.white;

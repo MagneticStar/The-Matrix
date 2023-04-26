@@ -37,6 +37,10 @@ public class Motor extends Neuron{
     // MOTOR METHODS // MOTOR METHODS // MOTOR METHODS //
     ////////////////////////////////////////////////////////
 
+    private static void DoNothing(Creature creature) {
+        // Only meant as a default method as it serves no value
+    }
+
     private static void MoveUp(Creature creature){
         creature.setPosY(creature.getPosY() + 1);
     }
@@ -48,9 +52,6 @@ public class Motor extends Neuron{
     }
     private static void MoveRight(Creature creature){
         creature.setPosX(creature.getPosX() + 1);
-    }
-    private static void DoNothing(Creature creature) {
-        // Only meant as a default method as it serves no value
     }
     private static void Eat(Creature creature) {
         for (Food food : Database.foodsList) {

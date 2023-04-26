@@ -72,7 +72,7 @@ public class Main {
         }
         panel.repaint();
 
-        // Make tick wait
+        // Time between ticks
         try {
             Thread.sleep(20);
         } catch (InterruptedException e) {
