@@ -60,9 +60,6 @@ public class Genome{
     public int getOscillatorPeriod(){
         return this.oscillatorPeriod;
     }
-    public int getOscillatorPeriod(){
-        return this.oscillatorPeriod;
-    }
 
     public static void calculateColor(){
         int[][] neuronCoordinates = new int[Database.creatureCount][3];
