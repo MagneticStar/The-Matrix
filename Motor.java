@@ -56,6 +56,7 @@ public class Motor extends Neuron{
             if (creature.getPos().equals(food.getPos())) {
                 Database.foodsList.remove(food);
                 // place hunger stuff here
+                creature.incrementHunger();
                 // break is required because of enhanced loop
                 break;
             }

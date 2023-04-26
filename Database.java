@@ -17,5 +17,6 @@ public class Database {
      public final static int brainScreenSizeY = 500;
      public final static Color simulationScreenColor = Color.black;
      public final static Random random = new Random();
+     public final static int hungerCounter = 10;
      
 }
