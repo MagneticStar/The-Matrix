@@ -28,10 +28,6 @@ public class Sensor extends Neuron{
     ////////////////////////////////////////////////////////
 
     public static double nearestFoodDistance(Creature creature) {
-        if(Database.foodsList.size() == 0){
-            // means no food nearby
-            return -1.0;
-        }
         for (int i = 0; i < searchDepth; i++) {
             for (Coor coor : search(i,creature.getPos())) {
                 for (Food f: Database.foodsList) {
@@ -45,15 +41,10 @@ public class Sensor extends Neuron{
                 }
             }
         }
-        
         return -1.0;
     }
 
     private static double nearestWaterDistance(Creature creature){
-        if(Database.watersList.size() == 0){
-            // means no water nearby
-            return -1.0;
-        }
         for (int i = 0; i < searchDepth; i++) {
             for (Coor coor : search(i,creature.getPos())) {
                 for (Water w: Database.watersList) {
@@ -71,10 +62,6 @@ public class Sensor extends Neuron{
     }
 
     private static double detectFoodXDirection (Creature creature) {
-        if(Database.foodsList.size() == 0){
-            // means no food nearby
-            return 0.0;
-        }
         for (int i = 0; i < searchDepth; i++) {
             for (Coor coor : search(i,creature.getPos())) {
                 for (Food f: Database.foodsList) {
@@ -89,10 +76,6 @@ public class Sensor extends Neuron{
     }
 
     private static double detectFoodYDirection (Creature creature) {
-        if(Database.foodsList.size() == 0){
-            // means no food nearby
-            return 0.0;
-        }
         for (int i = 0; i < searchDepth; i++) {
             for (Coor coor : search(i,creature.getPos())) {
                 for (Food f: Database.foodsList) {
@@ -106,10 +89,6 @@ public class Sensor extends Neuron{
         return 0.0;
     }
     private static double detectWaterXDirection (Creature creature) {
-        if(Database.watersList.size() == 0){
-            // means no water nearby
-            return 0.0;
-        }
         for(int i=0; i<searchDepth; i++){
             for (Coor coor: search(i,creature.getPos())) {
                 for (Water w: Database.watersList) {
@@ -125,10 +104,6 @@ public class Sensor extends Neuron{
     }
     
     private static double detectWaterYDirection (Creature creature) {
-        if(Database.watersList.size() == 0){
-            // means no water nearby
-            return 0.0;
-        }
         for(int i=0; i<searchDepth; i++){
             for (Coor coor: search(i,creature.getPos())) {
                 for (Water w: Database.watersList) {

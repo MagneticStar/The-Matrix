@@ -59,11 +59,14 @@ public class Main {
                 highestValueMotor = motor;
             }
         }
-        // System.out.println(highestValueMotor.getMaxValue());
-        //loop throughneurons and clear values list
+
         for (Neuron neuron : creature.getGenome().getMotors()) {
             neuron.clearValues();
         }
+
+        // Debug
+        // System.out.println(highestValueMotor.getMaxValue());
+
         return highestValueMotor;
     }
 
