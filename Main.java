@@ -16,7 +16,7 @@ public class Main {
         Database.watersList.add(new Water(new Coor(50, 50)));
         // Create creatureCount creatures
         for (int i = 0; i < Database.creatureCount; i++) {
-        Database.creaturesList.add(new Creature());
+            Database.creaturesList.add(new Creature());
         }
         Genome.calculateColor();
         Screens.createScreens();
@@ -61,7 +61,7 @@ public class Main {
         }
         // System.out.println(highestValueMotor.getMaxValue());
         //loop throughneurons and clear values list
-        for (Neuron neuron : creature.getGenome().getNeurons()) {
+        for (Neuron neuron : creature.getGenome().getMotors()) {
             neuron.clearValues();
         }
         return highestValueMotor;
