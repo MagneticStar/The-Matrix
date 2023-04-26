@@ -36,7 +36,7 @@ public class Main {
             e.printStackTrace();
         }
         // how many ticks
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < Database.generationLength; i++) {
             tick(Screens.simulationPanel, i);
         }
     }
@@ -61,19 +61,17 @@ public class Main {
             iterateThroughNeuronChain(sensor);
         }
 
-        ArrayList<Motor> motors = creature.getGenome().getMotors();
+        Motor highestValueMotor = new Motor(0);
         
-        Motor highestValueMotor = motors.get(0);
-        
-        for(int i = 1; i<motors.size(); i++){
-            if(highestValueMotor.getMaxValue() < motors.get(i).getMaxValue()){
-                highestValueMotor = motors.get(i);
+        for(Motor motor : creature.getGenome().getMotors()){
+            if(highestValueMotor.getMaxValue() < motor.getMaxValue()){
+                highestValueMotor = motor;
             }
         }
         // System.out.println(highestValueMotor.getMaxValue());
-        //loop throughneurons and clear values list
-        for (Motor motor : motors) {
-            motor.clearValues();
+        // Clears the information from this step from the neuron's memory
+        for (Neuron neuron : creature.getGenome().getSensors()) {
+            neuron.clearValues();
         }
         return highestValueMotor;
     }
