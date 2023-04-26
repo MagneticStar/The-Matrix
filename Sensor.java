@@ -117,11 +117,11 @@ public class Sensor extends Neuron{
     }
 
     private static double Oscillator(Creature creature) {
-        if(Database.currentGenerationStep%creature.getGenome().getOscillatorPeriod()==0){
+        if(Database.currentGenerationTick%creature.getGenome().getOscillatorPeriod()==0){
             return 1;
         }
         else{
-            return 0;
+            return -1;
         }
     }
 

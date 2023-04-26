@@ -1,5 +1,4 @@
 import java.awt.Color;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map;
@@ -7,9 +6,9 @@ import java.util.Map;
 public class Genome{
     public static final int genomeLength = 128;
     private static final int geneLength = 32;
-    private final int oscillatorPeriod = Database.random.nextInt(1,Database.generationLength+1);
+    private int oscillatorPeriod = Database.random.nextInt(1,Database.generationLength+1);
     private String DNA;
-    public Creature subject;
+    public Creature creature;
     private Color color;
     private Neuron[] neurons;
     private ArrayList<Sensor> sensors = new ArrayList<Sensor>();
@@ -17,22 +16,34 @@ public class Genome{
     private ArrayList<Internal> internals = new ArrayList<Internal>();
     // Debug Vars
 
-    public Genome(Creature subject){
-        this.subject = subject;
+    public Genome(Creature creature){
+        this.creature = creature;
         generateDNA(); // sets this.DNA to a random binary String
         interpretDNA();
     }
 
-    public Genome(Creature subject, String DNA, ArrayList<Neuron> neurons){
-        this.subject = subject;
-        this.neurons = new Neuron[neurons.size()];
-        for (int i = 0; i < neurons.size(); i++) {
-            this.neurons[i] = neurons.get(i);
-            if(neurons.get(i).getClassType().equals("Sensor")){
-                this.sensors.add((Sensor)neurons.get(i));
-            }
-        }
+    // Creates a new neuron map based on the inputed DNA
+    public Genome(Creature creature, String DNA){
+        this.creature = creature;
         this.DNA = DNA;
+        interpretDNA();
+    }
+
+    // Copies a Genome
+    public Genome(Genome genome){
+        this.creature = genome.creature;
+        this.color = genome.getColor();
+        this.oscillatorPeriod = genome.getOscillatorPeriod();
+        this.sensors = genome.getSensors();
+        this.internals = genome.getInternals();
+        this.motors = genome.getMotors();
+        this.neurons = genome.getNeurons();
+        this.DNA = genome.getDNA();
+    }
+
+    
+    public Genome(Creature creature, Color color, ArrayList<Sensor> sensors, ArrayList<Motor> motors, ArrayList<Internal> internals, int oscillatorPeriod){
+        
     }
 
     public Color getColor(){
@@ -56,15 +67,18 @@ public class Genome{
     public int getOscillatorPeriod(){
         return this.oscillatorPeriod;
     }
+    public String getDNA(){
+        return this.DNA;
+    }
 
     public static void calculateColor(){
-        int[][] neuronCoordinates = new int[Database.creatureCount][3];
+        int[][] neuronCoordinates = new int[Database.generationSize][3];
         int[] averageNeuronCoordinate = {0,0,0};
         int[] coordinateDistanceMax = new int[3]; 
         int[] lowestNeuronCoordinate = {genomeLength,genomeLength,genomeLength};
         int[] highestNeuronCoordinate = {genomeLength,genomeLength,genomeLength};
         
-        for(int i=0; i<Database.creatureCount; i++){
+        for(int i=0; i<Database.generationSize; i++){
             int[] neuronListLengths = {Database.creaturesList.get(i).getGenome().getSensors().size(),Database.creaturesList.get(i).getGenome().getInternals().size(),Database.creaturesList.get(i).getGenome().getMotors().size()};
             for(int j = 0; j<3; j++){
                 neuronCoordinates[i][j] = neuronListLengths[j];
@@ -80,7 +94,7 @@ public class Genome{
         }
 
         for(int i=0; i<3; i++){
-            averageNeuronCoordinate[i] = averageNeuronCoordinate[i]/Database.creatureCount; 
+            averageNeuronCoordinate[i] = averageNeuronCoordinate[i]/Database.generationSize; 
             coordinateDistanceMax[i] = ((highestNeuronCoordinate[i]-averageNeuronCoordinate[i])+(averageNeuronCoordinate[i]-lowestNeuronCoordinate[i]))/2; //JACKSON
         }
 
@@ -174,7 +188,7 @@ public class Genome{
             }
             else if(neuronType == 2){
                 // Neuron is a sensor neuron
-                neuron = new Sensor(subject,neuronID);
+                neuron = new Sensor(creature,neuronID);
                 sensors.add(neuron);
                 replaceEmptyNeuron(neuron, emptyNeurons);
                 emptyNeurons.add(createSink(sinkType, sinkID, sinkWeight, neuron));
@@ -368,7 +382,7 @@ public class Genome{
         }
         else{
             // Source is a sensor neuron
-            source = new Sensor(subject,sourceID);
+            source = new Sensor(creature,sourceID);
             // System.out.println("Sensor");
         }
 

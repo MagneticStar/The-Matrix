@@ -8,15 +8,29 @@ public class Database {
      public static  ArrayList<Water> watersList = new ArrayList<Water>();
      public static ArrayList<Creature> creaturesList = new ArrayList<Creature>();
 
-     // Params
-     public final static int creatureCount = 1000;
-     public final static int generationLength = 20;
-     public static int currentGenerationStep = 0;
-     public final static int worldSize = 100;
-     public final static int brainScreenSizeX = 30;
-     public static int brainScreenSizeY = Genome.genomeLength*2; // just a good starting point
-     public final static Color simulationScreenColor = Color.black;
-     public final static Random random = new Random();
-     public final static int hungerCounter = 20;
+     // Parameters
+          // Simulation 
+          public final static int generationSize = 1000; // How many creatures should there be at the start of a new generation
+          public final static int generationLength = 300; // How many ticks each generation is
+          public final static int simulationLength = 10; // How many generations there should be
+          public final static int worldSize = 128; // The size of the square world
+          public final static double mutationChance = 0.001; // The chance of mutation, must be between 0 and 1 (inclusive)
+
+          // Trackers
+          public static int currentGenerationTick; // How many ticks have passed this generation
+          public static int currentGeneration; // How many generations have passed this simulation
+          public static ArrayList<Coor> creatureCoordinates;
+     
+          // Brain Screen
+          public final static int brainScreenSizeX = 30;
+          public final static int brainScreenSizeY = 500;
+
+          // Visuals
+          public final static Color simulationScreenColor = Color.white;
+
+          // Random
+          public final static Random random = new Random();
+          public final static int hungerCounter = 20;
+     
      
 }

@@ -12,7 +12,7 @@ public class Main {
     //     neuronMap.setVisible(true);
     
     public static void main(String[] args) {
-    
+        // Add Food and Water
         Database.foodsList.add(new Food(new Coor(45, 45)));
         Database.foodsList.add(new Food(new Coor(50, 40)));
         Database.foodsList.add(new Food(new Coor(50, 40)));
@@ -23,23 +23,47 @@ public class Main {
         Database.foodsList.add(new Food(new Coor(70, 20)));
         Database.watersList.add(new Water(new Coor(55, 59)));
         Database.watersList.add(new Water(new Coor(50, 50)));
+
         // Create creatureCount creatures
-        for (int i = 0; i < Database.creatureCount; i++) {
+        for (int i = 0; i < Database.generationSize; i++) {
         Database.creaturesList.add(new Creature());
         }
-        Genome.calculateColor();
+    
+        // Technical stuff Joey put here that I don't understand
         Screens.createScreens();
-        // ignore me
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        // how many ticks
-        for (int i = 0; i < Database.generationLength; i++) {
-            Database.currentGenerationStep = i;
-            tick(Screens.simulationPanel, i);
+
+        // Run the simulation
+        for(Database.currentGeneration = 0; Database.currentGeneration < Database.simulationLength; Database.currentGeneration++){
+            // Gives every instantiated creature, food, and water a unique position
+            populateSimulationSpace();
+            // Gives every creature a color based on their composition of neurons
+            Genome.calculateColor();
+
+            // Simulate the Generation
+            for (Database.currentGenerationTick = 0; Database.currentGenerationTick < Database.generationLength; Database.currentGenerationTick++) {
+                tick(Screens.simulationPanel, Database.currentGenerationTick);
+            }
+
+            // Survival Criteria Check (Needs to be changed to hunger or something)
+            ArrayList<Creature> newGeneration = new ArrayList<Creature>();
+            for(Creature creature : Database.creaturesList){
+                // Check whether they get to reproduce or not
+                if(Database.random.nextDouble()>0.5){
+                    newGeneration.add(creature.reproduce());
+                }
+            }
+            // Fill the rest of the new generation with random creatures
+            for(int i = newGeneration.size(); i<Database.generationSize; i++){
+                newGeneration.add(new Creature());
+            }
+            Database.creaturesList = newGeneration;
         }
+        
     }
 
     public static void tick(SimulationPanel panel, int i) {
@@ -108,6 +132,26 @@ public class Main {
 
             // Debug
             // System.out.println(sink.toString()+" "+sink.getValues().size()+"/"+sink.getSources().size());
+        }
+    }
+
+    private static void populateSimulationSpace(){
+        // Generate all the possible starting positions
+        ArrayList<Coor> startingPositions = new ArrayList<Coor>();
+        for(int i = 0; i<Database.worldSize; i++){
+            for(int j = 0; j<Database.worldSize; j++){
+                startingPositions.add(new Coor(i, j));
+            }
+        }
+
+        for(Creature creature : Database.creaturesList){
+            creature.setPos(startingPositions.remove(Database.random.nextInt(0,startingPositions.size())));
+        }
+        for(Food food : Database.foodsList){
+            food.setPos(startingPositions.remove(Database.random.nextInt(0,startingPositions.size())));
+        }
+        for(Water water : Database.watersList){
+            water.setPos(startingPositions.remove(Database.random.nextInt(0,startingPositions.size())));
         }
     }
 }
