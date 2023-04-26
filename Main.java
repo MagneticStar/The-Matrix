@@ -37,7 +37,7 @@ public class Main {
             e.printStackTrace();
         }
         // how many ticks
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < 300; i++) {
             tick(Screens.simulationPanel, i);
         }
     }
@@ -50,7 +50,7 @@ public class Main {
 
         // Make tick wait
         try {
-            Thread.sleep(100);
+            Thread.sleep(20);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -72,9 +72,13 @@ public class Main {
             }
         }
         // System.out.println(highestValueMotor.getMaxValue());
-        //loop throughneurons and clear values list
-        for (Motor motor : motors) {
-            motor.clearValues();
+        
+        // Try changing getMotors to getNeurons. Your behavior looks nicer but we should clear all neurons after each step, otherwise previous sensor input will interfere. 
+        // The reason it appears that previous sensor input does in fact not interefere is because you are adding more and more to it which makes it more likely to activate it's sinks.
+        // For example, if a sensor detecting food is close, it's continually building up over time but will get overtaken by a sensor detecting water if the creature gets close to that
+        // water source because that build up is now higher. Like a competing armsrace, the numbers are continuing to stack up and up which makes it appear as if it's working
+        for (Neuron neuron : creature.getGenome().getMotors()) {
+            neuron.clearValues();
         }
         return highestValueMotor;
     }
@@ -85,7 +89,7 @@ public class Main {
             for(double value : neuron.getValues()){
                 sum+= value;
             }
-
+            
             sink.addValue(sum);
 
             if(sink instanceof Internal && sink.getSources().size() == sink.getValues().size()){
