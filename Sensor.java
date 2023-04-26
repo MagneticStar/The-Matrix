@@ -37,8 +37,8 @@ public class Sensor extends Neuron{
                     if (f.getPos().equals(coor)) {
                         double d = distance(f, creature);
                         if (d != -1.0) {
-                            // System.out.println(d);
-                            return d/Database.worldSize;
+                            // System.out.println("Distance: "+d+" Adjusted: "+(1-(d/Database.worldSize)));
+                            return 1-(d/Database.worldSize);
                         }
                     }
                 }
@@ -54,8 +54,8 @@ public class Sensor extends Neuron{
                     if (w.getPos().equals(coor)) {
                         double d = distance(w, creature);
                         if (d != -1.0) {
-                            // System.out.println(d);
-                            return d/Database.worldSize;
+                            // System.out.println("Distance: "+d+" Adjusted: "+(1-(d/Database.worldSize)));
+                            return 1-(d/Database.worldSize);
                         }
                     }
                 }
