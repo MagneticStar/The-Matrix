@@ -43,8 +43,16 @@ public class Main {
     }
 
     public static void tick(SimulationPanel panel, int i) {
+        // movement loop
         for(Creature creature : Database.creaturesList){
             determineNeuronActivation(creature).motorMethod.invoke(creature);
+        }
+        for (int j = 0; j < Database.creaturesList.size(); j++) {
+            Database.creaturesList.get(j).decrementHunger();
+            if (Database.creaturesList.get(j).getHunger() < 0) {
+                Database.creaturesList.remove(j);
+                j--;
+            }
         }
         panel.repaint();
 
