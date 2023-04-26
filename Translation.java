@@ -42,5 +42,4 @@ public class Translation {
         }
         return (int)cell;
     }
-
 }

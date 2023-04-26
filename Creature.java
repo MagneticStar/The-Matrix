@@ -2,20 +2,20 @@ import java.awt.*;
 
 public class Creature extends ScreenObject{
     private Genome genome;
-    
+    public double backAndForth = 1;
+
+    // constructors
     public Creature() {
         super();
         this.genome = new Genome(this);
     }
-    
-    public Creature(Color color,Coor position){
-        super(color, position);
-        this.genome = new Genome(this);
-    }
-
     public Creature(Genome genome){
         super();
         this.genome = genome;
+    }
+    public Creature(Color color,Coor position){
+        super(color, position);
+        this.genome = new Genome(this);
     }
 
     // setters

@@ -1,14 +1,14 @@
 import java.awt.FlowLayout;
 public class Screens {
+
     public static BrainFrame brainFrame = new BrainFrame();
     public static BrainPanel brainPanel = new BrainPanel();
     public static Translation brainWorldToScreen = new Translation(Database.brainScreenSizeX, Database.brainScreenSizeY);
     public static SimulationFrame simulationFrame = new SimulationFrame();
     public static SimulationPanel simulationPanel = new SimulationPanel();
     public static Translation SimulationWorldToScreen = new Translation(Database.worldSize, Database.worldSize);
-    
-    
     public static String[] subNames = new String[Database.creaturesList.size()];
+    
     public static void createScreens() {
         
         brainFrame.add(brainPanel);
@@ -16,8 +16,6 @@ public class Screens {
         
         simulationFrame.add(simulationPanel);         
         simulationFrame.setVisible(true);
-
-        
         
         FlowLayout flowLayout = new FlowLayout(FlowLayout.LEADING);
         brainPanel.setLayout(flowLayout);
@@ -25,10 +23,5 @@ public class Screens {
             subNames[i] = String.format("Creature %04d",i);
         }
         brainPanel.selectionBox();
-        
-        
-        
-
-        
     }
 }

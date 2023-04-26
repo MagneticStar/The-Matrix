@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 
 public class Genome{
-    private static final int genomeLength = 256;
+    private static final int genomeLength = 8;
     private static final int geneLength = 32;
     private static final Random rand = new Random();
     private String DNA;
@@ -17,8 +17,6 @@ public class Genome{
     private ArrayList<Motor> motors = new ArrayList<Motor>();
     private ArrayList<Internal> internals = new ArrayList<Internal>();
     // Debug Vars
-    // public ArrayList<Integer> neuronChainLengths = new ArrayList<Integer>();
-    
 
     public Genome(Creature subject){
         this.subject = subject;
@@ -60,9 +58,7 @@ public class Genome{
     public static void calculateColor(){
         int[][] neuronCoordinates = new int[Database.creatureCount][3];
         int[] averageNeuronCoordinate = {0,0,0};
-        int[] coordinateDistanceMax = new int[3]; //JACKSON
-        // int[] coordinateDistanceRange = new int[3]; //JOEY
-        // int highestNeuronCoordinateEVER = 0; //JOEY
+        int[] coordinateDistanceMax = new int[3]; 
         int[] lowestNeuronCoordinate = {genomeLength,genomeLength,genomeLength};
         int[] highestNeuronCoordinate = {genomeLength,genomeLength,genomeLength};
         
@@ -78,15 +74,11 @@ public class Genome{
                 else if(neuronCoordinates[i][j] < lowestNeuronCoordinate[j]){
                     lowestNeuronCoordinate[j] = neuronCoordinates[i][j];
                 }
-                // if (neuronCoordinates[i][j] > highestNeuronCoordinateEVER) { //JOEY
-                //     highestNeuronCoordinateEVER = neuronCoordinates[i][j];
-                // }
             }
         }
 
         for(int i=0; i<3; i++){
             averageNeuronCoordinate[i] = averageNeuronCoordinate[i]/Database.creatureCount; 
-            // coordinateDistanceRange[i] = highestNeuronCoordinate[i]-lowestNeuronCoordinate[i]; //JOEY
             coordinateDistanceMax[i] = ((highestNeuronCoordinate[i]-averageNeuronCoordinate[i])+(averageNeuronCoordinate[i]-lowestNeuronCoordinate[i]))/2; //JACKSON
         }
 
@@ -97,10 +89,8 @@ public class Genome{
         for(int i=0; i<Database.creaturesList.size(); i++){
             int[] rgb = new int[3];
             for(int j =0; j<3; j++){
-                double distance = (Math.abs(averageNeuronCoordinate[j]-neuronCoordinates[i][j])/(double)coordinateDistanceMax[j]); //JACKSON
-                // double multiplier = 256.0 / (Math.abs(averageNeuronCoordinate[j]-highestNeuronCoordinateEVER)/(double)coordinateDistanceRange[j]); //JOEY
+                double distance = (Math.abs(averageNeuronCoordinate[j]-neuronCoordinates[i][j])/(double)coordinateDistanceMax[j]);
                 // double multiplier = 255 / (Math.abs(averageNeuronCoordinate[j]-neuronCoordinates[i][j])/(double)coordinateDistanceMax[j]); //JACKSON
-                // rgb[j] = (int) (((800*Math.abs(averageNeuronCoordinate[j]-neuronCoordinates[i][j])/(double)coordinateDistanceRange[j]))); //JOEY
                 rgb[j] = (int) (255*(distance*3)); //JACKSON
                 
                 // Debug
@@ -131,7 +121,6 @@ public class Genome{
                 DNA+=rand.nextInt(0,2);
             }
         }
-        
     }
 
     private void interpretDNA(){

@@ -1,11 +1,13 @@
 import java.awt.Color;
+
+import javax.xml.crypto.Data;
 class ScreenObject {
     private Coor position;
     private Color color;
 
     public ScreenObject() {
         color = Color.WHITE;
-        position = new Coor(50, 50);
+        position = new Coor(Database.worldSize/2, Database.worldSize/2);
     }
 
     public ScreenObject(Color color, Coor position) {

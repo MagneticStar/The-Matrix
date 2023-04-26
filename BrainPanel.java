@@ -14,17 +14,15 @@ public class BrainPanel extends JPanel {
         searchDropDown.setSelectedIndex(0); 
         searchDropDown.addActionListener(new ActionListener() {
             @Override
-    public void actionPerformed(ActionEvent e) {
-        // Sets the neuron map panel to the neuron map of the selected subject. The string manipulation is to avoid searching for the index of the subject
-        currentlySelectedSubjectIndex = Integer.parseInt(searchDropDown.getSelectedItem().toString().substring(searchDropDown.getSelectedItem().toString().indexOf(" ")+1));
-        repaint();
-    }
+            public void actionPerformed(ActionEvent e) {
+            // Sets the neuron map panel to the neuron map of the selected subject. The string manipulation is to avoid searching for the index of the subject
+            currentlySelectedSubjectIndex = Integer.parseInt(searchDropDown.getSelectedItem().toString().substring(searchDropDown.getSelectedItem().toString().indexOf(" ")+1));
+            repaint();
+            }
         });
         Screens.brainPanel.add(searchDropDown);
         Screens.brainPanel.revalidate();
     }
-
-    
 
     public BrainPanel() {
         setBackground(Color.BLACK);
@@ -90,7 +88,6 @@ public class BrainPanel extends JPanel {
                 g.drawLine(n.getPrintPos().x() + 10, n.getPrintPos().y() + 10, s.getPrintPos().x() + 10, s.getPrintPos().y() + 10);
             }
         }
-        
     }
 
     public void internalNeuron(Graphics g, int i, int nc, Neuron n) {
@@ -112,4 +109,3 @@ public class BrainPanel extends JPanel {
         g.drawOval(n.getPrintPos().x(), n.getPrintPos().y(), 20, 20);
     }
 }
-

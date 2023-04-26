@@ -8,12 +8,11 @@ public class Database {
      public static ArrayList<Creature> creaturesList = new ArrayList<Creature>();
 
      // Params
-     public final static int creatureCount = 100;
-     public final static int generationLength = 30;
+     public final static int creatureCount = 1000;
+     public final static int generationLength = 80;
      public final static int worldSize = 100;
      public final static int brainScreenSizeX = 30;
      public final static int brainScreenSizeY = 500;
-     public final static Color simulationScreenColor = Color.white;
+     public final static Color simulationScreenColor = Color.black;
      
-
 }

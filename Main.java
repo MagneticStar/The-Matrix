@@ -14,7 +14,7 @@ public class Main {
     public static void main(String[] args) {
     
         Database.foodsList.add(new Food(new Coor(45, 45)));
-        Database.foodsList.add(new Food(new Coor(52, 48)));
+        Database.foodsList.add(new Food(new Coor(50, 40)));
         Database.foodsList.add(new Food(new Coor(50, 40)));
         Database.foodsList.add(new Food(new Coor(70, 70)));
         Database.foodsList.add(new Food(new Coor(20, 70)));
@@ -31,7 +31,7 @@ public class Main {
         Screens.createScreens();
         // ignore me
         try {
-            Thread.sleep(3000);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -54,6 +54,9 @@ public class Main {
             e.printStackTrace();
         }
     }
+
+
+    // extra funcs
 
     private static Motor determineNeuronActivation(Creature creature){
         for(Sensor sensor : creature.getGenome().getSensors()){
@@ -97,5 +100,4 @@ public class Main {
             // System.out.println(sink.toString()+" "+sink.getValues().size()+"/"+sink.getSources().size());
         }
     }
-    
 }
