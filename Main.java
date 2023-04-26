@@ -29,7 +29,7 @@ public class Main {
         }
         Genome.calculateColor();
         Screens.createScreens();
-
+        // ignore me
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
@@ -49,7 +49,7 @@ public class Main {
 
         // Make tick wait
         try {
-            Thread.sleep(100);
+            Thread.sleep(20);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -69,8 +69,12 @@ public class Main {
             }
         }
         // System.out.println(highestValueMotor.getMaxValue());
-        // Clears the information from this step from the neuron's memory
-        for (Neuron neuron : creature.getGenome().getSensors()) {
+        
+        // Try changing getMotors to getNeurons. Your behavior looks nicer but we should clear all neurons after each step, otherwise previous sensor input will interfere. 
+        // The reason it appears that previous sensor input does in fact not interefere is because you are adding more and more to it which makes it more likely to activate it's sinks.
+        // For example, if a sensor detecting food is close, it's continually building up over time but will get overtaken by a sensor detecting water if the creature gets close to that
+        // water source because that build up is now higher. Like a competing armsrace, the numbers are continuing to stack up and up which makes it appear as if it's working
+        for (Neuron neuron : creature.getGenome().getNeurons()) {
             neuron.clearValues();
         }
         return highestValueMotor;
@@ -82,7 +86,7 @@ public class Main {
             for(double value : neuron.getValues()){
                 sum+= value;
             }
-
+            
             sink.addValue(sum);
 
             if(sink instanceof Internal && sink.getSources().size() == sink.getValues().size()){
