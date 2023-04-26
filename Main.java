@@ -30,7 +30,7 @@ public class Main {
         }
         Genome.calculateColor();
         Screens.createScreens();
-
+        // ignore me
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
