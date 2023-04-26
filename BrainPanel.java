@@ -14,17 +14,16 @@ public class BrainPanel extends JPanel {
         searchDropDown.setSelectedIndex(0); 
         searchDropDown.addActionListener(new ActionListener() {
             @Override
-    public void actionPerformed(ActionEvent e) {
-        // Sets the neuron map panel to the neuron map of the selected subject. The string manipulation is to avoid searching for the index of the subject
-        currentlySelectedSubjectIndex = Integer.parseInt(searchDropDown.getSelectedItem().toString().substring(searchDropDown.getSelectedItem().toString().indexOf(" ")+1));
-        repaint();
-    }
+            public void actionPerformed(ActionEvent e) {
+            // Sets the neuron map panel to the neuron map of the selected subject. The string manipulation is to avoid searching for the index of the subject
+            currentlySelectedSubjectIndex = Integer.parseInt(searchDropDown.getSelectedItem().toString().substring(searchDropDown.getSelectedItem().toString().indexOf(" ")+1));
+            Database.brainScreenSizeY = Database.creaturesList.get(currentlySelectedSubjectIndex).getGenome().getNeurons().length;
+            repaint();
+            }
         });
         Screens.brainPanel.add(searchDropDown);
         Screens.brainPanel.revalidate();
     }
-
-    
 
     public BrainPanel() {
         setBackground(Color.BLACK);
@@ -90,26 +89,24 @@ public class BrainPanel extends JPanel {
                 g.drawLine(n.getPrintPos().x() + 10, n.getPrintPos().y() + 10, s.getPrintPos().x() + 10, s.getPrintPos().y() + 10);
             }
         }
-        
     }
 
     public void internalNeuron(Graphics g, int i, int nc, Neuron n) {
         g.setColor(Color.green);
         n.setPosX(15+((nc+i)%4)*(int)Math.pow(-1,(nc+i)%3));
-        n.setPosY(i+35);
+        n.setPosY(i);
         g.drawOval(n.getPrintPos().x(), n.getPrintPos().y(), 20, 20);
     }
     public void sensorNeuron(Graphics g, int i, int nc, Neuron n) {
         g.setColor(Color.red);
         n.setPosX(8+((nc+i)%3)*(int)Math.pow(-1,(nc+i)%3));
-        n.setPosY(i+35);
+        n.setPosY(i);
         g.drawOval(n.getPrintPos().x(), n.getPrintPos().y(), 20, 20);
     }
     public void motorNeuron(Graphics g, int i, int nc, Neuron n) {
         g.setColor(Color.blue);
         n.setPosX(22+((nc+i)%3)*(int)Math.pow(-1,(nc+i)%3));
-        n.setPosY(i+35);
+        n.setPosY(i);
         g.drawOval(n.getPrintPos().x(), n.getPrintPos().y(), 20, 20);
     }
 }
-

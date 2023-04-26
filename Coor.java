@@ -1,6 +1,7 @@
 public class Coor {
     private int[] coor = new int[2];
 
+    // constructors
     public Coor() {
         
     }
@@ -35,4 +36,3 @@ public class Coor {
         return coor[0] + ", " + coor[1];
     }
 }
-

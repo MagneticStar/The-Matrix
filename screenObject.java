@@ -1,11 +1,17 @@
 import java.awt.Color;
+
 class ScreenObject {
     private Coor position;
     private Color color;
 
     public ScreenObject() {
         color = Color.WHITE;
-        position = new Coor(50, 50);
+        position = new Coor(Database.worldSize/2, Database.worldSize/2);
+    }
+
+    public ScreenObject(Coor position){
+        color = Color.WHITE;
+        this.position = position;
     }
 
     public ScreenObject(Color color, Coor position) {
@@ -17,9 +23,11 @@ class ScreenObject {
     public void setPosX(int x) {
         position.setX(x);
     }
-
     public void setPosY(int y) {
         position.setY(y);
+    }
+    public void setPos(Coor coor){
+        this.position = coor; 
     }
 
     public void setColor(Color color) {

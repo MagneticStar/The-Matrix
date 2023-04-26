@@ -1,14 +1,13 @@
 import java.util.ArrayList;
 
+// search is very slow.
 
 public class Sensor extends Neuron{
 
     public SensorMethod sensorMethod; 
-    private static int numberOfSensorMethods = 6; // Update this when creating new Sensor methods
-    private static int searchDepth = 25;
-    
-    
-    
+    private static int numberOfSensorMethods = 9; // Update this when creating new Sensor methods
+    private static int searchDepth = 10;
+
     public Sensor(Creature s, int methodID) {
         super("Sensor");
         switch(methodID%(numberOfSensorMethods)){
@@ -18,6 +17,9 @@ public class Sensor extends Neuron{
             case 3: this.sensorMethod = Sensor::detectWaterXDirection; break;
             case 4: this.sensorMethod = Sensor::detectFoodYDirection; break;
             case 5: this.sensorMethod = Sensor::detectWaterYDirection; break;
+            case 6: this.sensorMethod = Sensor::Oscillator; break;
+            case 7: this.sensorMethod = Sensor::nearestCreatureDistance; break;
+            case 8: this.sensorMethod = Sensor::random; break;
         }
     }
     
@@ -32,33 +34,32 @@ public class Sensor extends Neuron{
     ////////////////////////////////////////////////////////
 
     public static double nearestFoodDistance(Creature creature) {
-        for (int i=0; i<searchDepth; i++) {
-            for (Coor coor : search(i, creature.getPos())) {
-                    for (Food f: Database.foodsList) {
-                        if (f.getPos().equals(coor)) {
-                            double d = distance(f, creature);
-                            if (d != -1.0) {
-                                // System.out.println("Distance: "+d+" Adjusted: "+(1-(d/Database.worldSize)));
-                                return 1-(d/Database.worldSize);
-                            }
+        for (int i = 0; i < searchDepth; i++) {
+            for (Coor coor : search(i,creature.getPos())) {
+                for (Food f: Database.foodsList) {
+                    if (f.getPos().equals(coor)) {
+                        double d = distance(f, creature);
+                        if (d != -1.0) {
+                            // System.out.println("Distance: "+d+" Adjusted: "+(1-(d/Database.worldSize)));
+                            return 1-(d/Database.worldSize);
+                        }
                     }
                 }
             }
         }
-        // -1.0 means no food nearby
         return -1.0;
     }
 
     private static double nearestWaterDistance(Creature creature){
-        for (int i=0; i<searchDepth; i++) {
-            for (Coor coor : search(i, creature.getPos())) {
-                    for (Water w: Database.watersList) {
-                        if (w.getPos().equals(coor)) {
-                            double d = distance(w, creature);
-                            if (d != -1.0) {
-                                // System.out.println("Distance: "+d+" Adjusted: "+(1-(d/Database.worldSize)));
-                                return 1-(d/Database.worldSize);
-                            }
+        for (int i = 0; i < searchDepth; i++) {
+            for (Coor coor : search(i,creature.getPos())) {
+                for (Water w: Database.watersList) {
+                    if (w.getPos().equals(coor)) {
+                        double d = distance(w, creature);
+                        if (d != -1.0) {
+                            // System.out.println("Distance: "+d+" Adjusted: "+(1-(d/Database.worldSize)));
+                            return 1-(d/Database.worldSize);
+                        }
                     }
                 }
             }
@@ -68,8 +69,8 @@ public class Sensor extends Neuron{
     }
 
     private static double detectFoodXDirection (Creature creature) {
-        for (int i=0; i<searchDepth; i++) {
-            for (Coor coor : search(i, creature.getPos())) {
+        for (int i = 0; i < searchDepth; i++) {
+            for (Coor coor : search(i,creature.getPos())) {
                 for (Food f: Database.foodsList) {
                     if (f.getPos().equals(coor)) {
                         return directionX(f, creature);
@@ -77,13 +78,12 @@ public class Sensor extends Neuron{
                 }
             }
         }
-        // if no food exist
         return 0.0;
     }
 
     private static double detectFoodYDirection (Creature creature) {
-        for (int i=0; i<searchDepth; i++) {
-            for (Coor coor : search(i, creature.getPos())) {
+        for (int i = 0; i < searchDepth; i++) {
+            for (Coor coor : search(i,creature.getPos())) {
                 for (Food f: Database.foodsList) {
                     if (f.getPos().equals(coor)) {
                         return directionY(f, creature);
@@ -91,12 +91,11 @@ public class Sensor extends Neuron{
                 }
             }
         }
-        // if no food exist
         return 0.0;
     }
     private static double detectWaterXDirection (Creature creature) {
-        for (int i=0; i<searchDepth; i++) {
-            for (Coor coor : search(i, creature.getPos())) {
+        for(int i=0; i<searchDepth; i++){
+            for (Coor coor: search(i,creature.getPos())) {
                 for (Water w: Database.watersList) {
                     if (w.getPos().equals(coor)) {
                         return directionX(w, creature);
@@ -104,7 +103,6 @@ public class Sensor extends Neuron{
                 }
             }
         }
-        // if no water exist
         return 0.0;
     }
     
@@ -118,9 +116,39 @@ public class Sensor extends Neuron{
                 }
             }
         }
-        // if no water exist
         return 0.0;
     }
+
+    private static double Oscillator(Creature creature) {
+        if(Database.currentGenerationTick%creature.getGenome().getOscillatorPeriod()==0){
+            return 1;
+        }
+        else{
+            return -1;
+        }
+    }
+
+    private static double random(Creature creature){
+        return Database.random.nextDouble(-1,1);
+    }
+    
+    private static double nearestCreatureDistance(Creature creature) {
+        for (int i = 0; i < searchDepth; i++) {
+            for (Coor coor : search(i,creature.getPos())) {
+                for (Creature otherCreature: Database.creaturesList) {
+                    if (otherCreature.getPos().equals(coor)) {
+                        double d = distance(otherCreature, creature);
+                        if (d != -1.0) {
+                            // System.out.println(d);
+                            return d/Database.worldSize;
+                        }
+                    }
+                }
+            }
+        }
+        return -1.0;
+    }
+
     ////////////////////////////////////////////////////////
     // SENSOR METHOD ASSISTORS // SENSOR METHOD ASSISTORS // 
     ////////////////////////////////////////////////////////

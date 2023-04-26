@@ -1,8 +1,7 @@
 public class Motor extends Neuron{
 
     public MotorMethod motorMethod;
-    private static int numberOfMotorMethods = 4; // Update this when creating new Motor methods
-
+    private static int numberOfMotorMethods = 5; // Update this when creating new Motor methods
     public Motor(int methodID){
         super("Motor");
         switch(methodID%(numberOfMotorMethods)){
@@ -10,10 +9,11 @@ public class Motor extends Neuron{
             case 1: this.motorMethod = Motor::MoveDown; break;
             case 2: this.motorMethod = Motor::MoveRight; break;
             case 3: this.motorMethod = Motor::MoveLeft; break;
-            
+            case 4: this.motorMethod = Motor::Eat; break;
+            case 5: this.motorMethod = Motor::Drink; break;
         }
     }
-    
+
     public Motor(){
         super("Motor");
         this.motorMethod = Motor::DoNothing;
@@ -49,8 +49,26 @@ public class Motor extends Neuron{
     private static void MoveRight(Creature creature){
         creature.setPosX(creature.getPosX() + 1);
     }
-    private static void DoNothing(Creature creature){
-        // Default Motor Method for those who have no motors
-        // NOT INCLUDED IN MOTOR METHOD NEURON COUNT
+    private static void DoNothing(Creature creature) {
+        // Only meant as a default method as it serves no value
+    }
+    private static void Eat(Creature creature) {
+        for (Food food : Database.foodsList) {
+            if (creature.getPos().equals(food.getPos())) {
+                creature.incrementHunger();
+                Database.foodsList.remove(food);
+                break;
+            }
+        }
+    }
+    private static void Drink(Creature creature){
+        for (Water water : Database.watersList) {
+            if (creature.getPos().equals(water.getPos())) {
+                // place thirst stuff here
+
+                Database.watersList.remove(water);
+                break;
+            }
+        }
     }
 }
