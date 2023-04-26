@@ -2,6 +2,7 @@ public class Motor extends Neuron{
 
     public MotorMethod motorMethod;
     private static int numberOfMotorMethods = 4; // Update this when creating new Motor methods
+
     public Motor(int methodID){
         super("Motor");
         switch(methodID%(numberOfMotorMethods)){
@@ -9,7 +10,13 @@ public class Motor extends Neuron{
             case 1: this.motorMethod = Motor::MoveDown; break;
             case 2: this.motorMethod = Motor::MoveRight; break;
             case 3: this.motorMethod = Motor::MoveLeft; break;
+            
         }
+    }
+    
+    public Motor(){
+        super("Motor");
+        this.motorMethod = Motor::DoNothing;
     }
 
     public double getMaxValue(){
@@ -41,5 +48,9 @@ public class Motor extends Neuron{
     }
     private static void MoveRight(Creature creature){
         creature.setPosX(creature.getPosX() + 1);
+    }
+    private static void DoNothing(Creature creature){
+        // Default Motor Method for those who have no motors
+        // NOT INCLUDED IN MOTOR METHOD NEURON COUNT
     }
 }

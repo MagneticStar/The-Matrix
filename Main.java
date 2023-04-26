@@ -52,7 +52,7 @@ public class Main {
             iterateThroughNeuronChain(sensor);
         }
         
-        Motor highestValueMotor = new Motor(0);
+        Motor highestValueMotor = new Motor();
         
         for(Motor motor : creature.getGenome().getMotors()){
             if(highestValueMotor.getMaxValue() < motor.getMaxValue()){
