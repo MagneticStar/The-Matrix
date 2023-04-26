@@ -3,18 +3,6 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
-        // Add Food and Water
-        Database.foodsList.add(new Food(new Coor(45, 45)));
-        Database.foodsList.add(new Food(new Coor(50, 40)));
-        Database.foodsList.add(new Food(new Coor(50, 40)));
-        Database.foodsList.add(new Food(new Coor(70, 70)));
-        Database.foodsList.add(new Food(new Coor(20, 70)));
-        Database.foodsList.add(new Food(new Coor(90, 55)));
-        Database.watersList.add(new Water(new Coor(90, 45)));
-        Database.foodsList.add(new Food(new Coor(70, 20)));
-        Database.watersList.add(new Water(new Coor(55, 59)));
-        Database.watersList.add(new Water(new Coor(50, 50)));
-
         // Create creatureCount creatures
         for (int i = 0; i < Database.generationSize; i++) {
         Database.creaturesList.add(new Creature());
@@ -30,6 +18,14 @@ public class Main {
 
         // Run the simulation
         for(Database.currentGeneration = 0; Database.currentGeneration < Database.simulationLength; Database.currentGeneration++){
+            // Repopulate with food and water
+            for(int i=0; i<Database.startingFoodCount; i++){
+                Database.foodsList.add(new Food());
+            }
+            for(int i=0; i<Database.startingWaterCount; i++){
+                Database.watersList.add(new Water());
+            }
+
             // Gives every instantiated creature, food, and water a unique position
             populateSimulationSpace();
             // Gives every creature a color based on their composition of neurons
@@ -40,11 +36,11 @@ public class Main {
                 tick(Screens.simulationPanel, Database.currentGenerationTick);
             }
 
-            // Survival Criteria Check (Needs to be changed to hunger or something)
+            // Survival Criteria Check
             ArrayList<Creature> newGeneration = new ArrayList<Creature>();
             for(Creature creature : Database.creaturesList){
                 // Check whether they get to reproduce or not
-                if(Database.random.nextDouble()>0.5){
+                if(creature.getFoodCount()>=Database.minimumFoodEaten){
                     newGeneration.add(creature.reproduce());
                 }
             }
@@ -62,22 +58,14 @@ public class Main {
         for(Creature creature : Database.creaturesList){
             determineNeuronActivation(creature).motorMethod.invoke(creature);
         }
-        // temporary killing mechanism for hunger
-        for (int j = 0; j < Database.creaturesList.size(); j++) {
-            Database.creaturesList.get(j).decrementHunger();
-            if (Database.creaturesList.get(j).getHunger() < 0) {
-                Database.creaturesList.remove(j);
-                j--;
-            }
-        }
         panel.repaint();
 
         // Time between ticks
-        try {
-            Thread.sleep(20);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        // try {
+        //     Thread.sleep(20);
+        // } catch (InterruptedException e) {
+        //     e.printStackTrace();
+        // }
     }
 
 
@@ -139,14 +127,24 @@ public class Main {
             }
         }
 
+        Database.creatureCoordinates = new ArrayList<Coor>();
+        Database.waterCoordinates = new ArrayList<Coor>();
+        Database.foodCoordinates = new ArrayList<Coor>();
+        
         for(Creature creature : Database.creaturesList){
-            creature.setPos(startingPositions.remove(Database.random.nextInt(0,startingPositions.size())));
+            Coor coor = startingPositions.remove(Database.random.nextInt(0,startingPositions.size()));
+            creature.setPos(coor);
+            Database.creatureCoordinates.add(coor);
         }
         for(Food food : Database.foodsList){
-            food.setPos(startingPositions.remove(Database.random.nextInt(0,startingPositions.size())));
+            Coor coor = startingPositions.remove(Database.random.nextInt(0,startingPositions.size()));
+            food.setPos(coor);
+            Database.foodCoordinates.add(coor);
         }
         for(Water water : Database.watersList){
-            water.setPos(startingPositions.remove(Database.random.nextInt(0,startingPositions.size())));
+            Coor coor = startingPositions.remove(Database.random.nextInt(0,startingPositions.size()));
+            water.setPos(coor);
+            Database.waterCoordinates.add(coor);
         }
     }
 }
