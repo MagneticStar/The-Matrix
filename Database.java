@@ -10,11 +10,11 @@ public class Database {
 
      // Params
      public final static int creatureCount = 1000;
-     public final static int generationLength = 21;
+     public final static int generationLength = 20;
      public static int currentGenerationStep = 0;
      public final static int worldSize = 100;
      public final static int brainScreenSizeX = 30;
-     public final static int brainScreenSizeY = 500;
+     public static int brainScreenSizeY = Genome.genomeLength*2; // just a good starting point
      public final static Color simulationScreenColor = Color.black;
      public final static Random random = new Random();
      public final static int hungerCounter = 20;

@@ -1,12 +1,11 @@
 import java.awt.Color;
-import java.util.Random;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map;
 
 public class Genome{
-    private static final int genomeLength = 8;
+    public static final int genomeLength = 128;
     private static final int geneLength = 32;
     private final int oscillatorPeriod = Database.random.nextInt(1,Database.generationLength+1);
     private String DNA;

@@ -47,6 +47,7 @@ public class Main {
         for(Creature creature : Database.creaturesList){
             determineNeuronActivation(creature).motorMethod.invoke(creature);
         }
+        // temporary killing mechanism for hunger
         for (int j = 0; j < Database.creaturesList.size(); j++) {
             Database.creaturesList.get(j).decrementHunger();
             if (Database.creaturesList.get(j).getHunger() < 0) {
