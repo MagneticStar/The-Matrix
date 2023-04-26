@@ -1,6 +1,5 @@
 import java.awt.Color;
 
-import javax.xml.crypto.Data;
 class ScreenObject {
     private Coor position;
     private Color color;
