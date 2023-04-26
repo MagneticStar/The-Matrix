@@ -37,6 +37,7 @@ public class Main {
         }
         // how many ticks
         for (int i = 0; i < Database.generationLength; i++) {
+            Database.currentGenerationStep = i;
             tick(Screens.simulationPanel, i);
         }
     }
@@ -64,7 +65,7 @@ public class Main {
             iterateThroughNeuronChain(sensor);
         }
 
-        Motor highestValueMotor = new Motor(0);
+        Motor highestValueMotor = new Motor();
         
         for(Motor motor : creature.getGenome().getMotors()){
             if(highestValueMotor.getMaxValue() < motor.getMaxValue()){

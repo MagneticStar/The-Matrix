@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Sensor extends Neuron{
 
     public SensorMethod sensorMethod; 
-    private static int numberOfSensorMethods = 8; // Update this when creating new Sensor methods
+    private static int numberOfSensorMethods = 9; // Update this when creating new Sensor methods
     private static int searchDepth = 10;
 
     public Sensor(Creature s, int methodID) {
@@ -17,8 +17,9 @@ public class Sensor extends Neuron{
             case 3: this.sensorMethod = Sensor::detectWaterXDirection; break;
             case 4: this.sensorMethod = Sensor::detectFoodYDirection; break;
             case 5: this.sensorMethod = Sensor::detectWaterYDirection; break;
-            case 6: this.sensorMethod = Sensor::Oscilator; break;
+            case 6: this.sensorMethod = Sensor::Oscillator; break;
             case 7: this.sensorMethod = Sensor::nearestCreatureDistance; break;
+            case 8: this.sensorMethod = Sensor::random; break;
         }
     }
     
@@ -115,15 +116,17 @@ public class Sensor extends Neuron{
         return 0.0;
     }
 
-    private static double Oscilator(Creature creature) {
-        if (creature.backAndForth == 1) {
-            creature.backAndForth = 0;
-            return 1.0;
+    private static double Oscillator(Creature creature) {
+        if(Database.currentGenerationStep%creature.getGenome().getOscillatorPeriod()==0){
+            return 1;
         }
         else{
-            creature.backAndForth = 1;
-            return -1.0;
+            return 0;
         }
+    }
+
+    private static double random(Creature creature){
+        return Database.random.nextDouble(-1,1);
     }
     
     private static double nearestCreatureDistance(Creature creature) {

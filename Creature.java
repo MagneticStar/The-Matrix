@@ -2,7 +2,6 @@ import java.awt.*;
 
 public class Creature extends ScreenObject{
     private Genome genome;
-    public double backAndForth = 1;
 
     // constructors
     public Creature() {

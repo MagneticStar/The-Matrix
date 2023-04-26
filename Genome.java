@@ -8,7 +8,7 @@ import java.util.Map;
 public class Genome{
     private static final int genomeLength = 8;
     private static final int geneLength = 32;
-    private static final Random rand = new Random();
+    private final int oscillatorPeriod = Database.random.nextInt(1,Database.generationLength+1);
     private String DNA;
     public Creature subject;
     private Color color;
@@ -53,6 +53,9 @@ public class Genome{
     }
     public ArrayList<Internal> getInternals(){
         return this.internals;
+    }
+    public int getOscillatorPeriod(){
+        return this.oscillatorPeriod;
     }
 
     public static void calculateColor(){
@@ -118,7 +121,7 @@ public class Genome{
 
         for (int i = 0; i < genomeLength; i++) {
             for(int j=0; j<geneLength; j++){
-                DNA+=rand.nextInt(0,2);
+                DNA+=Database.random.nextInt(0,2);
             }
         }
     }
@@ -214,22 +217,22 @@ public class Genome{
 
                 if(emptyNeuron.getSources().size() == 0){
                     // Get a random neuron that isnt a motor
-                    Neuron randomNeuron = neurons.get(rand.nextInt(neurons.size()));
+                    Neuron randomNeuron = neurons.get(Database.random.nextInt(neurons.size()));
                     while(randomNeuron instanceof Motor){
-                        randomNeuron = neurons.get(rand.nextInt(neurons.size()));
+                        randomNeuron = neurons.get(Database.random.nextInt(neurons.size()));
                     }
                     // Complete the incomplete internal neuron by giving it a valid source
                     emptyNeuron.addSource(randomNeuron);
-                    randomNeuron.addSink(emptyNeuron, rand.nextInt(0,(int)Math.pow(2, 16)));
+                    randomNeuron.addSink(emptyNeuron, Database.random.nextInt(0,(int)Math.pow(2, 16)));
                 }
                 else{
                     // Get a random neuron that isnt a sensor
-                    Neuron randomNeuron = neurons.get(rand.nextInt(neurons.size()));
+                    Neuron randomNeuron = neurons.get(Database.random.nextInt(neurons.size()));
                     while(randomNeuron instanceof Sensor){
-                        randomNeuron = neurons.get(rand.nextInt(neurons.size()));
+                        randomNeuron = neurons.get(Database.random.nextInt(neurons.size()));
                     }
                     // Complete the incomplete internal neuron by giving it a valid sink (with a random sinkweight)
-                    emptyNeuron.addSink(randomNeuron, rand.nextInt(0,(int)Math.pow(2, 16)));
+                    emptyNeuron.addSink(randomNeuron, Database.random.nextInt(0,(int)Math.pow(2, 16)));
                     randomNeuron.addSource(emptyNeuron);
                 }
 
@@ -403,7 +406,7 @@ public class Genome{
                 
                 // Deletes the prexisting empty neuron and adds its sources and sinks to this new neuron
                 for(Neuron sink : new ArrayList<Neuron>(emptyNeurons.get(j).getSinks().keySet())){
-                    newNeuron.addSink(sink, rand.nextInt(0,(int)Math.pow(2, 16)));
+                    newNeuron.addSink(sink, Database.random.nextInt(0,(int)Math.pow(2, 16)));
                     sink.replaceSource(emptyNeurons.get(j), newNeuron);
                 }
                 for(Neuron source : emptyNeurons.get(j).getSources()){
