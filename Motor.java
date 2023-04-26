@@ -10,6 +10,7 @@ public class Motor extends Neuron{
             case 2: this.motorMethod = Motor::MoveRight; break;
             case 3: this.motorMethod = Motor::MoveLeft; break;
             case 4: this.motorMethod = Motor::Eat; break;
+            case 5: this.motorMethod = Motor::Drink; break;
         }
     }
 
@@ -54,10 +55,18 @@ public class Motor extends Neuron{
     private static void Eat(Creature creature) {
         for (Food food : Database.foodsList) {
             if (creature.getPos().equals(food.getPos())) {
-                Database.foodsList.remove(food);
-                // place hunger stuff here
                 creature.incrementHunger();
-                // break is required because of enhanced loop
+                Database.foodsList.remove(food);
+                break;
+            }
+        }
+    }
+    private static void Drink(Creature creature){
+        for (Water water : Database.watersList) {
+            if (creature.getPos().equals(water.getPos())) {
+                // place thirst stuff here
+
+                Database.watersList.remove(water);
                 break;
             }
         }

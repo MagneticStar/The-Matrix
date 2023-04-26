@@ -41,6 +41,30 @@ public class Creature extends ScreenObject{
         int[] ans = Screens.SimulationWorldToScreen.translate(this.getPos().matrix());
         return new Coor(ans[0], ans[1]);
     }
+
+    // Methods
+    public Creature reproduce(){
+        Genome genome;
+        Creature creature;
+
+        // Mutate
+        if(Database.random.nextDouble(0,1)<Database.mutationChance){
+            String newDNA = this.getGenome().getDNA();
+            // Mutate the DNA here
+            genome = new Genome(this,newDNA);
+        }
+        // Don't Mutate
+        else{
+            genome = new Genome(this.getGenome());
+        }
+
+        // Create the new creature with the new genome 
+        creature = new Creature(genome);
+        // Let genome now it's creature
+        genome.creature = creature;
+
+        return creature;
+    }
     // hunger
     public int incrementHunger() {
         hungerCounter++;
