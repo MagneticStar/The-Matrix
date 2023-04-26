@@ -1,12 +1,10 @@
-import java.util.ArrayList;
-
 // search is very slow.
 
 public class Sensor extends Neuron{
 
     public SensorMethod sensorMethod; 
     private static int numberOfSensorMethods = 9; // Update this when creating new Sensor methods
-    private static int searchDepth = 10;
+    private static int searchDepth = 0;
 
     public Sensor(Creature s, int methodID) {
         super("Sensor");
@@ -26,21 +24,19 @@ public class Sensor extends Neuron{
     public interface SensorMethod{
         double invoke(Creature creature);
     }
-
+    
     ////////////////////////////////////////////////////////
     // SENSOR METHODS // SENSOR METHODS // SENSOR METHODS //
     ////////////////////////////////////////////////////////
 
     public static double nearestFoodDistance(Creature creature) {
         for (int i = 0; i < searchDepth; i++) {
-            for (Coor coor : search(i,creature.getPos())) {
-                for (Food f: Database.foodsList) {
-                    if (f.getPos().equals(coor)) {
-                        double d = distance(f, creature);
-                        if (d != -1.0) {
-                            // System.out.println("Distance: "+d+" Adjusted: "+(1-(d/Database.worldSize)));
-                            return 1-(d/Database.worldSize);
-                        }
+            for (Food f: Database.foodsList) {
+                if (f.getPos().equals(search(i, creature.getPos(), "food"))) {
+                    double d = distance(f, creature);
+                    if (d != -1.0) {
+                        // System.out.println("Distance: "+d+" Adjusted: "+(1-(d/Database.worldSize)));
+                        return 1-(d/Database.worldSize);
                     }
                 }
             }
@@ -50,28 +46,24 @@ public class Sensor extends Neuron{
 
     private static double nearestWaterDistance(Creature creature){
         for (int i = 0; i < searchDepth; i++) {
-            for (Coor coor : search(i,creature.getPos())) {
-                for (Water w: Database.watersList) {
-                    if (w.getPos().equals(coor)) {
-                        double d = distance(w, creature);
-                        if (d != -1.0) {
-                            // System.out.println("Distance: "+d+" Adjusted: "+(1-(d/Database.worldSize)));
-                            return 1-(d/Database.worldSize);
-                        }
+            for (Water w: Database.watersList) {
+                if (w.getPos().equals(search(i, creature.getPos(), "water"))) {
+                    double d = distance(w, creature);
+                    if (d != -1.0) {
+                        // System.out.println("Distance: "+d+" Adjusted: "+(1-(d/Database.worldSize)));
+                        return 1-(d/Database.worldSize);
                     }
                 }
-            } 
+            }
         }
         return -1.0;
     }
 
     private static double detectFoodXDirection (Creature creature) {
         for (int i = 0; i < searchDepth; i++) {
-            for (Coor coor : search(i,creature.getPos())) {
-                for (Food f: Database.foodsList) {
-                    if (f.getPos().equals(coor)) {
-                        return directionX(f, creature);
-                    }
+            for (Food f: Database.foodsList) {
+                if (f.getPos().equals(search(i, creature.getPos(), "food"))) {
+                    return directionX(f, creature);
                 }
             }
         }
@@ -80,11 +72,9 @@ public class Sensor extends Neuron{
 
     private static double detectFoodYDirection (Creature creature) {
         for (int i = 0; i < searchDepth; i++) {
-            for (Coor coor : search(i,creature.getPos())) {
-                for (Food f: Database.foodsList) {
-                    if (f.getPos().equals(coor)) {
-                        return directionY(f, creature);
-                    }
+            for (Food f: Database.foodsList) {
+                if (f.getPos().equals(search(i, creature.getPos(), "food"))) {
+                    return directionY(f, creature);
                 }
             }
         }
@@ -92,11 +82,9 @@ public class Sensor extends Neuron{
     }
     private static double detectWaterXDirection (Creature creature) {
         for(int i=0; i<searchDepth; i++){
-            for (Coor coor: search(i,creature.getPos())) {
-                for (Water w: Database.watersList) {
-                    if (w.getPos().equals(coor)) {
-                        return directionX(w, creature);
-                    }
+            for (Water w: Database.watersList) {
+                if (w.getPos().equals(search(i, creature.getPos(), "water"))) {
+                    return directionX(w, creature);
                 }
             }
         }
@@ -105,11 +93,9 @@ public class Sensor extends Neuron{
     
     private static double detectWaterYDirection (Creature creature) {
         for(int i=0; i<searchDepth; i++){
-            for (Coor coor: search(i,creature.getPos())) {
-                for (Water w: Database.watersList) {
-                    if (w.getPos().equals(coor)) {
-                        return directionY(w, creature);
-                    }
+            for (Water w: Database.watersList) {
+                if (w.getPos().equals(search(i, creature.getPos(), "water"))) {
+                    return directionY(w, creature);
                 }
             }
         }
@@ -131,14 +117,12 @@ public class Sensor extends Neuron{
     
     private static double nearestCreatureDistance(Creature creature) {
         for (int i = 0; i < searchDepth; i++) {
-            for (Coor coor : search(i,creature.getPos())) {
-                for (Creature otherCreature: Database.creaturesList) {
-                    if (otherCreature.getPos().equals(coor)) {
-                        double d = distance(otherCreature, creature);
-                        if (d != -1.0) {
-                            // System.out.println(d);
-                            return d/Database.worldSize;
-                        }
+            for (Creature otherCreature: Database.creaturesList) {
+                if (otherCreature.getPos().equals(search(i,creature.getPos(), "creature"))) {
+                    double d = distance(otherCreature, creature);
+                    if (d != -1.0) {
+                        // System.out.println(d);
+                        return d/Database.worldSize;
                     }
                 }
             }
@@ -188,39 +172,91 @@ public class Sensor extends Neuron{
         }    
     }
 
-    public static ArrayList<Coor> search(int i, Coor center) {
-        Coor temp = new Coor();
-        ArrayList<Coor> arr= new ArrayList<Coor>();
+    private static boolean checkLocation(String type, Coor temp) {
+        switch (type) {
+            case "creature": 
+                for (Creature creature : Database.creaturesList) {
+                    if (creature.getPos().equals(temp)) {
+                        return true;
+                    }
+                }
+                return false;
+            
+            case "food": 
+                for (Food food: Database.foodsList) {
+                    if (food.getPos().equals(temp)) {
+                        return true;
+                    }
+                }
+                return false;
+            case "water": 
+                for (Water water : Database.watersList) {
+                    if (water.getPos().equals(temp)) {
+                        return true;
+                    }
+                }
+                return false;
+            // should never happen
+            default: System.out.println("ERROR IN Genome.checkLocation");return false;
+        }
+    }
 
+    public static Coor search(int i, Coor center, String type) {
+        Coor temp = new Coor();
+        
         // Search logic
         temp.setX(center.x());temp.setY(center.y()+i); // Above
-        arr.add(temp); 
+        if (checkLocation(type, temp)) {
+            return temp;
+        }
         temp.setX(center.x()+i);temp.setY(center.y()); // Right
-        arr.add(temp);
+        if (checkLocation(type, temp)) {
+            return temp;
+        }
         temp.setX(center.x()-i);temp.setY(center.y()); // Left
-        arr.add(temp);  
+        if (checkLocation(type, temp)) {
+            return temp;
+        }
         temp.setX(center.x());temp.setY(center.y()-i); // Below
-        
+        if (checkLocation(type, temp)) {
+            return temp;
+        }
         for(int j=1; j<i+1;j++){
             temp.setX(center.x()+j);temp.setY(center.y()+i); // Above right
-            arr.add(temp);  
+            if (checkLocation(type, temp)) {
+                return temp;
+            } 
             temp.setX(center.x()-j);temp.setY(center.y()+i); // Above Left
-            arr.add(temp);  
+            if (checkLocation(type, temp)) {
+                return temp;
+            } 
             temp.setX(center.x()+j);temp.setY(center.y()-i); // Below Right
-            arr.add(temp);  
+            if (checkLocation(type, temp)) {
+                return temp;
+            } 
             temp.setX(center.x()-j);temp.setY(center.y()-i); // Below Left
-            arr.add(temp);
+            if (checkLocation(type, temp)) {
+                return temp;
+            }
             if(j < i){
                 temp.setX(center.x()+i);temp.setY(center.y()+j); // Right Above
-                arr.add(temp);  
+                if (checkLocation(type, temp)) {
+                    return temp;
+                } 
                 temp.setX(center.x()+i);temp.setY(center.y()-j); // Right Below
-                arr.add(temp);  
+                if (checkLocation(type, temp)) {
+                    return temp;
+                } 
                 temp.setX(center.x()-i);temp.setY(center.y()+j); // Left Above
-                arr.add(temp);  
+                if (checkLocation(type, temp)) {
+                    return temp;
+                }  
                 temp.setX(center.x()-i);temp.setY(center.y()-j); // Left Below
-                arr.add(temp); 
+                if (checkLocation(type, temp)) {
+                    return temp;
+                }
             }
         }
-      return arr;
+      return center;
     } 
 }

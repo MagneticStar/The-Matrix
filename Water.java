@@ -1,8 +1,8 @@
 import java.awt.Color;
 
 public class Water extends ScreenObject{
-    public Water(Coor coor) {
-        super(Color.BLUE, coor);
+    public Water() {
+        super(Color.BLUE, new Coor());
     }
     public Coor getPrintPos() {
         Screens.SimulationWorldToScreen.setWorld(Screens.simulationPanel.getWidth(), Screens.simulationPanel.getHeight());

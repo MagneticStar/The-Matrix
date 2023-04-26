@@ -1,8 +1,8 @@
 import java.awt.Color;
 
 public class Food extends ScreenObject{
-    public Food(Coor position) {
-        super(Color.GREEN, position);
+    public Food() {
+        super(Color.GREEN, new Coor());
     }
     public Coor getPrintPos() {
         Screens.SimulationWorldToScreen.setWorld(Screens.simulationPanel.getWidth(), Screens.simulationPanel.getHeight());

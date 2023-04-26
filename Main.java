@@ -13,23 +13,20 @@ public class Main {
     
     public static void main(String[] args) {
         // Add Food and Water
-        Database.foodsList.add(new Food(new Coor(45, 45)));
-        Database.foodsList.add(new Food(new Coor(50, 40)));
-        Database.foodsList.add(new Food(new Coor(50, 40)));
-        Database.foodsList.add(new Food(new Coor(70, 70)));
-        Database.foodsList.add(new Food(new Coor(20, 70)));
-        Database.foodsList.add(new Food(new Coor(90, 55)));
-        Database.watersList.add(new Water(new Coor(90, 45)));
-        Database.foodsList.add(new Food(new Coor(70, 20)));
-        Database.watersList.add(new Water(new Coor(55, 59)));
-        Database.watersList.add(new Water(new Coor(50, 50)));
-
+        for (int i = 0; i < Database.amountOfFood; i++) {
+            Database.foodsList.add(new Food());
+        }
+        for (int i = 0; i < Database.amountOfWater; i++) {
+            Database.watersList.add(new Water());
+        }
         // Create creatureCount creatures
         for (int i = 0; i < Database.generationSize; i++) {
         Database.creaturesList.add(new Creature());
         }
     
         // Technical stuff Joey put here that I don't understand
+
+        // this just slows down the program by 3 secs at the start cuz sometimes it lags
         Screens.createScreens();
         try {
             Thread.sleep(2000);
@@ -53,7 +50,7 @@ public class Main {
             ArrayList<Creature> newGeneration = new ArrayList<Creature>();
             for(Creature creature : Database.creaturesList){
                 // Check whether they get to reproduce or not
-                if(Database.random.nextDouble()>0.5){
+                if(creature.getHunger() > 0){
                     newGeneration.add(creature.reproduce());
                 }
             }
@@ -107,10 +104,6 @@ public class Main {
         }
         // System.out.println(highestValueMotor.getMaxValue());
         
-        // Try changing getMotors to getNeurons. Your behavior looks nicer but we should clear all neurons after each step, otherwise previous sensor input will interfere. 
-        // The reason it appears that previous sensor input does in fact not interefere is because you are adding more and more to it which makes it more likely to activate it's sinks.
-        // For example, if a sensor detecting food is close, it's continually building up over time but will get overtaken by a sensor detecting water if the creature gets close to that
-        // water source because that build up is now higher. Like a competing armsrace, the numbers are continuing to stack up and up which makes it appear as if it's working
         for (Neuron neuron : creature.getGenome().getNeurons()) {
             neuron.clearValues();
         }

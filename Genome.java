@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Map;
 
 public class Genome{
-    public static final int genomeLength = 128;
+    public static final int genomeLength = 8;
     private static final int geneLength = 32;
     private int oscillatorPeriod = Database.random.nextInt(1,Database.generationLength+1);
     private String DNA;
@@ -247,7 +247,7 @@ public class Genome{
                     // Complete the incomplete internal neuron by giving it a valid sink (with a random sinkweight)
                     emptyNeuron.addSink(randomNeuron, Database.random.nextInt(0,(int)Math.pow(2, 16)));
                     randomNeuron.addSource(emptyNeuron);
-                }
+                } 
 
                 // Debug
                 // System.out.println("Complete "+emptyNeuron.toString());
