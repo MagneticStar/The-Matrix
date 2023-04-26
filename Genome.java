@@ -1,69 +1,127 @@
 import java.awt.Color;
 import java.util.Random;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map;
 
 public class Genome{
-    private final int genomeLength = 8;
-    private final int geneLength = 32;
-    private final Random rand = new Random();
+    private static final int genomeLength = 256;
+    private static final int geneLength = 32;
+    private static final Random rand = new Random();
     private final int oscillatorPeriod = rand.nextInt(0,100);
     private String DNA;
-    public Subject subject;
+    public Creature subject;
     private Color color;
     private Neuron[] neurons;
-    private ArrayList<Neuron> sensors = new ArrayList<Neuron>();
+    private ArrayList<Sensor> sensors = new ArrayList<Sensor>();
+    private ArrayList<Motor> motors = new ArrayList<Motor>();
+    private ArrayList<Internal> internals = new ArrayList<Internal>();
     // Debug Vars
     // public ArrayList<Integer> neuronChainLengths = new ArrayList<Integer>();
     
 
-    public Genome(Subject subject){
+    public Genome(Creature subject){
         this.subject = subject;
         generateDNA(); // sets this.DNA to a random binary String
-        calculateColor(); // sets this.color to RGB values based on the content of this.DNA
         interpretDNA();
     }
 
-    public Genome(Subject subject, String DNA, ArrayList<Neuron> neurons){
+    public Genome(Creature subject, String DNA, ArrayList<Neuron> neurons){
         this.subject = subject;
         this.neurons = new Neuron[neurons.size()];
         for (int i = 0; i < neurons.size(); i++) {
             this.neurons[i] = neurons.get(i);
             if(neurons.get(i).getClassType().equals("Sensor")){
-                this.sensors.add(neurons.get(i));
+                this.sensors.add((Sensor)neurons.get(i));
             }
         }
         this.DNA = DNA;
-        calculateColor();
     }
 
     public Color getColor(){
         return this.color;
     }
-    public Neuron[] getNeurons() {
-        return neurons;
+    public void setColor(Color color){
+        this.color = color;
     }
-    public ArrayList<Neuron> getSensors(){
-        return sensors;
+    public Neuron[] getNeurons() {
+        return this.neurons;
+    }
+    public ArrayList<Sensor> getSensors(){
+        return this.sensors;
+    }
+    public ArrayList<Motor> getMotors(){
+        return this.motors;
+    }
+    public ArrayList<Internal> getInternals(){
+        return this.internals;
+    }
+    public int getOscillatorPeriod(){
+        return this.oscillatorPeriod;
     }
     public int getOscillatorPeriod(){
         return this.oscillatorPeriod;
     }
 
-    private void calculateColor(){
-        // The color is calculated by splicing the DNA into three equal segments
-        // (in cases where the length is not divisible by 3, the last 1 or 2 bits are dropped)
-        // then that binary string is converted to a number and it's range is reduced from
-        // 0-2^segmentLength to 0-256 based on it's position within the first range
+    public static void calculateColor(){
+        int[][] neuronCoordinates = new int[Database.creatureCount][3];
+        int[] averageNeuronCoordinate = {0,0,0};
+        int[] coordinateDistanceMax = new int[3]; //JACKSON
+        // int[] coordinateDistanceRange = new int[3]; //JOEY
+        // int highestNeuronCoordinateEVER = 0; //JOEY
+        int[] lowestNeuronCoordinate = {genomeLength,genomeLength,genomeLength};
+        int[] highestNeuronCoordinate = {genomeLength,genomeLength,genomeLength};
+        
+        for(int i=0; i<Database.creatureCount; i++){
+            int[] neuronListLengths = {Database.creaturesList.get(i).getGenome().getSensors().size(),Database.creaturesList.get(i).getGenome().getInternals().size(),Database.creaturesList.get(i).getGenome().getMotors().size()};
+            for(int j = 0; j<3; j++){
+                neuronCoordinates[i][j] = neuronListLengths[j];
+                averageNeuronCoordinate[j]+=neuronCoordinates[i][j];
+                
+                if(neuronCoordinates[i][j] > highestNeuronCoordinate[j]){
+                    highestNeuronCoordinate[j] = neuronCoordinates[i][j];
+                }
+                else if(neuronCoordinates[i][j] < lowestNeuronCoordinate[j]){
+                    lowestNeuronCoordinate[j] = neuronCoordinates[i][j];
+                }
+                // if (neuronCoordinates[i][j] > highestNeuronCoordinateEVER) { //JOEY
+                //     highestNeuronCoordinateEVER = neuronCoordinates[i][j];
+                // }
+            }
+        }
 
-        // int segmentLength = (DNA.length()-DNA.length()%3)/3;
-        // int segmentOne = (int) (Integer.parseInt(DNA.substring(0, segmentLength+1),2)/(Math.pow(2,segmentLength)));
-        // int segmentTwo = (int) (Integer.parseInt(DNA.substring(segmentLength+1, segmentLength*2+1),2)/(Math.pow(2,segmentLength)));
-        // int segmentThree = (int) (Integer.parseInt(DNA.substring(segmentLength*2+1, segmentLength*3+1),2)/(Math.pow(2,segmentLength)));
+        for(int i=0; i<3; i++){
+            averageNeuronCoordinate[i] = averageNeuronCoordinate[i]/Database.creatureCount; 
+            // coordinateDistanceRange[i] = highestNeuronCoordinate[i]-lowestNeuronCoordinate[i]; //JOEY
+            coordinateDistanceMax[i] = ((highestNeuronCoordinate[i]-averageNeuronCoordinate[i])+(averageNeuronCoordinate[i]-lowestNeuronCoordinate[i]))/2; //JACKSON
+        }
 
-        // color = new Color(segmentOne,segmentTwo,segmentThree);
-        color = Color.yellow;
+        // Debug
+        // System.out.println(coordinateDistanceMax[0]+ "," + coordinateDistanceMax[1] + "," + coordinateDistanceMax[2]);
+        // System.out.println(averageNeuronCoordinate[0]+ "," + averageNeuronCoordinate[1] + "," + averageNeuronCoordinate[2]);
+
+        for(int i=0; i<Database.creaturesList.size(); i++){
+            int[] rgb = new int[3];
+            for(int j =0; j<3; j++){
+                double distance = (Math.abs(averageNeuronCoordinate[j]-neuronCoordinates[i][j])/(double)coordinateDistanceMax[j]); //JACKSON
+                // double multiplier = 256.0 / (Math.abs(averageNeuronCoordinate[j]-highestNeuronCoordinateEVER)/(double)coordinateDistanceRange[j]); //JOEY
+                // double multiplier = 255 / (Math.abs(averageNeuronCoordinate[j]-neuronCoordinates[i][j])/(double)coordinateDistanceMax[j]); //JACKSON
+                // rgb[j] = (int) (((800*Math.abs(averageNeuronCoordinate[j]-neuronCoordinates[i][j])/(double)coordinateDistanceRange[j]))); //JOEY
+                rgb[j] = (int) (255*(distance*3)); //JACKSON
+                
+                // Debug
+                // System.out.println(10*(averageNeuronCoordinate[j]-neuronCoordinates[i][j])/(double)coordinateDistanceRange[j] * 10);
+            }
+            
+            // Debug
+            // System.out.println(rgb[0]+ "," + rgb[1] + "," + rgb[2]);
+
+            Database.creaturesList.get(i).getGenome().setColor(new Color(Math.min(rgb[0],255), Math.min(rgb[1],255),Math.min(rgb[2],255)));
+            Database.creaturesList.get(i).setColor(Database.creaturesList.get(i).getGenome().getColor());
+        }
+            
+
     }
 
     private void generateDNA(){
@@ -103,7 +161,7 @@ public class Genome{
 
         for(int i=0; i<genomeLength; i++){
             // Debug
-            // Main.subs.add(new Subject(new Genome(this.subject,this.DNA,neurons)));
+            // Database.creaturesList.add(new Creature(new Genome(this.subject,this.DNA,neurons)));
 
             Neuron neuron;
             
@@ -147,7 +205,7 @@ public class Genome{
         }
 
         // Debug
-        // Main.subs.add(new Subject(new Genome(this.subject,this.DNA,neurons)));
+        // Database.creaturesList.add(new Creature(new Genome(this.subject,this.DNA,neurons)));
         
         ////////////////////////////////////////////
         // FILL EMPTY // FILL EMPTY // FILL EMPTY //
@@ -209,11 +267,16 @@ public class Genome{
             neurons.add(emptyNeuron);
         }
         // Debug
-        // Main.subs.add(new Subject(new Genome(this.subject,this.DNA,neurons)));
+        // Database.creaturesList.add(new Creature(new Genome(this.subject,this.DNA,neurons)));
+        // for(Neuron neuron : neurons){
+        //     if(findSourceSinkError(neuron,false,0)){
+        //         System.out.println("Uh Ohh");
+        //     }
+        // }
         for(Neuron neuron : neurons){
             String toPrint = "";
             Boolean print = false;
-            toPrint+="Subject "+Main.subs.size()+":\n";
+            toPrint+="Subject "+Database.creaturesList.size()+":\n";
             toPrint+="Neuron "+neuron.toString()+":\n";
             toPrint+="Sources:\n";
             for(Neuron source : neuron.getSources()){
@@ -267,8 +330,14 @@ public class Genome{
         this.neurons = new Neuron[inNeuronChain.size()];
         for (int i = 0; i < inNeuronChain.size(); i++) {
             this.neurons[i] = inNeuronChain.get(i);
-            if(inNeuronChain.get(i).getClassType().equals("Sensor")){
-                this.sensors.add(inNeuronChain.get(i));
+            if(inNeuronChain.get(i) instanceof Sensor){
+                this.sensors.add((Sensor) inNeuronChain.get(i));
+            }
+            else if(inNeuronChain.get(i) instanceof Motor){
+                this.motors.add((Motor) inNeuronChain.get(i));
+            }
+            else{
+                this.internals.add((Internal) inNeuronChain.get(i));
             }
         }
     }
@@ -349,7 +418,7 @@ public class Genome{
                 
                 // Deletes the prexisting empty neuron and adds its sources and sinks to this new neuron
                 for(Neuron sink : new ArrayList<Neuron>(emptyNeurons.get(j).getSinks().keySet())){
-                    newNeuron.addSink(sink, rand.nextInt(0,(int)Math.pow(2, geneLength-16)));
+                    newNeuron.addSink(sink, rand.nextInt(0,(int)Math.pow(2, 16)));
                     sink.replaceSource(emptyNeurons.get(j), newNeuron);
                 }
                 for(Neuron source : emptyNeurons.get(j).getSources()){

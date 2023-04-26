@@ -1,23 +1,7 @@
-
-import java.awt.Color;
 import java.util.ArrayList;
 
-<<<<<<< Updated upstream
-public class Main{
-    // ArrayList for all food
-    public static  ArrayList<Food> foods = new ArrayList<Food>();
-    // ArrayList for all water
-    public static  ArrayList<Water> waters = new ArrayList<Water>();
-    // ArrayList for all subjects
-    public static ArrayList<Subject> subs = new ArrayList<Subject>();
-    // An array containing a seralized name for each subject
-    public static String[] subNames = new String[1];
-    // Translation obj used to find scalers
-    public static Translation matCalc = new Translation();
-=======
+
 public class Main {
-    public static int stepCount = 0;
-    public static int generationLength = 1;
    
 
     // simFrame.add(simPanel);
@@ -28,49 +12,40 @@ public class Main {
     //     neuronMap.add(neuronMapPanel);
     //     neuronMap.setVisible(true);
     
->>>>>>> Stashed changes
     public static void main(String[] args) {
-
-        
-        subs.add(new Subject(Color.yellow, new Coor(0, 0)));
-        // subs.add(new Subject(Color.yellow, new Coor(0, 10)));
-        // subs.add(new Subject(Color.yellow, new Coor(10, 0)));
-        // subs.add(new Subject(Color.yellow, new Coor(10, 10)));
-        foods.add(new Food(new Coor(1, 3)));
-        foods.add(new Food(new Coor(7, 3)));
-        waters.add(new Water(new Coor(6, 8)));
-
-        while(subs.size() < 1000){
-            subs.add(new Subject(Color.yellow, new Coor(100,100)));
+    
+        Database.foodsList.add(new Food(new Coor(45, 45)));
+        Database.foodsList.add(new Food(new Coor(52, 48)));
+        Database.foodsList.add(new Food(new Coor(50, 40)));
+        Database.foodsList.add(new Food(new Coor(70, 70)));
+        Database.foodsList.add(new Food(new Coor(20, 70)));
+        Database.foodsList.add(new Food(new Coor(90, 55)));
+        Database.watersList.add(new Water(new Coor(90, 45)));
+        Database.foodsList.add(new Food(new Coor(70, 20)));
+        Database.watersList.add(new Water(new Coor(55, 59)));
+        Database.watersList.add(new Water(new Coor(50, 50)));
+        // Create creatureCount creatures
+        for (int i = 0; i < Database.creatureCount; i++) {
+        Database.creaturesList.add(new Creature());
         }
-        subNames = new String[Main.subs.size()];
-        for(int i=0; i<Main.subs.size(); i++){
-            subNames[i] = String.format("Subject %04d",i);
+        Genome.calculateColor();
+        Screens.createScreens();
+
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-        
-        Frame.main(args);
-        NeurPanel.main(args);
-        
         // how many ticks
-<<<<<<< Updated upstream
-        for (int i = 0; i < 5; i++) {
-            tick(Frame.simPanel, i);
-=======
-        for (int i = 0; i < generationLength; i++) {
+        for (int i = 0; i < 30; i++) {
             tick(Screens.simulationPanel, i);
-            stepCount++;
->>>>>>> Stashed changes
         }
     }
 
-    public static void tick(Panel panel, int i) {
-       
-        // do all gamestate changes before repaint() is called
-        // subs.get(0).setPosX(subs.get(0).getPosX() + 1);
-        // Sensor s = new Sensor(subs.get(0), 0);
-        // Sensor s2 = new Sensor(subs.get(0), 1);
-        // // System.out.println(s.search());
-        // System.out.println(s2.search());
+    public static void tick(SimulationPanel panel, int i) {
+        for(Creature creature : Database.creaturesList){
+            determineNeuronActivation(creature).motorMethod.invoke(creature);
+        }
         panel.repaint();
 
         // Make tick wait
@@ -78,6 +53,47 @@ public class Main {
             Thread.sleep(100);
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+    }
+
+    private static Motor determineNeuronActivation(Creature creature){
+        for(Sensor sensor : creature.getGenome().getSensors()){
+            sensor.addValue(sensor.sensorMethod.invoke(creature));
+            iterateThroughNeuronChain(sensor);
+        }
+
+        ArrayList<Motor> motors = creature.getGenome().getMotors();
+        
+        Motor highestValueMotor = motors.get(0);
+        
+        for(int i = 1; i<motors.size(); i++){
+            if(highestValueMotor.getMaxValue() < motors.get(i).getMaxValue()){
+                highestValueMotor = motors.get(i);
+            }
+        }
+        // System.out.println(highestValueMotor.getMaxValue());
+        //loop throughneurons and clear values list
+        for (Motor motor : motors) {
+            motor.clearValues();
+        }
+        return highestValueMotor;
+    }
+
+    private static void iterateThroughNeuronChain(Neuron neuron){
+        for(Neuron sink : new ArrayList<Neuron>(neuron.getSinks().keySet())){
+            double sum = 0;
+            for(double value : neuron.getValues()){
+                sum+= value;
+            }
+
+            sink.addValue(sum);
+
+            if(sink instanceof Internal && sink.getSources().size() == sink.getValues().size()){
+                iterateThroughNeuronChain(sink);
+            }
+
+            // Debug
+            // System.out.println(sink.toString()+" "+sink.getValues().size()+"/"+sink.getSources().size());
         }
     }
     

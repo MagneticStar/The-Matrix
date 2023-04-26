@@ -2,12 +2,13 @@ import java.util.HashMap;
 import java.awt.Color;
 import java.util.ArrayList;
 
-public abstract class Neuron extends screenObject{
+public abstract class Neuron extends ScreenObject{
     private ArrayList<Neuron> sources = new ArrayList<Neuron>();
     private HashMap<Neuron,Integer> sinks = new HashMap<Neuron,Integer>();
     private String type;
+    private ArrayList<Double> values = new ArrayList<Double>();
+
     public Neuron(String type) {
-        
         super(Color.white, new Coor(0, 0));
         switch(type){
             case "Sensor": this.setPosX(50);
@@ -21,6 +22,7 @@ public abstract class Neuron extends screenObject{
             break;
         }
     }
+
     public ArrayList<Neuron> getSources(){
         return this.sources;
     }
@@ -31,6 +33,16 @@ public abstract class Neuron extends screenObject{
     
     public String getClassType() {
         return type;
+    }
+
+    public ArrayList<Double> getValues() {
+        return values;
+    }
+    public void addValue(Double value) {
+        this.values.add(value);
+    }
+    public void clearValues() {
+            values.clear();
     }
 
     public void addSource(Neuron neuron){
@@ -56,5 +68,11 @@ public abstract class Neuron extends screenObject{
     public void replaceSink(Neuron initial, Neuron replacement){
         this.sinks.put(replacement, this.sinks.get(initial));
         this.sinks.remove(initial);
+    }
+
+    public Coor getPrintPos() {
+        Screens.brainWorldToScreen.setWorld(Screens.brainPanel.getWidth(), Screens.brainPanel.getHeight());
+        int[] ans = Screens.brainWorldToScreen.translate(this.getPos().matrix());
+        return new Coor(ans[0], ans[1]);
     }
 }

@@ -12,5 +12,4 @@ public class Internal extends Neuron{
     public boolean isMeta(){
         return this.meta;
     }
-
 }

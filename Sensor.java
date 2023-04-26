@@ -1,207 +1,201 @@
 import java.util.ArrayList;
 
+
 public class Sensor extends Neuron{
 
-<<<<<<< Updated upstream
-    private static Subject subject;
-    public SensorMethod sensorMethod; 
-    private static int numberOfSensorMethods = 2; // Update this when creating new Sensor methods
-=======
     public SensorMethod sensorMethod; 
     private static int numberOfSensorMethods = 6; // Update this when creating new Sensor methods
->>>>>>> Stashed changes
-    private Coor temp = new Coor();
-    private ArrayList<Double> arr= new ArrayList<Double>();
-    private static int i;
-    private static int j;
+    private static int searchDepth = 25;
     
-    public Sensor(Subject subject, int methodID) {
+    
+    
+    public Sensor(Creature s, int methodID) {
         super("Sensor");
-<<<<<<< Updated upstream
-        this.subject = subject;
-        switch(methodID%numberOfSensorMethods){
-=======
         switch(methodID%(numberOfSensorMethods)){
->>>>>>> Stashed changes
-            case 0: this.sensorMethod = Sensor::detectFood; break;
-            case 1: this.sensorMethod = Sensor::nearestWater; break;
+            case 0: this.sensorMethod = Sensor::nearestFoodDistance; break;
+            case 1: this.sensorMethod = Sensor::nearestWaterDistance; break;
+            case 2: this.sensorMethod = Sensor::detectFoodXDirection; break;
+            case 3: this.sensorMethod = Sensor::detectWaterXDirection; break;
+            case 4: this.sensorMethod = Sensor::detectFoodYDirection; break;
+            case 5: this.sensorMethod = Sensor::detectWaterYDirection; break;
         }
     }
+    
 
     public interface SensorMethod{
         double invoke(Creature creature);
     }
 
+    
     ////////////////////////////////////////////////////////
     // SENSOR METHODS // SENSOR METHODS // SENSOR METHODS //
     ////////////////////////////////////////////////////////
 
-<<<<<<< Updated upstream
-    public static double detectFood(Coor coor) {
-        for (Food f: Main.foods) {
-            if (f.getPos().equals(coor)) {
-=======
-    public static double detectFood(Creature creature) {
-        for (Food f: Database.foodsList) {
-            if (f.getPos().equals(creature.getPos())) {
->>>>>>> Stashed changes
-                double d = distance(f);
-                if (d != -1.0) {
-                    // System.out.println(d);
-                    return d;
+    public static double nearestFoodDistance(Creature creature) {
+        for (int i=0; i<searchDepth; i++) {
+            for (Coor coor : search(i, creature.getPos())) {
+                    for (Food f: Database.foodsList) {
+                        if (f.getPos().equals(coor)) {
+                            double d = distance(f, creature);
+                            if (d != -1.0) {
+                                // System.out.println(d);
+                                return d;
+                            }
+                    }
                 }
             }
         }
-        // -1.0 means null 
+        // -1.0 means no food nearby
         return -1.0;
     }
 
-<<<<<<< Updated upstream
-    private static double nearestWater(Coor coor){
-        for (Water w: Main.waters) {
-            if (w.getPos().equals(coor)) {
-=======
-    private static double nearestWater(Creature creature){
-        for (Water w: Database.watersList) {
-            if (w.getPos().equals(creature.getPos())) {
->>>>>>> Stashed changes
-                double d = distance(w);
-                if (d != -1.0) {
-                    // System.out.println(d);
-                    return d;
+    private static double nearestWaterDistance(Creature creature){
+        for (int i=0; i<searchDepth; i++) {
+            for (Coor coor : search(i, creature.getPos())) {
+                    for (Water w: Database.watersList) {
+                        if (w.getPos().equals(coor)) {
+                            double d = distance(w, creature);
+                            if (d != -1.0) {
+                                // System.out.println(d);
+                                return d;
+                            }
+                    }
                 }
             }
         } 
+        // -1.0 means no water nearby
         return -1.0;
     }
 
-<<<<<<< Updated upstream
-=======
     private static double detectFoodXDirection (Creature creature) {
-        for (Food f: Database.foodsList) {
-            if (f.getPos().equals(creature.getPos())) {
-                return directionX(f);
+        for (int i=0; i<searchDepth; i++) {
+            for (Coor coor : search(i, creature.getPos())) {
+                for (Food f: Database.foodsList) {
+                    if (f.getPos().equals(coor)) {
+                        return directionX(f, creature);
+                    }
+                }
             }
         }
-        // if no food exist or none nearby
+        // if no food exist
         return 0.0;
     }
 
     private static double detectFoodYDirection (Creature creature) {
-        for (Food f: Database.foodsList) {
-            if (f.getPos().equals(creature.getPos())) {
-                return directionY(f);
+        for (int i=0; i<searchDepth; i++) {
+            for (Coor coor : search(i, creature.getPos())) {
+                for (Food f: Database.foodsList) {
+                    if (f.getPos().equals(coor)) {
+                        return directionY(f, creature);
+                    }
+                }
             }
         }
-        // if no food exist or none nearby
+        // if no food exist
         return 0.0;
     }
     private static double detectWaterXDirection (Creature creature) {
-        for (Water w: Database.watersList) {
-            if (w.getPos().equals(creature.getPos())) {
-                return directionX(w);
+        for (int i=0; i<searchDepth; i++) {
+            for (Coor coor : search(i, creature.getPos())) {
+                for (Water w: Database.watersList) {
+                    if (w.getPos().equals(coor)) {
+                        return directionX(w, creature);
+                    }
+                }
             }
         }
-        // if no water exist or none nearby
+        // if no water exist
         return 0.0;
     }
+    
     private static double detectWaterYDirection (Creature creature) {
-        for (Water w: Database.watersList) {
-            if (w.getPos().equals(creature.getPos())) {
-                return directionY(w);
+        for(int i=0; i<searchDepth; i++){
+            for (Coor coor : search(i,creature.getPos())) {
+                for (Water w: Database.watersList) {
+                    if (w.getPos().equals(coor)) {
+                        return directionY(w,creature);
+                    }
+                }
             }
         }
-        // if no water exist or none nearby
+        // if no water exist
         return 0.0;
     }
-    private static double oscillator(Creature creature){
-        return Main.stepCount%creature.getGenome().getOscillatorPeriod();
-    }
->>>>>>> Stashed changes
     ////////////////////////////////////////////////////////
     // SENSOR METHOD ASSISTORS // SENSOR METHOD ASSISTORS // 
     ////////////////////////////////////////////////////////
 
-
+    public static double directionX(ScreenObject obj, Creature creature) {
+        // left
+        if (obj.getPosX() < creature.getPosX()) {
+            return -1.0;
+        }
+        // right
+        else if (obj.getPosX() > creature.getPosX()) {
+            return 1.0;
+        }
+        // same
+        else {
+            return 0.0;
+        }
+    }
+    public static double directionY(ScreenObject obj, Creature creature) {
+        // down
+        if (obj.getPosY() < creature.getPosY()) {
+            return -1.0;
+        }
+        // up
+        else if (obj.getPosY() > creature.getPosY()) {
+            return 1.0;
+        }
+        // same
+        else {
+            return 0.0;
+        }
+    }
     
-    public static double distance(screenObject obj) {
+    public static double distance(ScreenObject obj, Creature creature) {
         // using Pyth theorem
         try {
-            return Math.sqrt(Math.pow(obj.getPos().x() - subject.getPos().x(), 2) + Math.pow(obj.getPos().y() - subject.getPos().y(), 2));
+            return Math.sqrt(Math.pow(obj.getPos().x() - creature.getPos().x(), 2) + Math.pow(obj.getPos().y() - creature.getPos().y(), 2));
         } catch (NullPointerException e) {
             return -1.0;
         }    
     }
 
-    public void findAdj() {
+    public static ArrayList<Coor> search(int i, Coor center) {
+        Coor temp = new Coor();
+        ArrayList<Coor> arr= new ArrayList<Coor>();
 
-        Coor tempPos = new Coor();
-
-        for (int i = subject.getPos().x() - 1; i <= subject.getPos().x() + 1; i++) {
-            for (int j = subject.getPos().y() - 1; j <= subject.getPos().y() + 1; j++) {
-                tempPos.setX(i);
-                tempPos.setY(j);
-                detectFood(tempPos);
+        // Search logic
+        temp.setX(center.x());temp.setY(center.y()+i); // Above
+        arr.add(temp); 
+        temp.setX(center.x()+i);temp.setY(center.y()); // Right
+        arr.add(temp);
+        temp.setX(center.x()-i);temp.setY(center.y()); // Left
+        arr.add(temp);  
+        temp.setX(center.x());temp.setY(center.y()-i); // Below
+        
+        for(int j=1; j<i+1;j++){
+            temp.setX(center.x()+j);temp.setY(center.y()+i); // Above right
+            arr.add(temp);  
+            temp.setX(center.x()-j);temp.setY(center.y()+i); // Above Left
+            arr.add(temp);  
+            temp.setX(center.x()+j);temp.setY(center.y()-i); // Below Right
+            arr.add(temp);  
+            temp.setX(center.x()-j);temp.setY(center.y()-i); // Below Left
+            arr.add(temp);
+            if(j < i){
+                temp.setX(center.x()+i);temp.setY(center.y()+j); // Right Above
+                arr.add(temp);  
+                temp.setX(center.x()+i);temp.setY(center.y()-j); // Right Below
+                arr.add(temp);  
+                temp.setX(center.x()-i);temp.setY(center.y()+j); // Left Above
+                arr.add(temp);  
+                temp.setX(center.x()-i);temp.setY(center.y()-j); // Left Below
+                arr.add(temp); 
             }
         }
-    }
-
-    public double search(Creature creature) {
-        // Search logic
-    for(i=1;i<10;i++){
-
-        temp.setX(creature.getPos().x());temp.setY(creature.getPos().y()+i); // Above
-        arr.add(sensorMethod.invoke(temp)); 
-        temp.setX(creature.getPos().x()+i);temp.setY(creature.getPos().y()); // Right
-        arr.add(sensorMethod.invoke(temp));
-        temp.setX(creature.getPos().x()-i);temp.setY(creature.getPos().y()); // Left
-        arr.add(sensorMethod.invoke(temp));  
-        temp.setX(creature.getPos().x());temp.setY(creature.getPos().y()-i); // Below
-        
-        j = 1;
-        while(abNext(creature) || rlNext(creature)){
-          j++;
-        }
-      }
-      for (double num : arr) {
-        if (num != -1.0) {
-            return num;
-        }
-      }
-      return -1.0;
-    }
-<<<<<<< Updated upstream
-    public boolean rlNext(){
-=======
-
-    public boolean rlNext(Creature creature){
->>>>>>> Stashed changes
-        if(j < i){
-            temp.setX(creature.getPos().x()+i);temp.setY(creature.getPos().y()+j); // Right Above
-            arr.add(sensorMethod.invoke(temp));  
-            temp.setX(creature.getPos().x()+i);temp.setY(creature.getPos().y()-j); // Right Below
-            arr.add(sensorMethod.invoke(temp));  
-            temp.setX(creature.getPos().x()-i);temp.setY(creature.getPos().y()+j); // Left Above
-            arr.add(sensorMethod.invoke(temp));  
-            temp.setX(creature.getPos().x()-i);temp.setY(creature.getPos().y()-j); // Left Below
-            arr.add(sensorMethod.invoke(temp));  
-            return true;
-        }
-        return false;
-    }
-    
-    public boolean abNext(Creature creature){
-        if(j < i+1){
-          temp.setX(creature.getPos().x()+j);temp.setY(creature.getPos().y()+i); // Above right
-          arr.add(sensorMethod.invoke(temp));  
-          temp.setX(creature.getPos().x()-j);temp.setY(creature.getPos().y()+i); // Above Left
-          arr.add(sensorMethod.invoke(temp));  
-          temp.setX(creature.getPos().x()+j);temp.setY(creature.getPos().y()-i); // Below Right
-          arr.add(sensorMethod.invoke(temp));  
-          temp.setX(creature.getPos().x()-j);temp.setY(creature.getPos().y()-i); // Below Left
-          arr.add(sensorMethod.invoke(temp));  
-          return true;
-        }
-        return false;
-    }    
+      return arr;
+    } 
 }
