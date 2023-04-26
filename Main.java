@@ -2,16 +2,6 @@ import java.util.ArrayList;
 
 
 public class Main {
-   
-
-    // simFrame.add(simPanel);
-    //     simFrame.setVisible(true);
-
-    //     FlowLayout flowLayout = new FlowLayout(FlowLayout.LEADING);
-    //     neuronMapPanel.setLayout(flowLayout);
-    //     neuronMap.add(neuronMapPanel);
-    //     neuronMap.setVisible(true);
-    
     public static void main(String[] args) {
     
         Database.foodsList.add(new Food(new Coor(45, 45)));
@@ -30,7 +20,7 @@ public class Main {
         }
         Genome.calculateColor();
         Screens.createScreens();
-        // ignore me
+
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
@@ -50,7 +40,7 @@ public class Main {
 
         // Make tick wait
         try {
-            Thread.sleep(100);
+            Thread.sleep(20);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
