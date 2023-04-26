@@ -77,7 +77,7 @@ public class Main {
         // The reason it appears that previous sensor input does in fact not interefere is because you are adding more and more to it which makes it more likely to activate it's sinks.
         // For example, if a sensor detecting food is close, it's continually building up over time but will get overtaken by a sensor detecting water if the creature gets close to that
         // water source because that build up is now higher. Like a competing armsrace, the numbers are continuing to stack up and up which makes it appear as if it's working
-        for (Neuron neuron : creature.getGenome().getMotors()) {
+        for (Neuron neuron : creature.getGenome().getNeurons()) {
             neuron.clearValues();
         }
         return highestValueMotor;
