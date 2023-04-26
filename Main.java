@@ -60,7 +60,7 @@ public class Main {
             }
         }
 
-        for (Neuron neuron : creature.getGenome().getMotors()) {
+        for (Neuron neuron : creature.getGenome().getNeurons()) {
             neuron.clearValues();
         }
 

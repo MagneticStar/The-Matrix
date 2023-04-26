@@ -9,7 +9,7 @@ public class Database {
 
      // Params
      public final static int creatureCount = 100;
-     public final static int generationLength = 30;
+     public final static int generationLength = 300;
      public final static int worldSize = 100;
      public final static int brainScreenSizeX = 30;
      public final static int brainScreenSizeY = 500;
