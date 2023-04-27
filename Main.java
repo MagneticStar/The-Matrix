@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 
-
 public class Main {
     public static void main(String[] args) {
         // Create creatureCount creatures
@@ -18,11 +17,14 @@ public class Main {
 
         // Run the simulation
         for(Database.currentGeneration = 0; Database.currentGeneration < Database.simulationLength; Database.currentGeneration++){
+            // Debug
+            System.out.println("Generation: "+(Database.currentGeneration+1));
+            
             // Repopulate with food and water
-            for(int i=0; i<Database.startingFoodCount; i++){
+            while(Database.foodsList.size()<Database.startingFoodCount){
                 Database.foodsList.add(new Food());
             }
-            for(int i=0; i<Database.startingWaterCount; i++){
+            while(Database.watersList.size()<Database.startingWaterCount){
                 Database.watersList.add(new Water());
             }
 
@@ -41,9 +43,12 @@ public class Main {
             for(Creature creature : Database.creaturesList){
                 // Check whether they get to reproduce or not
                 if(creature.getFoodCount()>=Database.minimumFoodEaten){
-                    newGeneration.add(creature.reproduce());
+                    newGeneration.addAll(creature.reproduce());
                 }
             }
+            // Debug
+            System.out.println(newGeneration.size()+" creatures reproduced!");
+
             // Fill the rest of the new generation with random creatures
             for(int i = newGeneration.size(); i<Database.generationSize; i++){
                 newGeneration.add(new Creature());
@@ -61,19 +66,31 @@ public class Main {
         panel.repaint();
 
         // Time between ticks
-        // try {
-        //     Thread.sleep(20);
-        // } catch (InterruptedException e) {
-        //     e.printStackTrace();
-        // }
+        if(Database.currentGeneration > 90){
+            try {
+                Thread.sleep(20);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 
     // extra funcs
 
     private static Motor determineNeuronActivation(Creature creature){
+        Sensor[] checkedSensors = new Sensor[Sensor.numberOfSensorMethods];
         for(Sensor sensor : creature.getGenome().getSensors()){
-            sensor.addValue(sensor.sensorMethod.invoke(creature));
+            if(checkedSensors[sensor.methodID] == null){
+                // This sensor type hasnt been run yet for this creature
+                sensor.addValue(sensor.sensorMethod.invoke(creature));
+                checkedSensors[sensor.methodID] = sensor;
+            }
+            else{
+                // This sensor type has been run for this creature
+                sensor.addValue(checkedSensors[sensor.methodID].getValues().get(0));
+            }
+
             iterateThroughNeuronChain(sensor);
         }
 

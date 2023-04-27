@@ -42,16 +42,24 @@ public class Motor extends Neuron{
     }
 
     private static void MoveUp(Creature creature){
+        Database.creatureCoordinates.remove(creature.getPos());
         creature.setPosY(creature.getPosY() + 1);
+        Database.creatureCoordinates.add(creature.getPos());
     }
     private static void MoveDown(Creature creature){
+        Database.creatureCoordinates.remove(creature.getPos());
         creature.setPosY(creature.getPosY() - 1);
+        Database.creatureCoordinates.add(creature.getPos());
     }
     private static void MoveLeft(Creature creature){
+        Database.creatureCoordinates.remove(creature.getPos());
         creature.setPosX(creature.getPosX() - 1);
+        Database.creatureCoordinates.add(creature.getPos());
     }
     private static void MoveRight(Creature creature){
+        Database.creatureCoordinates.remove(creature.getPos());
         creature.setPosX(creature.getPosX() + 1);
+        Database.creatureCoordinates.add(creature.getPos());
     }
     private static void Eat(Creature creature) {
         for (Food food : Database.foodsList) {
@@ -61,6 +69,7 @@ public class Motor extends Neuron{
 
                 creature.ateFood();
                 Database.foodsList.remove(food);
+                Database.foodCoordinates.remove(food.getPos());
                 break;
             }
         }
@@ -71,6 +80,7 @@ public class Motor extends Neuron{
                 // place thirst stuff here
 
                 Database.watersList.remove(water);
+                Database.waterCoordinates.remove(water.getPos());
                 break;
             }
         }

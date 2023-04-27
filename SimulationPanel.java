@@ -25,10 +25,16 @@ public class SimulationPanel extends JPanel{
     }
     public void drawFood(Graphics g) {
 
-        for(Food f : Database.foodsList) {
-            g.setColor(f.getColor());
-            g.fillRect(f.getPrintPos().x() - 2, f.getPrintPos().y() - 2, 4, 4);
+        for(int i=0; i<Database.foodsList.size(); i++){
+            g.setColor(Database.foodsList.get(i).getColor());
+            g.fillRect(Database.foodsList.get(i).getPrintPos().x() - 2, Database.foodsList.get(i).getPrintPos().y() - 2, 4, 4);
         }
+
+        // This errored for some reason, could have something to do with modification
+        // for(Food f : Database.foodsList) {
+        //     g.setColor(f.getColor());
+        //     g.fillRect(f.getPrintPos().x() - 2, f.getPrintPos().y() - 2, 4, 4);
+        // }
     }
     public void drawWater(Graphics g) {
 

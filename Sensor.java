@@ -5,12 +5,14 @@ import java.util.ArrayList;
 public class Sensor extends Neuron{
 
     public SensorMethod sensorMethod; 
-    private static int numberOfSensorMethods = 9; // Update this when creating new Sensor methods
+    public static int numberOfSensorMethods = 9; // Update this when creating new Sensor methods
+    public int methodID;
     private static int searchDepth = 10;
 
     public Sensor(Creature s, int methodID) {
         super("Sensor");
-        switch(methodID%(numberOfSensorMethods)){
+        this.methodID = methodID%(numberOfSensorMethods);
+        switch(this.methodID){
             case 0: this.sensorMethod = Sensor::nearestFoodDistance; break;
             case 1: this.sensorMethod = Sensor::nearestWaterDistance; break;
             case 2: this.sensorMethod = Sensor::detectFoodXDirection; break;
@@ -34,134 +36,91 @@ public class Sensor extends Neuron{
     ////////////////////////////////////////////////////////
 
     public static double nearestFoodDistance(Creature creature) {
-        // Debug
-        System.out.println("New Search");
+        int indexOfFoundObject = findNearestObject(creature.getPos(), Database.foodCoordinates);
 
-        for (int i = 0; i < searchDepth; i++) {
-            for (Coor coor : search(i,creature.getPos())) {
-                // Debug
-                System.out.println(coor.toString());
-                
-                if (Database.foodCoordinates.contains(coor)) {
-                    double d = distance(coor, creature);
-                    if (d != -1.0) {
-                        // System.out.println("Distance: "+d+" Adjusted: "+(1-(d/Database.worldSize)));
-                        return 1-(d/Database.worldSize);
-                    }
-                }
+        if(indexOfFoundObject != -1){
+            double distance = distance(Database.foodCoordinates.get(indexOfFoundObject), creature);
+            if (distance != -1.0) {
+                // System.out.println("Distance: "+d+" Adjusted: "+(1-(d/Database.worldSize)));
+                return 1-(distance/Database.worldSize);
             }
         }
-        return -1.0;
+
+        // No object found
+        return -1;
     }
 
     private static double nearestWaterDistance(Creature creature){
-        // Debug
-        System.out.println("New Search");
+        int indexOfFoundObject = findNearestObject(creature.getPos(), Database.waterCoordinates);
 
-        for (int i = 0; i < searchDepth; i++) {
-            for (Coor coor : search(i,creature.getPos())) {
-                // Debug
-                System.out.println(coor.toString());
-                
-                if (Database.waterCoordinates.contains(coor)) {
-                    double d = distance(coor, creature);
-                    if (d != -1.0) {
-                        // System.out.println("Distance: "+d+" Adjusted: "+(1-(d/Database.worldSize)));
-                        return 1-(d/Database.worldSize);
-                    }
-                }
+        if(indexOfFoundObject != -1){
+            double distance = distance(Database.waterCoordinates.get(indexOfFoundObject), creature);
+            if (distance != -1.0) {
+                // System.out.println("Distance: "+d+" Adjusted: "+(1-(d/Database.worldSize)));
+                return 1-(distance/Database.worldSize);
             }
-        } 
-        // -1.0 means no water nearby
-        return -1.0;
+        }
+
+        // No object found
+        return -1;
     }
 
     private static double nearestCreatureDistance(Creature creature) {
-        // Debug
-        System.out.println("New Search");
+        int indexOfFoundObject = findNearestObject(creature.getPos(), Database.creatureCoordinates);
 
-        for (int i = 0; i < searchDepth; i++) {
-            for (Coor coor : search(i,creature.getPos())) {
-                // Debug
-                System.out.println(coor.toString());
-                
-                if (Database.creatureCoordinates.contains(coor)) {
-                    double d = distance(coor, creature);
-                    if (d != -1.0) {
-                        // System.out.println("Distance: "+d+" Adjusted: "+(1-(d/Database.worldSize)));
-                        return 1-(d/Database.worldSize);
-                    }
-                }
+        if(indexOfFoundObject != -1){
+            double distance = distance(Database.creatureCoordinates.get(indexOfFoundObject), creature);
+            if (distance != -1.0) {
+                // System.out.println("Distance: "+d+" Adjusted: "+(1-(d/Database.worldSize)));
+                return 1-(distance/Database.worldSize);
             }
         }
-        return -1.0;
+
+        // No object found
+        return -1;
     }
 
     private static double detectFoodXDirection (Creature creature) {
-        // Debug
-        System.out.println("New Search");
+        int indexOfFoundObject = findNearestObject(creature.getPos(), Database.foodCoordinates);
 
-        for (int i = 0; i < searchDepth; i++) {
-            for (Coor coor : search(i,creature.getPos())) {
-                // Debug
-                System.out.println(coor.toString());
-                
-                if(Database.foodCoordinates.contains(coor)){
-                    return directionX(coor, creature);
-                }
-            }
+        if(indexOfFoundObject != -1){
+            return directionX(Database.foodCoordinates.get(indexOfFoundObject), creature);
         }
-        return 0.0;
+
+        // No object found
+        return 0;
     }
 
     private static double detectFoodYDirection (Creature creature) {
-        // Debug
-        System.out.println("New Search");
+        int indexOfFoundObject = findNearestObject(creature.getPos(), Database.foodCoordinates);
 
-        for (int i = 0; i < searchDepth; i++) {
-            for (Coor coor : search(i,creature.getPos())) {
-                // Debug
-                System.out.println(coor.toString());
-                
-                if(Database.foodCoordinates.contains(coor)){
-                    return directionY(coor, creature);
-                }
-            }
+        if(indexOfFoundObject != -1){
+            return directionY(Database.foodCoordinates.get(indexOfFoundObject), creature);
         }
-        return 0.0;
+
+        // No object found
+        return 0;
     }
     private static double detectWaterXDirection (Creature creature) {
-        // Debug
-        System.out.println("New Search");
+        int indexOfFoundObject = findNearestObject(creature.getPos(), Database.waterCoordinates);
 
-        for(int i=0; i<searchDepth; i++){
-            for (Coor coor: search(i,creature.getPos())) {
-                // Debug
-                System.out.println(coor.toString());
-                
-                if(Database.waterCoordinates.contains(coor)){
-                    return directionX(coor, creature);
-                }
-            }
+        if(indexOfFoundObject != -1){
+            return directionX(Database.waterCoordinates.get(indexOfFoundObject), creature);
         }
-        return 0.0;
+
+        // No object found
+        return 0;
     }
     
     private static double detectWaterYDirection (Creature creature) {
-        // Debug
-        System.out.println("New Search");
+        int indexOfFoundObject = findNearestObject(creature.getPos(), Database.waterCoordinates);
 
-        for(int i=0; i<searchDepth; i++){
-            for (Coor coor : search(i,creature.getPos())) {
-                // Debug
-                System.out.println(coor.toString());
-                
-                if(Database.waterCoordinates.contains(coor)){
-                    return directionY(coor, creature);
-                }
-            }
+        if(indexOfFoundObject != -1){
+            return directionY(Database.waterCoordinates.get(indexOfFoundObject), creature);
         }
-        return 0.0;
+
+        // No object found
+        return 0;
     }
 
     private static double Oscillator(Creature creature) {
@@ -181,11 +140,64 @@ public class Sensor extends Neuron{
     // SENSOR METHOD ASSISTORS // SENSOR METHOD ASSISTORS // 
     ////////////////////////////////////////////////////////
 
-    // public static Coor findNearestObject(){
-    //     for(int i=0; i<searchDepth; i++){
+    public static int findNearestObject(Coor center, ArrayList<Coor> coordinatesToCheck){
+        for(int i=0; i<searchDepth; i++){
+            Coor check = new Coor();
 
-    //     }
-    // }
+            // Search logic
+            check.setX(center.x());check.setY(center.y()+i); // Above
+            if(coordinatesToCheck.contains(check)){
+                return coordinatesToCheck.indexOf(check);
+            }
+            check.setX(center.x()+i);check.setY(center.y()); // Right
+            if(coordinatesToCheck.contains(check)){
+                return coordinatesToCheck.indexOf(check);
+            }
+            check.setX(center.x()-i);check.setY(center.y()); // Left
+            if(coordinatesToCheck.contains(check)){
+                return coordinatesToCheck.indexOf(check);
+            }  
+            check.setX(center.x());check.setY(center.y()-i); // Below
+            
+            for(int j=1; j<i+1;j++){
+                check.setX(center.x()+j);check.setY(center.y()+i); // Above right
+                if(coordinatesToCheck.contains(check)){
+                    return coordinatesToCheck.indexOf(check);
+                }  
+                check.setX(center.x()-j);check.setY(center.y()+i); // Above Left
+                if(coordinatesToCheck.contains(check)){
+                    return coordinatesToCheck.indexOf(check);
+                }  
+                check.setX(center.x()+j);check.setY(center.y()-i); // Below Right
+                if(coordinatesToCheck.contains(check)){
+                    return coordinatesToCheck.indexOf(check);
+                }  
+                check.setX(center.x()-j);check.setY(center.y()-i); // Below Left
+                if(coordinatesToCheck.contains(check)){
+                    return coordinatesToCheck.indexOf(check);
+                }
+                if(j < i){
+                    check.setX(center.x()+i);check.setY(center.y()+j); // Right Above
+                    if(coordinatesToCheck.contains(check)){
+                        return coordinatesToCheck.indexOf(check);
+                    }  
+                    check.setX(center.x()+i);check.setY(center.y()-j); // Right Below
+                    if(coordinatesToCheck.contains(check)){
+                        return coordinatesToCheck.indexOf(check);
+                    }  
+                    check.setX(center.x()-i);check.setY(center.y()+j); // Left Above
+                    if(coordinatesToCheck.contains(check)){
+                        return coordinatesToCheck.indexOf(check);
+                    } 
+                    check.setX(center.x()-i);check.setY(center.y()-j); // Left Below
+                    if(coordinatesToCheck.contains(check)){
+                        return coordinatesToCheck.indexOf(check);
+                    }
+                }
+            }
+        }
+        return -1;
+    }
 
     public static double directionX(Coor coor, Creature creature) {
         // left
@@ -223,41 +235,5 @@ public class Sensor extends Neuron{
         } catch (NullPointerException e) {
             return -1.0;
         }    
-    }
-
-    public static ArrayList<Coor> search(int i, Coor center) {
-        Coor temp = new Coor();
-        ArrayList<Coor> arr= new ArrayList<Coor>();
-
-        // Search logic
-        temp.setX(center.x());temp.setY(center.y()+i); // Above
-        arr.add(temp); 
-        temp.setX(center.x()+i);temp.setY(center.y()); // Right
-        arr.add(temp);
-        temp.setX(center.x()-i);temp.setY(center.y()); // Left
-        arr.add(temp);  
-        temp.setX(center.x());temp.setY(center.y()-i); // Below
-        
-        for(int j=1; j<i+1;j++){
-            temp.setX(center.x()+j);temp.setY(center.y()+i); // Above right
-            arr.add(temp);  
-            temp.setX(center.x()-j);temp.setY(center.y()+i); // Above Left
-            arr.add(temp);  
-            temp.setX(center.x()+j);temp.setY(center.y()-i); // Below Right
-            arr.add(temp);  
-            temp.setX(center.x()-j);temp.setY(center.y()-i); // Below Left
-            arr.add(temp);
-            if(j < i){
-                temp.setX(center.x()+i);temp.setY(center.y()+j); // Right Above
-                arr.add(temp);  
-                temp.setX(center.x()+i);temp.setY(center.y()-j); // Right Below
-                arr.add(temp);  
-                temp.setX(center.x()-i);temp.setY(center.y()+j); // Left Above
-                arr.add(temp);  
-                temp.setX(center.x()-i);temp.setY(center.y()-j); // Left Below
-                arr.add(temp); 
-            }
-        }
-      return arr;
     } 
 }
