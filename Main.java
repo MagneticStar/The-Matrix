@@ -2,15 +2,6 @@ import java.util.ArrayList;
 
 public class Main {
    
-
-    // simFrame.add(simPanel);
-    //     simFrame.setVisible(true);
-
-    //     FlowLayout flowLayout = new FlowLayout(FlowLayout.LEADING);
-    //     neuronMapPanel.setLayout(flowLayout);
-    //     neuronMap.add(neuronMapPanel);
-    //     neuronMap.setVisible(true);
-    
     public static void main(String[] args) {
         // Add Food and Water
         for (int i = 0; i < Database.amountOfFood; i++) {
@@ -24,15 +15,7 @@ public class Main {
         Database.creaturesList.add(new Creature());
         }
     
-        // Technical stuff Joey put here that I don't understand
-
-        // this just slows down the program by 3 secs at the start cuz sometimes it lags
         Screens.createScreens();
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
         // Run the simulation
         for(Database.currentGeneration = 0; Database.currentGeneration < Database.simulationLength; Database.currentGeneration++){
@@ -46,11 +29,18 @@ public class Main {
                 tick(Screens.simulationPanel, Database.currentGenerationTick);
             }
 
+            int avhung = 0;
+            for (Creature creature : Database.creaturesList) {
+                avhung+=creature.getHunger();
+            }
+            avhung/=Database.creaturesList.size();
+
             // Survival Criteria Check (Needs to be changed to hunger or something)
             ArrayList<Creature> newGeneration = new ArrayList<Creature>();
+            
             for(Creature creature : Database.creaturesList){
                 // Check whether they get to reproduce or not
-                if(creature.getHunger() > 0){
+                if(creature.getHunger() > avhung+1){
                     newGeneration.add(creature.reproduce());
                 }
             }
@@ -68,14 +58,14 @@ public class Main {
         for(Creature creature : Database.creaturesList){
             determineNeuronActivation(creature).motorMethod.invoke(creature);
         }
-        // temporary killing mechanism for hunger
-        for (int j = 0; j < Database.creaturesList.size(); j++) {
-            Database.creaturesList.get(j).decrementHunger();
-            if (Database.creaturesList.get(j).getHunger() < 0) {
-                Database.creaturesList.remove(j);
-                j--;
-            }
-        }
+        // // temporary killing mechanism for hunger
+        // for (int j = 0; j < Database.creaturesList.size(); j++) {
+        //     Database.creaturesList.get(j).decrementHunger();
+        //     if (Database.creaturesList.get(j).getHunger() < 0) {
+        //         Database.creaturesList.remove(j);
+        //         j--;
+        //     }
+        // }
         panel.repaint();
 
         // Make tick wait

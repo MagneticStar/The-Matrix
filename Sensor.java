@@ -4,7 +4,7 @@ public class Sensor extends Neuron{
 
     public SensorMethod sensorMethod; 
     private static int numberOfSensorMethods = 9; // Update this when creating new Sensor methods
-    private static int searchDepth = 0;
+    private static int searchDepth = 10;
 
     public Sensor(Creature s, int methodID) {
         super("Sensor");
@@ -31,8 +31,9 @@ public class Sensor extends Neuron{
 
     public static double nearestFoodDistance(Creature creature) {
         for (int i = 0; i < searchDepth; i++) {
+            Coor near = search(i, creature.getPos(), "food");
             for (Food f: Database.foodsList) {
-                if (f.getPos().equals(search(i, creature.getPos(), "food"))) {
+                if (f.getPos().equals(near)) {
                     double d = distance(f, creature);
                     if (d != -1.0) {
                         // System.out.println("Distance: "+d+" Adjusted: "+(1-(d/Database.worldSize)));
@@ -46,8 +47,9 @@ public class Sensor extends Neuron{
 
     private static double nearestWaterDistance(Creature creature){
         for (int i = 0; i < searchDepth; i++) {
+            Coor near = search(i, creature.getPos(), "water");
             for (Water w: Database.watersList) {
-                if (w.getPos().equals(search(i, creature.getPos(), "water"))) {
+                if (w.getPos().equals(near)) {
                     double d = distance(w, creature);
                     if (d != -1.0) {
                         // System.out.println("Distance: "+d+" Adjusted: "+(1-(d/Database.worldSize)));
@@ -61,8 +63,9 @@ public class Sensor extends Neuron{
 
     private static double detectFoodXDirection (Creature creature) {
         for (int i = 0; i < searchDepth; i++) {
+            Coor near = search(i, creature.getPos(), "food");
             for (Food f: Database.foodsList) {
-                if (f.getPos().equals(search(i, creature.getPos(), "food"))) {
+                if (f.getPos().equals(near)) {
                     return directionX(f, creature);
                 }
             }
@@ -72,8 +75,9 @@ public class Sensor extends Neuron{
 
     private static double detectFoodYDirection (Creature creature) {
         for (int i = 0; i < searchDepth; i++) {
+            Coor near = search(i, creature.getPos(), "food");
             for (Food f: Database.foodsList) {
-                if (f.getPos().equals(search(i, creature.getPos(), "food"))) {
+                if (f.getPos().equals(near)) {
                     return directionY(f, creature);
                 }
             }
@@ -82,8 +86,9 @@ public class Sensor extends Neuron{
     }
     private static double detectWaterXDirection (Creature creature) {
         for(int i=0; i<searchDepth; i++){
+            Coor near = search(i, creature.getPos(), "water");
             for (Water w: Database.watersList) {
-                if (w.getPos().equals(search(i, creature.getPos(), "water"))) {
+                if (w.getPos().equals(near)) {
                     return directionX(w, creature);
                 }
             }
@@ -93,8 +98,9 @@ public class Sensor extends Neuron{
     
     private static double detectWaterYDirection (Creature creature) {
         for(int i=0; i<searchDepth; i++){
+            Coor near = search(i, creature.getPos(), "water");
             for (Water w: Database.watersList) {
-                if (w.getPos().equals(search(i, creature.getPos(), "water"))) {
+                if (w.getPos().equals(near)) {
                     return directionY(w, creature);
                 }
             }
@@ -117,8 +123,9 @@ public class Sensor extends Neuron{
     
     private static double nearestCreatureDistance(Creature creature) {
         for (int i = 0; i < searchDepth; i++) {
+            Coor near = search(i,creature.getPos(), "creature");
             for (Creature otherCreature: Database.creaturesList) {
-                if (otherCreature.getPos().equals(search(i,creature.getPos(), "creature"))) {
+                if (otherCreature.getPos().equals(near)) {
                     double d = distance(otherCreature, creature);
                     if (d != -1.0) {
                         // System.out.println(d);

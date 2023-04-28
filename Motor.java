@@ -1,7 +1,7 @@
 public class Motor extends Neuron{
 
     public MotorMethod motorMethod;
-    private static int numberOfMotorMethods = 5; // Update this when creating new Motor methods
+    private static int numberOfMotorMethods = 7; // Update this when creating new Motor methods
     public Motor(int methodID){
         super("Motor");
         switch(methodID%(numberOfMotorMethods)){
@@ -11,6 +11,7 @@ public class Motor extends Neuron{
             case 3: this.motorMethod = Motor::MoveLeft; break;
             case 4: this.motorMethod = Motor::Eat; break;
             case 5: this.motorMethod = Motor::Drink; break;
+            case 6: this.motorMethod = Motor::DoNothing; break;
         }
     }
 
@@ -55,7 +56,10 @@ public class Motor extends Neuron{
     private static void Eat(Creature creature) {
         for (Food food : Database.foodsList) {
             if (creature.getPos().equals(food.getPos())) {
-                creature.incrementHunger();
+                for (int i = 0; i < 10 ; i++) {
+                    creature.incrementHunger();
+                }
+                // creature.setHunger(10);
                 Database.foodsList.remove(food);
                 break;
             }
