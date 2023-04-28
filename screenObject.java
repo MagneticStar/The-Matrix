@@ -9,6 +9,11 @@ class ScreenObject {
         position = new Coor(Database.worldSize/2, Database.worldSize/2);
     }
 
+    public ScreenObject(Color color){
+        this.color = color;
+        position = new Coor(Database.worldSize/2, Database.worldSize/2);
+    }
+
     public ScreenObject(Coor position){
         color = Color.WHITE;
         this.position = position;

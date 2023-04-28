@@ -38,20 +38,29 @@ public class Motor extends Neuron{
     // MOTOR METHODS // MOTOR METHODS // MOTOR METHODS //
     ////////////////////////////////////////////////////////
 
-    private static void MoveUp(Creature creature){
-        creature.setPosY(creature.getPosY() + 1);
-    }
-    private static void MoveDown(Creature creature){
-        creature.setPosY(creature.getPosY() - 1);
-    }
-    private static void MoveLeft(Creature creature){
-        creature.setPosX(creature.getPosX() - 1);
-    }
-    private static void MoveRight(Creature creature){
-        creature.setPosX(creature.getPosX() + 1);
-    }
     private static void DoNothing(Creature creature) {
         // Only meant as a default method as it serves no value
+    }
+
+    private static void MoveUp(Creature creature){
+        Database.creatureCoordinates.remove(creature.getPos());
+        creature.setPosY(creature.getPosY() + 1);
+        Database.creatureCoordinates.add(creature.getPos());
+    }
+    private static void MoveDown(Creature creature){
+        Database.creatureCoordinates.remove(creature.getPos());
+        creature.setPosY(creature.getPosY() - 1);
+        Database.creatureCoordinates.add(creature.getPos());
+    }
+    private static void MoveLeft(Creature creature){
+        Database.creatureCoordinates.remove(creature.getPos());
+        creature.setPosX(creature.getPosX() - 1);
+        Database.creatureCoordinates.add(creature.getPos());
+    }
+    private static void MoveRight(Creature creature){
+        Database.creatureCoordinates.remove(creature.getPos());
+        creature.setPosX(creature.getPosX() + 1);
+        Database.creatureCoordinates.add(creature.getPos());
     }
     private static void Eat(Creature creature) {
         for (Food food : Database.foodsList) {
@@ -62,7 +71,13 @@ public class Motor extends Neuron{
                 // creature.setHunger(10);
                 // Database.foodsList.remove(food);
                 // creature.setHunger(100);
-                break;
+                // Debug
+                // System.out.println("Ate Food");
+
+                // creature.ateFood();
+                Database.foodsList.remove(food);
+                // Database.foodCoordinates.remove(food.getPos());
+                // break;
             }
         }
     }
@@ -72,6 +87,7 @@ public class Motor extends Neuron{
                 // place thirst stuff here
 
                 Database.watersList.remove(water);
+                Database.waterCoordinates.remove(water.getPos());
                 break;
             }
         }

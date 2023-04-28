@@ -4,6 +4,9 @@ public class Food extends ScreenObject{
     public Food() {
         super(Color.GREEN, new Coor());
     }
+    public Food(){
+        super(Color.green);
+    }
     public Coor getPrintPos() {
         Screens.SimulationWorldToScreen.setWorld(Screens.simulationPanel.getWidth(), Screens.simulationPanel.getHeight());
         int[] ans = Screens.SimulationWorldToScreen.translate(this.getPos().matrix());

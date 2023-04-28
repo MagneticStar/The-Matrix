@@ -19,6 +19,17 @@ public class Main {
 
         // Run the simulation
         for(Database.currentGeneration = 0; Database.currentGeneration < Database.simulationLength; Database.currentGeneration++){
+            // Debug
+            System.out.println("Generation: "+(Database.currentGeneration+1));
+            
+            // Repopulate with food and water
+            while(Database.foodsList.size()<Database.startingFoodCount){
+                Database.foodsList.add(new Food());
+            }
+            while(Database.watersList.size()<Database.startingWaterCount){
+                Database.watersList.add(new Water());
+            }
+
             // Gives every instantiated creature, food, and water a unique position
             populateSimulationSpace();
             // Gives every creature a color based on their composition of neurons
@@ -42,8 +53,13 @@ public class Main {
                 // Check whether they get to reproduce or not
                 if(creature.getHunger() > avhung+1){
                     newGeneration.add(creature.reproduce());
-                }
+                // if(creature.getFoodCount()>=Database.minimumFoodEaten){
+                //     newGeneration.addAll(creature.reproduce());
+                // }
             }
+            // Debug
+            System.out.println(newGeneration.size()+" creatures reproduced!");
+
             // Fill the rest of the new generation with random creatures
             for(int i = newGeneration.size(); i<Database.generationSize; i++){
                 newGeneration.add(new Creature());
@@ -68,11 +84,13 @@ public class Main {
         // }
         panel.repaint();
 
-        // Make tick wait
-        try {
-            Thread.sleep(20);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        // Time between ticks
+        if(Database.currentGeneration > 90){
+            try {
+                Thread.sleep(20);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -80,8 +98,18 @@ public class Main {
     // extra funcs
 
     private static Motor determineNeuronActivation(Creature creature){
+        Sensor[] checkedSensors = new Sensor[Sensor.numberOfSensorMethods];
         for(Sensor sensor : creature.getGenome().getSensors()){
-            sensor.addValue(sensor.sensorMethod.invoke(creature));
+            if(checkedSensors[sensor.methodID] == null){
+                // This sensor type hasnt been run yet for this creature
+                sensor.addValue(sensor.sensorMethod.invoke(creature));
+                checkedSensors[sensor.methodID] = sensor;
+            }
+            else{
+                // This sensor type has been run for this creature
+                sensor.addValue(checkedSensors[sensor.methodID].getValues().get(0));
+            }
+
             iterateThroughNeuronChain(sensor);
         }
 
@@ -97,6 +125,10 @@ public class Main {
         for (Neuron neuron : creature.getGenome().getNeurons()) {
             neuron.clearValues();
         }
+
+        // Debug
+        // System.out.println(highestValueMotor.getMaxValue());
+
         return highestValueMotor;
     }
 
@@ -127,14 +159,24 @@ public class Main {
             }
         }
 
+        Database.creatureCoordinates = new ArrayList<Coor>();
+        Database.waterCoordinates = new ArrayList<Coor>();
+        Database.foodCoordinates = new ArrayList<Coor>();
+        
         for(Creature creature : Database.creaturesList){
-            creature.setPos(startingPositions.remove(Database.random.nextInt(0,startingPositions.size())));
+            Coor coor = startingPositions.remove(Database.random.nextInt(0,startingPositions.size()));
+            creature.setPos(coor);
+            Database.creatureCoordinates.add(coor);
         }
         for(Food food : Database.foodsList){
-            food.setPos(startingPositions.remove(Database.random.nextInt(0,startingPositions.size())));
+            Coor coor = startingPositions.remove(Database.random.nextInt(0,startingPositions.size()));
+            food.setPos(coor);
+            Database.foodCoordinates.add(coor);
         }
         for(Water water : Database.watersList){
-            water.setPos(startingPositions.remove(Database.random.nextInt(0,startingPositions.size())));
+            Coor coor = startingPositions.remove(Database.random.nextInt(0,startingPositions.size()));
+            water.setPos(coor);
+            Database.waterCoordinates.add(coor);
         }
     }
 }

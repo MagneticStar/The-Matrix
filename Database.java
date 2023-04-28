@@ -18,11 +18,16 @@ public class Database {
           public final static int simulationLength = 10; // How many generations there should be
           public final static int worldSize = 128; // The size of the square world
           public final static double mutationChance = 0.001; // The chance of mutation, must be between 0 and 1 (inclusive)
+          public final static int minimumFoodEaten = 1; // The minimum number of food a creature must eat to reproduce at the end of a generation
+          public final static int startingFoodCount = 100;
+          public final static int startingWaterCount = 100;
 
           // Trackers
           public static int currentGenerationTick; // How many ticks have passed this generation
           public static int currentGeneration; // How many generations have passed this simulation
           public static ArrayList<Coor> creatureCoordinates;
+          public static ArrayList<Coor> foodCoordinates;
+          public static ArrayList<Coor> waterCoordinates;
      
           // Brain Screen
           public static int brainScreenSizeX = 30;
