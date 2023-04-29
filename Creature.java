@@ -45,7 +45,7 @@ public class Creature extends ScreenObject{
         ArrayList<Creature> newCreatures = new ArrayList<Creature>();
         // Make this.foodeaten % Database.minimumFoodEaten creatures
         while(this.foodEaten>=Database.minimumFoodEaten){
-            this.usedFood();
+            this.foodEaten-=Database.minimumFoodEaten;
 
             Genome genome;
             Creature creature;
@@ -88,6 +88,7 @@ public class Creature extends ScreenObject{
             // Don't Mutate
             else{
                 creature = this;
+                creature.clearFood();
             }
             newCreatures.add(creature);
         }
@@ -100,7 +101,7 @@ public class Creature extends ScreenObject{
         this.foodEaten++;
     }
 
-    public void usedFood(){
-        this.foodEaten-=Database.minimumFoodEaten;
+    public void clearFood(){
+        this.foodEaten = 0;
     }
 }

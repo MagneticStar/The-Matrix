@@ -20,12 +20,9 @@ public class Main {
             // Debug
             System.out.println("Generation: "+(Database.currentGeneration+1));
             
-            // Repopulate with food and water
+            // Repopulate with food
             while(Database.foodsList.size()<Database.startingFoodCount){
                 Database.foodsList.add(new Food());
-            }
-            while(Database.watersList.size()<Database.startingWaterCount){
-                Database.watersList.add(new Water());
             }
 
             // Gives every instantiated creature, food, and water a unique position
@@ -157,11 +154,6 @@ public class Main {
             Coor coor = startingPositions.remove(Database.random.nextInt(0,startingPositions.size()));
             food.setPos(coor);
             Database.foodCoordinates.add(coor);
-        }
-        for(Water water : Database.watersList){
-            Coor coor = startingPositions.remove(Database.random.nextInt(0,startingPositions.size()));
-            water.setPos(coor);
-            Database.waterCoordinates.add(coor);
         }
     }
 }
