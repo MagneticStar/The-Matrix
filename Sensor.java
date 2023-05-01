@@ -1,7 +1,5 @@
 import java.util.ArrayList;
 
-// search is very slow.
-
 public class Sensor extends Neuron{
 
     public SensorMethod sensorMethod; 
