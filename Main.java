@@ -3,12 +3,9 @@ import java.util.ArrayList;
 public class Main {
    
     public static void main(String[] args) {
-        // Add Food and Water
+        // Add Food
         for (int i = 0; i < Database.amountOfFood; i++) {
             Database.foodsList.add(new Food());
-        }
-        for (int i = 0; i < Database.amountOfWater; i++) {
-            Database.watersList.add(new Water());
         }
         // Create creatureCount creatures
         for (int i = 0; i < Database.generationSize; i++) {
@@ -132,9 +129,6 @@ public class Main {
         }
         for(Food food : Database.foodsList){
             food.setPos(startingPositions.remove(Database.random.nextInt(0,startingPositions.size())));
-        }
-        for(Water water : Database.watersList){
-            water.setPos(startingPositions.remove(Database.random.nextInt(0,startingPositions.size())));
         }
     }
 }

@@ -3,21 +3,18 @@
 public class Sensor extends Neuron{
 
     public SensorMethod sensorMethod; 
-    private static int numberOfSensorMethods = 9; // Update this when creating new Sensor methods
+    private static int numberOfSensorMethods = 6; // Update this when creating new Sensor methods
     private static int searchDepth = 10;
 
     public Sensor(Creature s, int methodID) {
         super("Sensor");
         switch(methodID%(numberOfSensorMethods)){
             case 0: this.sensorMethod = Sensor::nearestFoodDistance; break;
-            case 1: this.sensorMethod = Sensor::nearestWaterDistance; break;
-            case 2: this.sensorMethod = Sensor::detectFoodXDirection; break;
-            case 3: this.sensorMethod = Sensor::detectWaterXDirection; break;
-            case 4: this.sensorMethod = Sensor::detectFoodYDirection; break;
-            case 5: this.sensorMethod = Sensor::detectWaterYDirection; break;
-            case 6: this.sensorMethod = Sensor::Oscillator; break;
-            case 7: this.sensorMethod = Sensor::nearestCreatureDistance; break;
-            case 8: this.sensorMethod = Sensor::random; break;
+            case 1: this.sensorMethod = Sensor::detectFoodXDirection; break;
+            case 2: this.sensorMethod = Sensor::detectFoodYDirection; break;
+            case 3: this.sensorMethod = Sensor::Oscillator; break;
+            case 4: this.sensorMethod = Sensor::nearestCreatureDistance; break;
+            case 5: this.sensorMethod = Sensor::random; break;
         }
     }
     
@@ -35,22 +32,6 @@ public class Sensor extends Neuron{
             for (Food f: Database.foodsList) {
                 if (f.getPos().equals(near)) {
                     double d = distance(f, creature);
-                    if (d != -1.0) {
-                        // System.out.println("Distance: "+d+" Adjusted: "+(1-(d/Database.worldSize)));
-                        return 1-(d/Database.worldSize);
-                    }
-                }
-            }
-        }
-        return -1.0;
-    }
-
-    private static double nearestWaterDistance(Creature creature){
-        for (int i = 0; i < searchDepth; i++) {
-            Coor near = search(i, creature.getPos(), "water");
-            for (Water w: Database.watersList) {
-                if (w.getPos().equals(near)) {
-                    double d = distance(w, creature);
                     if (d != -1.0) {
                         // System.out.println("Distance: "+d+" Adjusted: "+(1-(d/Database.worldSize)));
                         return 1-(d/Database.worldSize);
@@ -84,30 +65,7 @@ public class Sensor extends Neuron{
         }
         return 0.0;
     }
-    private static double detectWaterXDirection (Creature creature) {
-        for(int i=0; i<searchDepth; i++){
-            Coor near = search(i, creature.getPos(), "water");
-            for (Water w: Database.watersList) {
-                if (w.getPos().equals(near)) {
-                    return directionX(w, creature);
-                }
-            }
-        }
-        return 0.0;
-    }
     
-    private static double detectWaterYDirection (Creature creature) {
-        for(int i=0; i<searchDepth; i++){
-            Coor near = search(i, creature.getPos(), "water");
-            for (Water w: Database.watersList) {
-                if (w.getPos().equals(near)) {
-                    return directionY(w, creature);
-                }
-            }
-        }
-        return 0.0;
-    }
-
     private static double Oscillator(Creature creature) {
         if(Database.currentGenerationTick%creature.getGenome().getOscillatorPeriod()==0){
             return 1;
@@ -192,13 +150,6 @@ public class Sensor extends Neuron{
             case "food": 
                 for (Food food: Database.foodsList) {
                     if (food.getPos().equals(temp)) {
-                        return true;
-                    }
-                }
-                return false;
-            case "water": 
-                for (Water water : Database.watersList) {
-                    if (water.getPos().equals(temp)) {
                         return true;
                     }
                 }
