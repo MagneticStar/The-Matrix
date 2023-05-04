@@ -3,13 +3,6 @@ import java.util.ArrayList;
 public class Main {
    
     public static void main(String[] args) {
-        // Add Food and Water
-        for (int i = 0; i < Database.amountOfFood; i++) {
-            Database.foodsList.add(new Food());
-        }
-        for (int i = 0; i < Database.amountOfWater; i++) {
-            Database.watersList.add(new Water());
-        }
         // Create creatureCount creatures
         for (int i = 0; i < Database.generationSize; i++) {
         Database.creaturesList.add(new Creature());
@@ -39,7 +32,7 @@ public class Main {
 
             int avhung = 0;
             for (Creature creature : Database.creaturesList) {
-                avhung+=creature.getHunger();
+                // avhung+=creature.getHunger();
             }
             avhung/=Database.creaturesList.size();
 
@@ -48,8 +41,8 @@ public class Main {
             
             for(Creature creature : Database.creaturesList){
                 // Check whether they get to reproduce or not
-                if(creature.getHunger() > avhung+1){
-                    newGeneration.add(creature.reproduce());
+                // if(creature.getHunger() > avhung+1){
+                //     newGeneration.add(creature.reproduce());
                 // if(creature.getFoodCount()>=Database.minimumFoodEaten){
                 //     newGeneration.addAll(creature.reproduce());
                 // }
