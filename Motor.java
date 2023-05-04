@@ -1,7 +1,7 @@
 public class Motor extends Neuron{
 
     public MotorMethod motorMethod;
-    private static int numberOfMotorMethods = 5; // Update this when creating new Motor methods
+    private static int numberOfMotorMethods = 6; // Update this when creating new Motor methods
     public Motor(int methodID){
         super("Motor");
         switch(methodID%(numberOfMotorMethods)){
@@ -10,7 +10,7 @@ public class Motor extends Neuron{
             case 2: this.motorMethod = Motor::MoveRight; break;
             case 3: this.motorMethod = Motor::MoveLeft; break;
             case 4: this.motorMethod = Motor::Eat; break;
-            // case 5: this.motorMethod = Motor::DoNothing; break;
+            case 5: this.motorMethod = Motor::DoNothing; break;
         }
     }
 
@@ -37,6 +37,18 @@ public class Motor extends Neuron{
     // MOTOR METHODS // MOTOR METHODS // MOTOR METHODS //
     ////////////////////////////////////////////////////////
 
+    private static void MoveUp(Creature creature){
+        creature.setPosY((creature.getPosY() + 1) % Database.worldSize);
+    }
+    private static void MoveDown(Creature creature){
+        creature.setPosY((creature.getPosY() - 1) % Database.worldSize);
+    }
+    private static void MoveLeft(Creature creature){
+        creature.setPosX((creature.getPosX() - 1) % Database.worldSize);
+    }
+    private static void MoveRight(Creature creature){
+        creature.setPosX((creature.getPosX() + 1) % Database.worldSize);
+    }
     private static void DoNothing(Creature creature) {
         // Only meant as a default method as it serves no value
     }
@@ -70,12 +82,6 @@ public class Motor extends Neuron{
                 // creature.setHunger(10);
                 // Database.foodsList.remove(food);
                 // creature.setHunger(100);
-                // Debug
-                // System.out.println("Ate Food");
-
-                // creature.ateFood();
-                Database.foodsList.remove(food);
-                Database.foodCoordinates.remove(food.getPos());
                 break;
             }
         }
