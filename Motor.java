@@ -1,7 +1,7 @@
 public class Motor extends Neuron{
 
     public MotorMethod motorMethod;
-    private static int numberOfMotorMethods = 7; // Update this when creating new Motor methods
+    private static int numberOfMotorMethods = 5; // Update this when creating new Motor methods
     public Motor(int methodID){
         super("Motor");
         switch(methodID%(numberOfMotorMethods)){
@@ -10,8 +10,7 @@ public class Motor extends Neuron{
             case 2: this.motorMethod = Motor::MoveRight; break;
             case 3: this.motorMethod = Motor::MoveLeft; break;
             case 4: this.motorMethod = Motor::Eat; break;
-            case 5: this.motorMethod = Motor::Drink; break;
-            case 6: this.motorMethod = Motor::DoNothing; break;
+            // case 5: this.motorMethod = Motor::DoNothing; break;
         }
     }
 
@@ -76,18 +75,7 @@ public class Motor extends Neuron{
 
                 // creature.ateFood();
                 Database.foodsList.remove(food);
-                // Database.foodCoordinates.remove(food.getPos());
-                // break;
-            }
-        }
-    }
-    private static void Drink(Creature creature){
-        for (Water water : Database.watersList) {
-            if (creature.getPos().equals(water.getPos())) {
-                // place thirst stuff here
-
-                Database.watersList.remove(water);
-                Database.waterCoordinates.remove(water.getPos());
+                Database.foodCoordinates.remove(food.getPos());
                 break;
             }
         }

@@ -45,38 +45,27 @@ public class Creature extends ScreenObject{
         ArrayList<Creature> newCreatures = new ArrayList<Creature>();
         // Make this.foodeaten % Database.minimumFoodEaten creatures
         while(this.foodEaten>=Database.minimumFoodEaten){
-            this.usedFood();
+            this.foodEaten-=Database.minimumFoodEaten;
 
             Genome genome;
             Creature creature;
 
             // Mutate
             if(Database.random.nextDouble(0,1)<Database.mutationChance){
+
+                String newDNA = this.getGenome().getDNA();
+                int dnaLength = this.getGenome().getDNA().length();
                 // Debug
-                int mutationCounter = 0;
-                
-                String newDNA = "";
-                double currentMutationChance = Database.mutationChance;
-                for(char bit : this.getGenome().getDNA().toCharArray()){
-                    if(Database.random.nextDouble(0,1)<currentMutationChance){
-                        // Mutate the DNA
-                        newDNA+=(bit+1)%2;
-                        currentMutationChance = Database.mutationChance;
-                        mutationCounter++;
-                    }
-                    else{
-                        // Don't mutate the DNA but increase the chance of mutation
-                        newDNA+=bit;
-                        currentMutationChance += Database.mutationChance;
-                    }
+                int bitMutationTotal = (int) (dnaLength/Database.bitMutationAverage);
+
+
+                while(bitMutationTotal>0){
+                    int randomBit = Database.random.nextInt(dnaLength);
+                    newDNA = newDNA.substring(0, randomBit) + ((Integer.parseInt(newDNA.substring(randomBit, randomBit+1))+1)%2) + newDNA.substring(randomBit+1);
+                    bitMutationTotal--;
                 }
 
-                // Debug
-                // System.out.println("Old DNA: "+this.getGenome().getDNA());
-                // System.out.println("New DNA"+this.getGenome().getDNA());
-                System.out.println("Number of bits mutated: "+mutationCounter);
-
-                // Mutate the DNA here (Needs Implemented)
+                // Create the new genome with the newDNA
                 genome = new Genome(this,newDNA);
 
                 // Create the new creature with the new genome 
@@ -88,6 +77,7 @@ public class Creature extends ScreenObject{
             // Don't Mutate
             else{
                 creature = this;
+                creature.clearFood();
             }
             newCreatures.add(creature);
         }
@@ -100,7 +90,7 @@ public class Creature extends ScreenObject{
         this.foodEaten++;
     }
 
-    public void usedFood(){
-        this.foodEaten-=Database.minimumFoodEaten;
+    public void clearFood(){
+        this.foodEaten = 0;
     }
 }
