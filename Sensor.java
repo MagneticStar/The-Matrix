@@ -4,7 +4,7 @@ public class Sensor extends Neuron{
 
     public SensorMethod sensorMethod; 
     private static int numberOfSensorMethods = 6; // Update this when creating new Sensor methods
-    private static int searchDepth = 10;
+    private static int searchDepth = 0;
 
     public Sensor(Creature s, int methodID) {
         super("Sensor");
@@ -127,6 +127,7 @@ public class Sensor extends Neuron{
             return 0.0;
         }
     }
+    // distance needs to be fixed for modulus
     
     public static double distance(ScreenObject obj, Creature creature) {
         // using Pyth theorem
@@ -163,53 +164,53 @@ public class Sensor extends Neuron{
         Coor temp = new Coor();
         
         // Search logic
-        temp.setX(center.x());temp.setY(center.y()+i); // Above
+        temp.setX(center.x() % Database.worldSize);temp.setY(center.y()+i % Database.worldSize); // Above
         if (checkLocation(type, temp)) {
             return temp;
         }
-        temp.setX(center.x()+i);temp.setY(center.y()); // Right
+        temp.setX(center.x()+i % Database.worldSize);temp.setY(center.y() % Database.worldSize); // Right
         if (checkLocation(type, temp)) {
             return temp;
         }
-        temp.setX(center.x()-i);temp.setY(center.y()); // Left
+        temp.setX(center.x()-i % Database.worldSize);temp.setY(center.y() % Database.worldSize); // Left
         if (checkLocation(type, temp)) {
             return temp;
         }
-        temp.setX(center.x());temp.setY(center.y()-i); // Below
+        temp.setX(center.x() % Database.worldSize);temp.setY(center.y()-i % Database.worldSize); // Below
         if (checkLocation(type, temp)) {
             return temp;
         }
         for(int j=1; j<i+1;j++){
-            temp.setX(center.x()+j);temp.setY(center.y()+i); // Above right
+            temp.setX(center.x()+j % Database.worldSize);temp.setY(center.y()+i % Database.worldSize); // Above right
             if (checkLocation(type, temp)) {
                 return temp;
             } 
-            temp.setX(center.x()-j);temp.setY(center.y()+i); // Above Left
+            temp.setX(center.x()-j % Database.worldSize);temp.setY(center.y()+i % Database.worldSize); // Above Left
             if (checkLocation(type, temp)) {
                 return temp;
             } 
-            temp.setX(center.x()+j);temp.setY(center.y()-i); // Below Right
+            temp.setX(center.x()+j % Database.worldSize);temp.setY(center.y()-i % Database.worldSize); // Below Right
             if (checkLocation(type, temp)) {
                 return temp;
             } 
-            temp.setX(center.x()-j);temp.setY(center.y()-i); // Below Left
+            temp.setX(center.x()-j % Database.worldSize);temp.setY(center.y()-i % Database.worldSize); // Below Left
             if (checkLocation(type, temp)) {
                 return temp;
             }
             if(j < i){
-                temp.setX(center.x()+i);temp.setY(center.y()+j); // Right Above
+                temp.setX(center.x()+i % Database.worldSize);temp.setY(center.y()+j % Database.worldSize); // Right Above
                 if (checkLocation(type, temp)) {
                     return temp;
                 } 
-                temp.setX(center.x()+i);temp.setY(center.y()-j); // Right Below
+                temp.setX(center.x()+i % Database.worldSize);temp.setY(center.y()-j % Database.worldSize); // Right Below
                 if (checkLocation(type, temp)) {
                     return temp;
                 } 
-                temp.setX(center.x()-i);temp.setY(center.y()+j); // Left Above
+                temp.setX(center.x()-i % Database.worldSize);temp.setY(center.y()+j % Database.worldSize); // Left Above
                 if (checkLocation(type, temp)) {
                     return temp;
                 }  
-                temp.setX(center.x()-i);temp.setY(center.y()-j); // Left Below
+                temp.setX(center.x()-i % Database.worldSize);temp.setY(center.y()-j % Database.worldSize); // Left Below
                 if (checkLocation(type, temp)) {
                     return temp;
                 }

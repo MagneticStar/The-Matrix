@@ -10,7 +10,7 @@ public class Motor extends Neuron{
             case 2: this.motorMethod = Motor::MoveRight; break;
             case 3: this.motorMethod = Motor::MoveLeft; break;
             case 4: this.motorMethod = Motor::Eat; break;
-            case 6: this.motorMethod = Motor::DoNothing; break;
+            case 5: this.motorMethod = Motor::DoNothing; break;
         }
     }
 
@@ -38,16 +38,16 @@ public class Motor extends Neuron{
     ////////////////////////////////////////////////////////
 
     private static void MoveUp(Creature creature){
-        creature.setPosY(creature.getPosY() + 1);
+        creature.setPosY((creature.getPosY() + 1) % Database.worldSize);
     }
     private static void MoveDown(Creature creature){
-        creature.setPosY(creature.getPosY() - 1);
+        creature.setPosY((creature.getPosY() - 1) % Database.worldSize);
     }
     private static void MoveLeft(Creature creature){
-        creature.setPosX(creature.getPosX() - 1);
+        creature.setPosX((creature.getPosX() - 1) % Database.worldSize);
     }
     private static void MoveRight(Creature creature){
-        creature.setPosX(creature.getPosX() + 1);
+        creature.setPosX((creature.getPosX() + 1) % Database.worldSize);
     }
     private static void DoNothing(Creature creature) {
         // Only meant as a default method as it serves no value

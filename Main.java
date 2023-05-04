@@ -37,7 +37,7 @@ public class Main {
             
             for(Creature creature : Database.creaturesList){
                 // Check whether they get to reproduce or not
-                if(creature.getHunger() > avhung+1){
+                if(creature.getHunger() > avhung){
                     newGeneration.add(creature.reproduce());
                 }
             }
