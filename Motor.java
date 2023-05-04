@@ -38,41 +38,29 @@ public class Motor extends Neuron{
     ////////////////////////////////////////////////////////
 
     private static void MoveUp(Creature creature){
+        Database.creatureCoordinates.remove(creature.getPos());
         creature.setPosY((creature.getPosY() + 1) % Database.worldSize);
+        Database.creatureCoordinates.add(creature.getPos());
     }
     private static void MoveDown(Creature creature){
+        Database.creatureCoordinates.remove(creature.getPos());
         creature.setPosY((creature.getPosY() - 1) % Database.worldSize);
+        Database.creatureCoordinates.add(creature.getPos());
     }
     private static void MoveLeft(Creature creature){
+        Database.creatureCoordinates.remove(creature.getPos());
         creature.setPosX((creature.getPosX() - 1) % Database.worldSize);
+        Database.creatureCoordinates.add(creature.getPos());
     }
     private static void MoveRight(Creature creature){
+        Database.creatureCoordinates.remove(creature.getPos());
         creature.setPosX((creature.getPosX() + 1) % Database.worldSize);
+        Database.creatureCoordinates.add(creature.getPos());
     }
     private static void DoNothing(Creature creature) {
         // Only meant as a default method as it serves no value
     }
 
-    private static void MoveUp(Creature creature){
-        Database.creatureCoordinates.remove(creature.getPos());
-        creature.setPosY(creature.getPosY() + 1);
-        Database.creatureCoordinates.add(creature.getPos());
-    }
-    private static void MoveDown(Creature creature){
-        Database.creatureCoordinates.remove(creature.getPos());
-        creature.setPosY(creature.getPosY() - 1);
-        Database.creatureCoordinates.add(creature.getPos());
-    }
-    private static void MoveLeft(Creature creature){
-        Database.creatureCoordinates.remove(creature.getPos());
-        creature.setPosX(creature.getPosX() - 1);
-        Database.creatureCoordinates.add(creature.getPos());
-    }
-    private static void MoveRight(Creature creature){
-        Database.creatureCoordinates.remove(creature.getPos());
-        creature.setPosX(creature.getPosX() + 1);
-        Database.creatureCoordinates.add(creature.getPos());
-    }
     private static void Eat(Creature creature) {
         for (Food food : Database.foodsList) {
             if (creature.getPos().equals(food.getPos())) {
