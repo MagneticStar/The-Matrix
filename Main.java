@@ -36,7 +36,7 @@ public class Main {
 
             int avhung = 0;
             for (Creature creature : Database.creaturesList) {
-                avhung+=creature.getHunger();
+                // avhung+=creature.getHunger();
             }
             avhung/=Database.creaturesList.size();
 
@@ -45,8 +45,8 @@ public class Main {
             
             for(Creature creature : Database.creaturesList){
                 // Check whether they get to reproduce or not
-                if(creature.getHunger() > avhung){
-                    newGeneration.add(creature.reproduce());
+                // if(creature.getHunger() > avhung+1){
+                //     newGeneration.add(creature.reproduce());
                 // if(creature.getFoodCount()>=Database.minimumFoodEaten){
                 //     newGeneration.addAll(creature.reproduce());
                 // }
