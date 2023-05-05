@@ -22,7 +22,7 @@ public class Main {
         // }
         
         // Time between ticks
-        if(Database.currentGeneration > 0){
+        if(Database.doVisuals){
             panel.repaint();
             try {
                 Thread.sleep(20);
@@ -33,18 +33,24 @@ public class Main {
     }
     public static void startSimulation() {
         // ADD SERIALIZATION CHECK HERE
-        // ELSE
-        // Create generation 0
-        for (int i = 0; i < Database.generationSize; i++) {
-        Database.creaturesList.add(new Creature());
-        }
-        // Run the simulation
-        for(Database.currentGeneration = 0; Database.currentGeneration < Database.simulationLength && ; Database.currentGeneration++){
-            
-        }
+
+        // IF (PREEXISTING DNA){
+        //      MAKE GENERATION
+        // }
+        // ELSE{
+            // Create generation 0
+            for (int i = 0; i < Database.generationSize; i++) {
+                Database.creaturesList.add(new Creature());
+            }
+            runGeneration();
+        // }
     }
 
-    public static void nextGeneration(){
+    public static void runGeneration(){
+        if(Database.currentGeneration > Database.simulationLength){
+            return;
+        }
+
         // Debug
         System.out.println("Generation: "+(Database.currentGeneration+1));
             
@@ -63,24 +69,37 @@ public class Main {
             tick(Screens.simulationPanel, Database.currentGenerationTick);
         }
 
-        // Survival Criteria Check (Needs to be changed to hunger or something)
+        // Check if the next generation should be run immediately
+        if(Database.runNextGeneration){
+            // If so, initialize the next generation and run it
+            initializeNextGeneration();
+        }
+        else{
+            // SERIALIZATION
+        }
+        return;
+    }
+
+    public static void initializeNextGeneration(){
+        int reproductionCount = 0;
         ArrayList<Creature> newGeneration = new ArrayList<Creature>();
-        int highRepo = 0;
         for(Creature creature : Database.creaturesList){
-            // Check whether they get to reproduce or not
-            newGeneration.addAll(creature.reproduce());
-            if (creature.repo > highRepo) {
-                highRepo = creature.repo;
+            // Survival Criteria Check
+            if(creature.getFoodCount() >= Database.minimumFoodEaten){
+                reproductionCount++;
+                newGeneration.addAll(creature.reproduce());
             }
         }
+
         // Debug
-        System.out.println(newGeneration.size()+" creatures reproduced!");
-        System.out.println(highRepo);
+        System.out.println(reproductionCount+" creatures reproduced!");
+
         // Fill the rest of the new generation with random creatures
         for(int i = newGeneration.size(); i<Database.generationSize; i++){
             newGeneration.add(new Creature());
         }
         Database.creaturesList = newGeneration;
+        runGeneration();
     }
 
     // extra funcs
