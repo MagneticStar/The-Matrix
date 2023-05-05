@@ -24,6 +24,8 @@ public class Database {
           public static int currentGenerationTick; // How many ticks have passed this generation
           public static int currentGeneration; // How many generations have passed this simulation
           public static ArrayList<Coor> creatureCoordinates;
+          public static ArrayList<Coor> foodCoordinates;
+          public static ArrayList<Coor> waterCoordinates;
      
           // Brain Screen
           public static int brainScreenSizeX = 30;

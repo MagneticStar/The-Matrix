@@ -1,4 +1,4 @@
-// search is very slow.
+import java.util.ArrayList;
 
 public class Sensor extends Neuron{
 
@@ -9,7 +9,8 @@ public class Sensor extends Neuron{
 
     public Sensor(Creature s, int methodID) {
         super("Sensor");
-        switch(methodID%(numberOfSensorMethods)){
+        this.methodID = methodID%(numberOfSensorMethods);
+        switch(this.methodID){
             case 0: this.sensorMethod = Sensor::nearestFoodDistance; break;
             case 1: this.sensorMethod = Sensor::detectFoodXDirection; break;
             case 2: this.sensorMethod = Sensor::detectFoodYDirection; break;
@@ -19,6 +20,7 @@ public class Sensor extends Neuron{
         }
     }
     
+
     public interface SensorMethod{
         double invoke(Creature creature);
     }
@@ -182,11 +184,11 @@ public class Sensor extends Neuron{
 
     public static double directionX(Coor coor, Creature creature) {
         // left
-        if (obj.getPosX() < creature.getPosX()) {
+        if (coor.x() < creature.getPosX()) {
             return -1.0;
         }
         // right
-        else if (obj.getPosX() > creature.getPosX()) {
+        else if (coor.y() > creature.getPosX()) {
             return 1.0;
         }
         // same
@@ -194,13 +196,13 @@ public class Sensor extends Neuron{
             return 0.0;
         }
     }
-    public static double directionY(ScreenObject obj, Creature creature) {
+    public static double directionY(Coor coor, Creature creature) {
         // down
-        if (obj.getPosY() < creature.getPosY()) {
+        if (coor.y() < creature.getPosY()) {
             return -1.0;
         }
         // up
-        else if (obj.getPosY() > creature.getPosY()) {
+        else if (coor.x() > creature.getPosY()) {
             return 1.0;
         }
         // same
@@ -210,10 +212,10 @@ public class Sensor extends Neuron{
     }
     // distance needs to be fixed for modulus
     
-    public static double distance(ScreenObject obj, Creature creature) {
+    public static double distance(Coor coor, Creature creature) {
         // using Pyth theorem
         try {
-            return Math.sqrt(Math.pow(obj.getPos().x() - creature.getPos().x(), 2) + Math.pow(obj.getPos().y() - creature.getPos().y(), 2));
+            return Math.sqrt(Math.pow(coor.x() - creature.getPos().x(), 2) + Math.pow(coor.y() - creature.getPos().y(), 2));
         } catch (NullPointerException e) {
             return -1.0;
         }    

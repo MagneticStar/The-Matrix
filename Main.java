@@ -84,8 +84,18 @@ public class Main {
     // extra funcs
 
     private static Motor determineNeuronActivation(Creature creature){
+        Sensor[] checkedSensors = new Sensor[Sensor.numberOfSensorMethods];
         for(Sensor sensor : creature.getGenome().getSensors()){
-            sensor.addValue(sensor.sensorMethod.invoke(creature));
+            if(checkedSensors[sensor.methodID] == null){
+                // This sensor type hasnt been run yet for this creature
+                sensor.addValue(sensor.sensorMethod.invoke(creature));
+                checkedSensors[sensor.methodID] = sensor;
+            }
+            else{
+                // This sensor type has been run for this creature
+                sensor.addValue(checkedSensors[sensor.methodID].getValues().get(0));
+            }
+
             iterateThroughNeuronChain(sensor);
         }
 
@@ -101,6 +111,10 @@ public class Main {
         for (Neuron neuron : creature.getGenome().getNeurons()) {
             neuron.clearValues();
         }
+
+        // Debug
+        // System.out.println(highestValueMotor.getMaxValue());
+
         return highestValueMotor;
     }
 
@@ -131,11 +145,19 @@ public class Main {
             }
         }
 
+        Database.creatureCoordinates = new ArrayList<Coor>();
+        Database.waterCoordinates = new ArrayList<Coor>();
+        Database.foodCoordinates = new ArrayList<Coor>();
+        
         for(Creature creature : Database.creaturesList){
-            creature.setPos(startingPositions.remove(Database.random.nextInt(0,startingPositions.size())));
+            Coor coor = startingPositions.remove(Database.random.nextInt(0,startingPositions.size()));
+            creature.setPos(coor);
+            Database.creatureCoordinates.add(coor);
         }
         for(Food food : Database.foodsList){
-            food.setPos(startingPositions.remove(Database.random.nextInt(0,startingPositions.size())));
+            Coor coor = startingPositions.remove(Database.random.nextInt(0,startingPositions.size()));
+            food.setPos(coor);
+            Database.foodCoordinates.add(coor);
         }
     }
 }
