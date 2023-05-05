@@ -24,11 +24,11 @@ public class Main {
         // Time between ticks
         if(Database.currentGeneration > 0){
             panel.repaint();
-            try {
-                Thread.sleep(20);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            // try {
+            //     Thread.sleep(20);
+            // } catch (InterruptedException e) {
+            //     e.printStackTrace();
+            // }
         }
     }
     public static void simulation() {
@@ -62,17 +62,19 @@ public class Main {
 
             // Survival Criteria Check (Needs to be changed to hunger or something)
             ArrayList<Creature> newGeneration = new ArrayList<Creature>();
-            int highRepo = 0;
+
+            int bestPerformance = 0;
             for(Creature creature : Database.creaturesList){
                 // Check whether they get to reproduce or not
                 newGeneration.addAll(creature.reproduce());
-                if (creature.repo > highRepo) {
-                    highRepo = creature.repo;
+                if (creature.getFoodCountAll() > bestPerformance) {
+                    bestPerformance = creature.getFoodCountAll();
                 }
             }
+
             // Debug
             System.out.println(newGeneration.size()+" creatures reproduced!");
-            System.out.println(highRepo);
+            System.out.println(bestPerformance);
             // Fill the rest of the new generation with random creatures
             for(int i = newGeneration.size(); i<Database.generationSize; i++){
                 newGeneration.add(new Creature());

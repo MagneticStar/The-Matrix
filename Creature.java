@@ -4,7 +4,7 @@ import java.util.ArrayList;
 public class Creature extends ScreenObject{
     private Genome genome;
     private int foodEaten;
-    public int repo;
+    private int foodEatenAll;
     // constructors
     public Creature() {
         super();
@@ -34,7 +34,10 @@ public class Creature extends ScreenObject{
         return new Coor(ans[0], ans[1]);
     }
     public int getFoodCount(){
-        return this.foodEaten;
+        return foodEaten;
+    }
+    public int getFoodCountAll() {
+        return foodEatenAll;
     }
 
     // Methods
@@ -43,19 +46,17 @@ public class Creature extends ScreenObject{
         // System.out.println("Reproduced!");
 
         ArrayList<Creature> newCreatures = new ArrayList<Creature>();
-        // Make this.foodeaten % Database.minimumFoodEaten creatures
-        while(this.foodEaten*200>=Database.minimumFoodEaten){
-            repo++;
-            // this.foodEaten-=Database.minimumFoodEaten;
-            this.foodEaten--;
+        
+        while(this.foodEaten>=Database.minimumFoodEaten){
+            foodEaten--;
             Genome genome;
             Creature creature;
 
             // Mutate
             if(Database.random.nextDouble(0,1)<Database.mutationChance){
 
-                String newDNA = this.getGenome().getDNA();
-                int dnaLength = this.getGenome().getDNA().length();
+                String newDNA = getGenome().getDNA();
+                int dnaLength = getGenome().getDNA().length();
                 // Debug
                 int bitMutationTotal = (int) (dnaLength/Database.bitMutationAverage);
 
@@ -80,10 +81,11 @@ public class Creature extends ScreenObject{
                 creature = this;
                 creature.clearFood();
             }
+            for (int spread = 100; spread > 0; spread--) {}
             newCreatures.add(creature);
-            if (newCreatures.size()>Database.generationSize) {
-                newCreatures.remove(0);
-            }
+            // if (newCreatures.size()>Database.generationSize) {
+            //     newCreatures.remove(0);
+            // }
         }
         return newCreatures;
     }
@@ -91,10 +93,11 @@ public class Creature extends ScreenObject{
 
     // hunger
     public void ateFood() {
-        this.foodEaten++;
+        foodEaten++;
+        foodEatenAll++;
     }
 
     public void clearFood(){
-        this.foodEaten = 0;
+        foodEaten = 0;
     }
 }
