@@ -14,7 +14,6 @@ public class guiPanel extends JPanel {
 
     public void addComponents(){
         searchDropDown = new JComboBox<String>(Screens.subNames);
-        searchDropDown.setSelectedIndex(0); 
         searchDropDown.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

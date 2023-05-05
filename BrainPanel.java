@@ -11,7 +11,6 @@ public class BrainPanel extends JPanel {
 
     public void selectionBox(){
         searchDropDown = new JComboBox<String>(Screens.subNames);
-        searchDropDown.setSelectedIndex(0); 
         searchDropDown.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -37,8 +36,13 @@ public class BrainPanel extends JPanel {
     }
     public void drawNeuron(Graphics g) {
         
+        if (Database.creaturesList.size() == 0) {
+            return;
+        }
         Creature subject = Database.creaturesList.get(currentlySelectedSubjectIndex);
+        
         Neuron[] neurons = subject.getGenome().getNeurons();
+        
         int i = 1;
         int ic = 0;
         int sc = 0;
