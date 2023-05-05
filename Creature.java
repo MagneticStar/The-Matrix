@@ -4,7 +4,7 @@ import java.util.ArrayList;
 public class Creature extends ScreenObject{
     private Genome genome;
     private int foodEaten;
-
+    public int repo;
     // constructors
     public Creature() {
         super();
@@ -44,9 +44,10 @@ public class Creature extends ScreenObject{
 
         ArrayList<Creature> newCreatures = new ArrayList<Creature>();
         // Make this.foodeaten % Database.minimumFoodEaten creatures
-        while(this.foodEaten>=Database.minimumFoodEaten){
-            this.foodEaten-=Database.minimumFoodEaten;
-
+        while(this.foodEaten*200>=Database.minimumFoodEaten){
+            repo++;
+            // this.foodEaten-=Database.minimumFoodEaten;
+            this.foodEaten--;
             Genome genome;
             Creature creature;
 
@@ -80,6 +81,9 @@ public class Creature extends ScreenObject{
                 creature.clearFood();
             }
             newCreatures.add(creature);
+            if (newCreatures.size()>Database.generationSize) {
+                newCreatures.remove(0);
+            }
         }
         return newCreatures;
     }

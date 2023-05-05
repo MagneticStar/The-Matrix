@@ -74,8 +74,8 @@ public class Motor extends Neuron{
                 // System.out.println("Ate Food");
 
                 creature.ateFood();
-                Database.foodsList.remove(food);
-                Database.foodCoordinates.remove(food.getPos());
+                // Database.foodsList.remove(food);
+                // Database.foodCoordinates.remove(food.getPos());
                 break;
             }
         }
