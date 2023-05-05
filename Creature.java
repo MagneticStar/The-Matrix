@@ -81,11 +81,7 @@ public class Creature extends ScreenObject{
                 creature = this;
                 creature.clearFood();
             }
-            for (int spread = 100; spread > 0; spread--) {}
             newCreatures.add(creature);
-            // if (newCreatures.size()>Database.generationSize) {
-            //     newCreatures.remove(0);
-            // }
         }
         return newCreatures;
     }
