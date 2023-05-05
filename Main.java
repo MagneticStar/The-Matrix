@@ -24,11 +24,11 @@ public class Main {
         // Time between ticks
         if(Database.doVisuals){
             panel.repaint();
-            try {
-                Thread.sleep(20);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            // try {
+            //     Thread.sleep(20);
+            // } catch (InterruptedException e) {
+            //     e.printStackTrace();
+            // }
         }
     }
     public static void startSimulation() {
