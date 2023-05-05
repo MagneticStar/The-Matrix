@@ -9,9 +9,14 @@ public class Database {
 
      // Parameters
           // Simulation 
+<<<<<<< Updated upstream
           public final static int generationSize = 1; // How many creatures should there be at the start of a new generation
           public final static int amountOfFood = 100; // how many foods should be initially created
           public final static int amountOfWater = 100; // how many Waters should be initially created
+=======
+          public final static int generationSize = 1000; // How many creatures should there be at the start of a new generation
+          public final static int amountOfFood = 1000; // how many foods should be initially created
+>>>>>>> Stashed changes
           
           public final static int generationLength = 31; // How many ticks each generation is
           public final static int simulationLength = 1; // How many generations there should be
@@ -38,7 +43,7 @@ public class Database {
 
           // Random
           public final static Random random = new Random();
-          public final static int hungerCounter = 30;
+          // public final static int hungerCounter = 30;
      
      
 }

@@ -34,22 +34,17 @@ public class Main {
                 tick(Screens.simulationPanel, Database.currentGenerationTick);
             }
 
-            int avhung = 0;
-            for (Creature creature : Database.creaturesList) {
+            // int avhung = 0;
+            // for (Creature creature : Database.creaturesList) {
                 // avhung+=creature.getHunger();
-            }
-            avhung/=Database.creaturesList.size();
+            // }
+            // avhung/=Database.creaturesList.size();
 
             // Survival Criteria Check (Needs to be changed to hunger or something)
             ArrayList<Creature> newGeneration = new ArrayList<Creature>();
             
             for(Creature creature : Database.creaturesList){
-                // Check whether they get to reproduce or not
-                // if(creature.getHunger() > avhung+1){
-                //     newGeneration.add(creature.reproduce());
-                // if(creature.getFoodCount()>=Database.minimumFoodEaten){
-                //     newGeneration.addAll(creature.reproduce());
-                // }
+                newGeneration.addAll(creature.reproduce());
             }
             // Debug
             System.out.println(newGeneration.size()+" creatures reproduced!");

@@ -11,6 +11,7 @@ public class SimulationPanel extends JPanel{
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         // Where all graphics are rendered
+        highlightSubject(g);
         drawSub(g);
         drawFood(g);
     }
@@ -28,5 +29,14 @@ public class SimulationPanel extends JPanel{
             g.setColor(Database.foodsList.get(i).getColor());
             g.fillRect(Database.foodsList.get(i).getPrintPos().x() - 2, Database.foodsList.get(i).getPrintPos().y() - 2, 4, 4);
         }
+    }
+
+    public void highlightSubject(Graphics g){
+        Creature creature = Database.creaturesList.get(guiPanel.currentlySelectedSubjectIndex);
+        g.setColor(Color.red);
+        g.fillOval(creature.getPrintPos().x()-15, creature.getPrintPos().y()-15, 30, 30);
+        
+        
+        
     }
 }
