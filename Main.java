@@ -42,7 +42,7 @@ public class Main {
                 Database.creaturesList.add(new Creature());
             }
         // }
-        
+
         Screens.createScreens();
         runGeneration();
     }
@@ -75,8 +75,11 @@ public class Main {
             // If so, initialize the next generation and run it
             initializeNextGeneration();
         }
-        else{
+        // else if(doSerialize){
             // SERIALIZATION
+        // }
+        else{
+            Database.generationFinished = true;
         }
         return;
     }
@@ -100,6 +103,7 @@ public class Main {
             newGeneration.add(new Creature());
         }
         Database.creaturesList = newGeneration;
+        Database.currentGeneration += 1;
         runGeneration();
     }
 
