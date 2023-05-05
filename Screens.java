@@ -22,6 +22,6 @@ public class Screens {
         for(int i=0; i<Database.creaturesList.size(); i++){
             subNames[i] = String.format("Creature %04d",i);
         }
-        brainPanel.selectionBox();
+        // brainPanel.selectionBox();
     }
 }
