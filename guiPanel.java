@@ -1,5 +1,7 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -12,35 +14,33 @@ public class guiPanel extends JPanel {
     private JCheckBox startGenerationsCheckBox;
     private JCheckBox showVisualsCheckBox;
     private JButton startGenerationButton;
-    public static int currentlySelectedSubjectIndex = 0;
+    public static int currentlySelectedCreatureIndex = -1;
 
     public guiPanel() {
         setBackground(Database.simulationScreenColor);
     }
 
     public void addComponents(){
+
         // Combobox
-        highlightComboBox = new JComboBox<String>(Screens.subNames);
+        highlightComboBox = new JComboBox<String>(Screens.creatureNames);
         highlightComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
             // Sets the neuron map panel to the neuron map of the selected subject. The string manipulation is to avoid searching for the index of the subject
-            currentlySelectedSubjectIndex = Integer.parseInt(highlightComboBox.getSelectedItem().toString().substring(highlightComboBox.getSelectedItem().toString().indexOf(" ")+1));
+            // currentlySelectedCreatureIndex = Integer.parseInt(highlightComboBox.getSelectedItem().toString().substring(highlightComboBox.getSelectedItem().toString().indexOf(" ")+1));
+            currentlySelectedCreatureIndex = highlightComboBox.getSelectedIndex()-1;
             repaint();
-            }
-        });
-        Screens.guiPanel.add(highlightComboBox);
+        }});
 
         // Checkbox
-        startGenerationsCheckBox = new JCheckBox("Automatically Start Generations",Database.runNextGeneration);
+        startGenerationsCheckBox = new JCheckBox("Automatically Start Generations",Database.autoStartGeneration);
         startGenerationsCheckBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            Database.runNextGeneration = !Database.runNextGeneration;
+            Database.autoStartGeneration = !Database.autoStartGeneration;
             repaint();
-            }
-        });
-        Screens.guiPanel.add(startGenerationsCheckBox);
+        }});
 
         // Checkbox
         showVisualsCheckBox = new JCheckBox("Show Visuals",Database.doVisuals);
@@ -49,9 +49,7 @@ public class guiPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
             Database.doVisuals = !Database.doVisuals;
             repaint();
-            }
-        });
-        Screens.guiPanel.add(showVisualsCheckBox);
+        }});
 
         // Button
         startGenerationButton = new JButton("Start Next Generation");
@@ -59,13 +57,17 @@ public class guiPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
             if(Database.generationFinished == true){
-                Main.initializeNextGeneration();
+                Database.generationFinished = false;
+                Database.startNextGeneration = true;
             }
-            Database.generationFinished = false;
             repaint();
-            }
-        });
+        }});
+        
+        // Add the components (order matters)
+        Screens.guiPanel.add(highlightComboBox);
         Screens.guiPanel.add(startGenerationButton);
+        Screens.guiPanel.add(showVisualsCheckBox);
+        Screens.guiPanel.add(startGenerationsCheckBox);
 
         Screens.guiPanel.revalidate();
     }

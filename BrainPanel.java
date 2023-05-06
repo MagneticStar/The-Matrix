@@ -7,16 +7,16 @@ import javax.swing.JPanel;
 public class BrainPanel extends JPanel {
     
     private JComboBox<String> searchDropDown;
-    private int currentlySelectedCreatureIndex = 0;
+    private int currentlySelectedCreatureIndex = -1;
 
     public void selectionBox(){
-        searchDropDown = new JComboBox<String>(Screens.subNames);
+        searchDropDown = new JComboBox<String>(Screens.creatureNames);
         searchDropDown.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
             // Sets the neuron map panel to the neuron map of the selected subject. The string manipulation is to avoid searching for the index of the subject
-            currentlySelectedCreatureIndex = Integer.parseInt(searchDropDown.getSelectedItem().toString().substring(searchDropDown.getSelectedItem().toString().indexOf(" ")+1));
-            Database.brainScreenSizeY = Database.creaturesList.get(currentlySelectedCreatureIndex).getGenome().getNeurons().length;
+            // currentlySelectedCreatureIndex = Integer.parseInt(searchDropDown.getSelectedItem().toString().substring(searchDropDown.getSelectedItem().toString().indexOf(" ")+1));
+            currentlySelectedCreatureIndex = searchDropDown.getSelectedIndex()-1;
             repaint();
             }
         });
@@ -35,13 +35,12 @@ public class BrainPanel extends JPanel {
         drawNeuron(g);
     }
     public void drawNeuron(Graphics g) {
-        
-        if (Database.creaturesList.size() == 0) {
+        if (Database.creaturesList.size() == 0 || currentlySelectedCreatureIndex == -1) {
             return;
         }
-        Creature subject = Database.creaturesList.get(currentlySelectedCreatureIndex);
         
-        Neuron[] neurons = subject.getGenome().getNeurons();
+        Neuron[] neurons = Database.creaturesList.get(currentlySelectedCreatureIndex).getGenome().getNeurons();
+        Database.brainScreenSizeY = neurons.length;
         
         int i = 1;
         int ic = 0;

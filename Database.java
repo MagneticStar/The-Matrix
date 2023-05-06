@@ -31,7 +31,8 @@ public class Database {
           public static ArrayList<Coor> waterCoordinates;
 
           public static boolean doVisuals = true;
-          public static boolean runNextGeneration = true;
+          public static boolean startNextGeneration = false;
+          public static boolean autoStartGeneration = true;
           public static boolean generationFinished = false;
      
           // Brain Screen
