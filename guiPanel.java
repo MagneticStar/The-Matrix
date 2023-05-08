@@ -1,11 +1,10 @@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class guiPanel extends JPanel {
@@ -14,10 +13,26 @@ public class guiPanel extends JPanel {
     private JCheckBox startGenerationsCheckBox;
     private JCheckBox showVisualsCheckBox;
     private JButton startGenerationButton;
+    private JLabel settingsLabel;
+    private String settingsText;
+    private String trackersText;
+    private String settingsLabelText;
     public static int currentlySelectedCreatureIndex = -1;
 
     public guiPanel() {
         setBackground(Database.simulationScreenColor);
+    }
+
+    public void updateLabel(){
+        trackersText = "<br/><br/>Current Step: "+(Database.currentGenerationTick+1);
+        trackersText += "<br/>Current Generation: "+(Database.currentGeneration+1);
+        trackersText += "<br/>Reproduced Last Generation: "+Database.reproducedLastGeneration;
+        trackersText += "<br/>Food Count: "+Database.foodsList.size()+"</html>";
+
+        settingsLabelText = settingsText+trackersText;
+        
+        settingsLabel.setText(settingsLabelText);
+        repaint();
     }
 
     public void addComponents(){
@@ -65,12 +80,20 @@ public class guiPanel extends JPanel {
             }
             repaint();
         }});
+
+        
+        // Label
+        settingsText = "<html>Generation Size: "+Database.generationSize+"<br/>Generation Length: "+Database.generationLength+"<br/>World Size: "+Database.worldSize+"<br/>Mutation Chance: "+Database.mutationChance+"<br/>Genome Size: "+Database.genomeLength;
+        settingsLabel = new JLabel();
+        updateLabel();
+        settingsLabel.setForeground(Color.WHITE);
         
         // Add the components (order matters)
         Screens.guiPanel.add(highlightComboBox);
         Screens.guiPanel.add(startGenerationButton);
         Screens.guiPanel.add(showVisualsCheckBox);
         Screens.guiPanel.add(startGenerationsCheckBox);
+        Screens.guiPanel.add(settingsLabel);
 
         Screens.guiPanel.revalidate();
     }

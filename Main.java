@@ -28,6 +28,7 @@ public class Main {
             //     e.printStackTrace();
             // }
         }
+        Screens.guiPanel.updateLabel();
     }
     public static void startSimulation() {
         // ADD SERIALIZATION CHECK HERE
@@ -69,8 +70,11 @@ public class Main {
 
             Database.generationFinished = true;
             // Wait till next generation should be run
-            while(Database.autoStartGeneration || !Database.startNextGeneration){
-
+            while(true){
+                if(Database.autoStartGeneration || Database.startNextGeneration){
+                    break;
+                }
+                
                 Screens.simulationPanel.repaint();
                 try {
                     Thread.sleep(2);
@@ -89,6 +93,7 @@ public class Main {
                     newGeneration.addAll(creature.reproduce());
                 }
             }
+            Database.reproducedLastGeneration = reproductionCount;
 
             // Debug
             System.out.println(reproductionCount+" creatures reproduced!");
@@ -99,17 +104,6 @@ public class Main {
             }
             Database.creaturesList = newGeneration;
         }
-    }
-
-    public static void runGeneration(){
-        
-
-        
-    }
-
-    public static void initializeNextGeneration(){
-        
-        runGeneration();
     }
 
     // extra funcs
@@ -177,7 +171,6 @@ public class Main {
         }
 
         Database.creatureCoordinates = new ArrayList<Coor>();
-        Database.waterCoordinates = new ArrayList<Coor>();
         Database.foodCoordinates = new ArrayList<Coor>();
         
         for(Creature creature : Database.creaturesList){
