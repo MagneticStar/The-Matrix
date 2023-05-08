@@ -41,64 +41,74 @@ public class Main {
                 Database.creaturesList.add(new Creature());
             }
         // }
-        
+
         Screens.createScreens();
-        runGeneration();
+        
+        for(Database.currentGeneration = 0; Database.currentGeneration < Database.simulationLength; Database.currentGeneration++){
+            // Debug
+            System.out.println("Generation: "+(Database.currentGeneration+1));
+                
+            // Repopulate with food
+            while(Database.foodsList.size()<Database.amountOfFood){
+                Database.foodsList.add(new Food());
+            }
+
+            // Gives every instantiated creature and food a unique position
+            populateSimulationSpace();
+            // Gives every creature a color based on their composition of neurons
+            Genome.calculateColor();
+
+            // Simulate the Generation
+            for (Database.currentGenerationTick = 0; Database.currentGenerationTick < Database.generationLength; Database.currentGenerationTick++) {
+                tick(Screens.simulationPanel, Database.currentGenerationTick);
+            }
+
+            // if(doSerialize){
+                // SERIALIZATION
+            // }
+
+            Database.generationFinished = true;
+            // Wait till next generation should be run
+            while(Database.autoStartGeneration || !Database.startNextGeneration){
+
+                Screens.simulationPanel.repaint();
+                try {
+                    Thread.sleep(2);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            Database.startNextGeneration = false;
+
+            int reproductionCount = 0;
+            ArrayList<Creature> newGeneration = new ArrayList<Creature>();
+            for(Creature creature : Database.creaturesList){
+                // Survival Criteria Check
+                if(creature.getFoodCount() >= Database.minimumFoodEaten){
+                    reproductionCount++;
+                    newGeneration.addAll(creature.reproduce());
+                }
+            }
+
+            // Debug
+            System.out.println(reproductionCount+" creatures reproduced!");
+
+            // Fill the rest of the new generation with random creatures
+            for(int i = newGeneration.size(); i<Database.generationSize; i++){
+                newGeneration.add(new Creature());
+            }
+            Database.creaturesList = newGeneration;
+        }
     }
 
     public static void runGeneration(){
-        if(Database.currentGeneration > Database.simulationLength){
-            return;
-        }
+        
 
-        // Debug
-        System.out.println("Generation: "+(Database.currentGeneration+1));
-            
-        // Repopulate with food
-        while(Database.foodsList.size()<Database.amountOfFood){
-            Database.foodsList.add(new Food());
-        }
-
-        // Gives every instantiated creature and food a unique position
-        populateSimulationSpace();
-        // Gives every creature a color based on their composition of neurons
-        Genome.calculateColor();
-
-        // Simulate the Generation
-        for (Database.currentGenerationTick = 0; Database.currentGenerationTick < Database.generationLength; Database.currentGenerationTick++) {
-            tick(Screens.simulationPanel, Database.currentGenerationTick);
-        }
-
-        // Check if the next generation should be run immediately
-        if(Database.runNextGeneration){
-            // If so, initialize the next generation and run it
-            initializeNextGeneration();
-        }
-        else{
-            // SERIALIZATION
-        }
-        return;
+        
     }
 
     public static void initializeNextGeneration(){
-        int reproductionCount = 0;
-        ArrayList<Creature> newGeneration = new ArrayList<Creature>();
-        for(Creature creature : Database.creaturesList){
-            // Survival Criteria Check
-            if(creature.getFoodCount() >= Database.minimumFoodEaten){
-                reproductionCount++;
-                newGeneration.addAll(creature.reproduce());
-            }
-        }
-
-        // Debug
-        System.out.println(reproductionCount+" creatures reproduced!");
-
-        // Fill the rest of the new generation with random creatures
-        for(int i = newGeneration.size(); i<Database.generationSize; i++){
-            newGeneration.add(new Creature());
-        }
-        Database.creaturesList = newGeneration;
+        
         runGeneration();
     }
 

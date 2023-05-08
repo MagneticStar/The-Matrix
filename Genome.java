@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Map;
 
 public class Genome{
-    public static final int genomeLength = 16;
+    public static final int genomeLength = Database.genomeLength;
     private static final int geneLength = 32;
     private int oscillatorPeriod = Database.random.nextInt(1,Database.generationLength+1);
     private String DNA;

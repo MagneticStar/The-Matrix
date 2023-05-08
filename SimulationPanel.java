@@ -32,11 +32,15 @@ public class SimulationPanel extends JPanel{
     }
 
     public void highlightSubject(Graphics g){
-        Creature creature = Database.creaturesList.get(guiPanel.currentlySelectedSubjectIndex);
+        int NONE_SELECTED = -1;
+        int creatureIndex = guiPanel.currentlySelectedCreatureIndex;
+
+        if(creatureIndex == NONE_SELECTED){
+            return;
+        }
+        
+        Creature creature = Database.creaturesList.get(creatureIndex);
         g.setColor(Color.red);
         g.fillOval(creature.getPrintPos().x()-15, creature.getPrintPos().y()-15, 30, 30);
-        
-        
-        
     }
 }

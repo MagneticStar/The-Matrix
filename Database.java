@@ -23,8 +23,6 @@ public class Database {
           public final static double bitMutationAverage = (1.08665/Math.pow(mutationChance,0.531384)-0.0435476);
           public final static int genomeLength = 16;
 
-          
-          
           // Trackers
           public static int currentGenerationTick; // How many ticks have passed this generation
           public static int currentGeneration; // How many generations have passed this simulation
@@ -33,7 +31,9 @@ public class Database {
           public static ArrayList<Coor> waterCoordinates;
 
           public static boolean doVisuals = true;
-          public static boolean runNextGeneration = true;
+          public static boolean startNextGeneration = false;
+          public static boolean autoStartGeneration = true;
+          public static boolean generationFinished = false;
      
           // Brain Screen
           public static int brainScreenSizeX = 30;
