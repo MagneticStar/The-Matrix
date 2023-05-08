@@ -31,6 +31,9 @@ public class guiPanel extends JPanel {
             // currentlySelectedCreatureIndex = Integer.parseInt(highlightComboBox.getSelectedItem().toString().substring(highlightComboBox.getSelectedItem().toString().indexOf(" ")+1));
             currentlySelectedCreatureIndex = highlightComboBox.getSelectedIndex()-1;
             repaint();
+
+            // Debug
+            // System.out.println(Database.creaturesList.get(currentlySelectedCreatureIndex).getPos().toString());
         }});
 
         // Checkbox
