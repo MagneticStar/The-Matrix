@@ -41,11 +41,6 @@ public class Genome{
         this.DNA = genome.getDNA();
     }
 
-    
-    public Genome(Creature creature, Color color, ArrayList<Sensor> sensors, ArrayList<Motor> motors, ArrayList<Internal> internals, int oscillatorPeriod){
-        
-    }
-
     public Color getColor(){
         return this.color;
     }
@@ -131,7 +126,7 @@ public class Genome{
 
         for (int i = 0; i < genomeLength; i++) {
             for(int j=0; j<geneLength; j++){
-                DNA+=Database.random.nextInt(0,2);
+                DNA+=Database.random.nextInt(0,2); // Returns 0 or 1
             }
         }
     }
@@ -264,13 +259,7 @@ public class Genome{
             }
             neurons.add(emptyNeuron);
         }
-        // Debug
-        // Database.creaturesList.add(new Creature(new Genome(this.subject,this.DNA,neurons)));
-        // for(Neuron neuron : neurons){
-        //     if(findSourceSinkError(neuron,false,0)){
-        //         System.out.println("Uh Ohh");
-        //     }
-        // }
+        
         for(Neuron neuron : neurons){
             String toPrint = "";
             Boolean print = false;
