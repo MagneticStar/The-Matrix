@@ -44,12 +44,20 @@ public class Motor extends Neuron{
     }
     private static void MoveDown(Creature creature){
         Database.creatureCoordinates.remove(creature.getPos());
-        creature.setPosY((creature.getPosY() - 1) % Database.worldSize);
+        int pos = (creature.getPosY() - 1) % Database.worldSize;
+        if (pos < 0) {
+            pos += Database.worldSize;
+        }
+        creature.setPosY(pos);
         Database.creatureCoordinates.add(creature.getPos());
     }
     private static void MoveLeft(Creature creature){
         Database.creatureCoordinates.remove(creature.getPos());
-        creature.setPosX((creature.getPosX() - 1) % Database.worldSize);
+        int pos = (creature.getPosX() - 1) % Database.worldSize;
+        if (pos < 0) {
+            pos += Database.worldSize;
+        }
+        creature.setPosX(pos);
         Database.creatureCoordinates.add(creature.getPos());
     }
     private static void MoveRight(Creature creature){
