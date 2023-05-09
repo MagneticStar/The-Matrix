@@ -6,18 +6,19 @@ public class Main {
     }
 
     public static void tick(SimulationPanel panel, int i) {
-        // movement loop
-        for(Creature creature : Database.creaturesList){
-            determineNeuronActivation(creature).motorMethod.invoke(creature);
+        for(TickThread tickThread : Database.tickThreads){
+            tickThread.start();
         }
-        // // temporary killing mechanism for hunger
-        // for (int j = 0; j < Database.creaturesList.size(); j++) {
-        //     Database.creaturesList.get(j).decrementHunger();
-        //     if (Database.creaturesList.get(j).getHunger() < 0) {
-        //         Database.creaturesList.remove(j);
-        //         j--;
-        //     }
-        // }
+        for(TickThread tickThread : Database.tickThreads){
+            while(tickThread.isAlive()){
+                try{
+                    Thread.sleep(2);
+                }
+                catch(Exception e){
+                    continue;
+                }
+            }
+        }
         
         // Time between ticks
         if(Database.doVisuals){
@@ -59,7 +60,11 @@ public class Main {
             // Gives every creature a color based on their composition of neurons
             Genome.calculateColor();
 
+            
+            
+
             // Simulate the Generation
+            BaseThread.createThreads();
             for (Database.currentGenerationTick = 0; Database.currentGenerationTick < Database.generationLength; Database.currentGenerationTick++) {
                 tick(Screens.simulationPanel, Database.currentGenerationTick);
             }
@@ -108,7 +113,7 @@ public class Main {
 
     // extra funcs
 
-    private static Motor determineNeuronActivation(Creature creature){
+    public static Motor determineNeuronActivation(Creature creature){
         Sensor[] checkedSensors = new Sensor[Sensor.numberOfSensorMethods];
         for(Sensor sensor : creature.getGenome().getSensors()){
             if(checkedSensors[sensor.methodID] == null){
