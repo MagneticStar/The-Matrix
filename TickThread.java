@@ -28,7 +28,7 @@ public class TickThread extends BaseThread {
             // }
         }
         catch(Exception e){
-            System.out.println("Thread Error: "+e);
+            System.out.println("Thread Error: "+e+"\n"+e.getStackTrace());
         }
     }
 }
