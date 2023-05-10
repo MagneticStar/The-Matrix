@@ -170,18 +170,18 @@ public class Main {
             }
         }
 
-        Database.creatureCoordinates = new ArrayList<Coor>();
-        Database.foodCoordinates = new ArrayList<Coor>();
+        Database.foodLocations = new int[Database.worldSize][Database.worldSize];
+        Database.creatureLocations = new int[Database.worldSize][Database.worldSize];
         
         for(Creature creature : Database.creaturesList){
             Coor coor = startingPositions.remove(Database.random.nextInt(0,startingPositions.size()));
             creature.setPos(coor);
-            Database.creatureCoordinates.add(coor);
+            Database.creatureLocations[creature.getPosX()][creature.getPosY()]+=1;
         }
         for(Food food : Database.foodsList){
             Coor coor = startingPositions.remove(Database.random.nextInt(0,startingPositions.size()));
             food.setPos(coor);
-            Database.foodCoordinates.add(coor);
+            Database.foodLocations[food.getPosX()][food.getPosY()]+=1;
         }
     }
 }
