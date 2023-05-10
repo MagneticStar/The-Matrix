@@ -1,3 +1,5 @@
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 public class Main {
    
@@ -64,14 +66,23 @@ public class Main {
             
 
             // Simulate the Generation
-            BaseThread.createThreads();
             for (Database.currentGenerationTick = 0; Database.currentGenerationTick < Database.generationLength; Database.currentGenerationTick++) {
                 tick(Screens.simulationPanel, Database.currentGenerationTick);
             }
-
-            // if(doSerialize){
-                // SERIALIZATION
-            // }
+            if (true) {
+                try {
+                    FileOutputStream file = new FileOutputStream("t.tmp");
+                    ObjectOutputStream out = new ObjectOutputStream(file);
+                    for (Creature c : Database.creaturesList) {
+                        out.writeObject(c.getGenome().getDNA());
+                    }
+                    out.close();
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+            }
+            
+            
 
             Database.generationFinished = true;
             // Wait till next generation should be run

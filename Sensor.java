@@ -30,23 +30,23 @@ public class Sensor extends Neuron{
     ////////////////////////////////////////////////////////
 
     public static double nearestFoodDistance(Creature creature) {
-        // for (int i = 0; i < searchDepth; i++) {
-        //     Coor near = search(i, creature.getPos(), "food");
-        //     for (Food f: Database.foodsList) {
-        //         if (f.getPos().equals(near)) {
-        //             double d = distance(f, creature);
-        //             if (d != -1.0) {
-        //                 // System.out.println("Distance: "+d+" Adjusted: "+(1-(d/Database.worldSize)));
-        //                 return 1-(d/Database.worldSize);
-        //             }
-        //         }
-        int indexOfFoundObject = findNearestObject(creature.getPos(), Database.foodCoordinates);
+        for (int i = 0; i < searchDepth; i++) {
+            Coor near = search(i, creature.getPos(), "food");
+            for (Food f: Database.foodsList) {
+                if (f.getPos().equals(near)) {
+                    double d = distance(f.getPos(), creature);
+                    if (d != -1.0) {
+                        // System.out.println("Distance: "+d+" Adjusted: "+(1-(d/Database.worldSize)));
+                        return 1-(d/Database.worldSize);
+                    }
+                }
+        // int indexOfFoundObject = findNearestObject(creature.getPos(), Database.foodCoordinates);
 
-        if(indexOfFoundObject != -1){
-            double distance = distance(Database.foodCoordinates.get(indexOfFoundObject), creature);
-            if (distance != -1.0) {
-                // System.out.println("Distance: "+d+" Adjusted: "+(1-(d/Database.worldSize)));
-                return 1-(distance/Database.worldSize);
+        // if(indexOfFoundObject != -1){
+        //     double distance = distance(Database.foodCoordinates.get(indexOfFoundObject), creature);
+        //     if (distance != -1.0) {
+        //         // System.out.println("Distance: "+d+" Adjusted: "+(1-(d/Database.worldSize)));
+        //         return 1-(distance/Database.worldSize);
             }
         }
 
@@ -55,17 +55,17 @@ public class Sensor extends Neuron{
     }
 
     private static double detectFoodXDirection (Creature creature) {
-        // for (int i = 0; i < searchDepth; i++) {
-        //     Coor near = search(i, creature.getPos(), "food");
-        //     for (Food f: Database.foodsList) {
-        //         if (f.getPos().equals(near)) {
-        //             return directionX(f, creature);
-        //         }
-        //     }
-        int indexOfFoundObject = findNearestObject(creature.getPos(), Database.foodCoordinates);
+        for (int i = 0; i < searchDepth; i++) {
+            Coor near = search(i, creature.getPos(), "food");
+            for (Food f: Database.foodsList) {
+                if (f.getPos().equals(near)) {
+                    return directionX(f.getPos(), creature);
+                }
+            }
+        // int indexOfFoundObject = findNearestObject(creature.getPos(), Database.foodCoordinates);
 
-        if(indexOfFoundObject != -1){
-            return directionX(Database.foodCoordinates.get(indexOfFoundObject), creature);
+        // if(indexOfFoundObject != -1){
+        //     return directionX(Database.foodCoordinates.get(indexOfFoundObject), creature);
         }
 
         // No object found
@@ -73,17 +73,17 @@ public class Sensor extends Neuron{
     }
 
     private static double detectFoodYDirection (Creature creature) {
-        // for (int i = 0; i < searchDepth; i++) {
-        //     Coor near = search(i, creature.getPos(), "food");
-        //     for (Food f: Database.foodsList) {
-        //         if (f.getPos().equals(near)) {
-        //             return directionY(f, creature);
-        //         }
-        //     }
-        int indexOfFoundObject = findNearestObject(creature.getPos(), Database.foodCoordinates);
+        for (int i = 0; i < searchDepth; i++) {
+            Coor near = search(i, creature.getPos(), "food");
+            for (Food f: Database.foodsList) {
+                if (f.getPos().equals(near)) {
+                    return directionY(f.getPos(), creature);
+                }
+            }
+        // int indexOfFoundObject = findNearestObject(creature.getPos(), Database.foodCoordinates);
 
-        if(indexOfFoundObject != -1){
-            return directionY(Database.foodCoordinates.get(indexOfFoundObject), creature);
+        // if(indexOfFoundObject != -1){
+        //     return directionY(Database.foodCoordinates.get(indexOfFoundObject), creature);
         }
 
         // No object found

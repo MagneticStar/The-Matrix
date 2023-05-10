@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.BitSet;
 
 public class Creature extends ScreenObject{
     private Genome genome;
@@ -55,17 +56,17 @@ public class Creature extends ScreenObject{
             // Mutate
             if(Database.random.nextDouble(0,1)<Database.mutationChance){
 
-                String newDNA = getGenome().getDNA();
+                BitSet newDNA = getGenome().getDNA();
                 int dnaLength = getGenome().getDNA().length();
                 // Debug
                 int bitMutationTotal = (int) (dnaLength/Database.bitMutationAverage);
 
 
-                while(bitMutationTotal>0){
-                    int randomBit = Database.random.nextInt(dnaLength);
-                    newDNA = newDNA.substring(0, randomBit) + ((Integer.parseInt(newDNA.substring(randomBit, randomBit+1))+1)%2) + newDNA.substring(randomBit+1);
-                    bitMutationTotal--;
-                }
+                // while(bitMutationTotal>0){
+                //     int randomBit = Database.random.nextInt(dnaLength);
+                //     newDNA = newDNA.substring(0, randomBit) + ((Integer.parseInt(newDNA.substring(randomBit, randomBit+1))+1)%2) + newDNA.substring(randomBit+1);
+                //     bitMutationTotal--;
+                // }
 
                 // Create the new genome with the newDNA
                 genome = new Genome(this,newDNA);
