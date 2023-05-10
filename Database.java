@@ -22,9 +22,8 @@ public class Database {
           // Trackers
           public static int currentGenerationTick; // How many ticks have passed this generation
           public static int currentGeneration; // How many generations have passed this simulation
-          public static ArrayList<Coor> creatureCoordinates;
-          public static ArrayList<Coor> foodCoordinates;
-          public static ArrayList<Coor> waterCoordinates;
+          public static int[][] creatureLocations;
+          public static int[][] foodLocations;
           public static  ArrayList<Food> foodsList = new ArrayList<Food>();
           public static ArrayList<Creature> creaturesList = new ArrayList<Creature>();
           public static int reproducedLastGeneration = 0;
@@ -40,9 +39,6 @@ public class Database {
 
           // Visuals
           public final static Color simulationScreenColor = Color.black;
-
-          // Threads
-          public final static ArrayList<TickThread> tickThreads = new ArrayList<TickThread>();
 
           // Random
           public final static Random random = new Random();
