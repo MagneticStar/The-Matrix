@@ -15,6 +15,10 @@ public class Creature extends ScreenObject{
         super();
         this.genome = genome;
     }
+    public Creature(BitSet DNA) {
+        super();
+        this.genome = new Genome(this, DNA);
+    }
     public Creature(Color color,Coor position){
         super(color, position);
         this.genome = new Genome(this);

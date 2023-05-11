@@ -1,8 +1,10 @@
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.BitSet;
 public class Main {
-   
     public static void main(String[] args) {
         startSimulation();
     }
@@ -34,16 +36,26 @@ public class Main {
     }
     public static void startSimulation() {
         // ADD SERIALIZATION CHECK HERE
-
-        // IF (PREEXISTING DNA){
-        //      MAKE GENERATION
-        // }
-        // ELSE{
+        boolean SerialInput = true;
+        if (SerialInput){
+            try {
+                FileInputStream file = new FileInputStream("t.tmp");
+                ObjectInputStream in = new ObjectInputStream(file);
+                for (int i = 0; i < Database.generationSize; i++) {
+                    Database.creaturesList.add(new Creature((BitSet)in.readObject()));
+                }
+                in.close();
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+            
+        }
+        else{
             // Create generation 0
             for (int i = 0; i < Database.generationSize; i++) {
                 Database.creaturesList.add(new Creature());
             }
-        // }
+        }
 
         Screens.createScreens();
         
@@ -65,7 +77,8 @@ public class Main {
             for (Database.currentGenerationTick = 0; Database.currentGenerationTick < Database.generationLength; Database.currentGenerationTick++) {
                 tick(Screens.simulationPanel, Database.currentGenerationTick);
             }
-            if (true) {
+            // Serialize the genes for a generation
+            if (false) {
                 try {
                     FileOutputStream file = new FileOutputStream("t.tmp");
                     ObjectOutputStream out = new ObjectOutputStream(file);
