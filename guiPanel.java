@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.DataBuffer;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -12,6 +13,7 @@ public class guiPanel extends JPanel {
     private JComboBox<String> highlightComboBox;
     private JCheckBox startGenerationsCheckBox;
     private JCheckBox showVisualsCheckBox;
+    private JCheckBox saveSimulationCheckbox;
     private JButton startGenerationButton;
     private JLabel settingsLabel;
     private String settingsText;
@@ -21,6 +23,8 @@ public class guiPanel extends JPanel {
 
     public guiPanel() {
         setBackground(Database.simulationScreenColor);
+
+        addComponents();
     }
 
     public void updateLabel(){
@@ -66,6 +70,23 @@ public class guiPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
             Database.doVisuals = !Database.doVisuals;
+
+            if(Database.doVisuals){
+                Database.visualPanel = Screens.simulationPanel;
+            }
+            else{
+                Database.visualPanel = Screens.animationPanel;
+            }
+            Screens.splitPane.setLeftComponent(Database.visualPanel);
+            repaint();
+        }});
+
+        // Checkbox
+        saveSimulationCheckbox = new JCheckBox("Save and Exit",Database.saveAndExit);
+        saveSimulationCheckbox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            Database.saveAndExit = !Database.saveAndExit;
             repaint();
         }});
 
@@ -81,7 +102,6 @@ public class guiPanel extends JPanel {
             repaint();
         }});
 
-        
         // Label
         settingsText = "<html>Generation Size: "+Database.generationSize+"<br/>Generation Length: "+Database.generationLength+"<br/>World Size: "+Database.worldSize+"<br/>Mutation Chance: "+Database.mutationChance+"<br/>Genome Size: "+Database.genomeLength;
         settingsLabel = new JLabel();
@@ -89,13 +109,14 @@ public class guiPanel extends JPanel {
         settingsLabel.setForeground(Color.WHITE);
         
         // Add the components (order matters)
-        Screens.guiPanel.add(highlightComboBox);
-        Screens.guiPanel.add(startGenerationButton);
-        Screens.guiPanel.add(showVisualsCheckBox);
-        Screens.guiPanel.add(startGenerationsCheckBox);
-        Screens.guiPanel.add(settingsLabel);
-
-        Screens.guiPanel.revalidate();
+        this.add(highlightComboBox);
+        this.add(startGenerationButton);
+        this.add(showVisualsCheckBox);
+        this.add(startGenerationsCheckBox);
+        this.add(saveSimulationCheckbox);
+        this.add(settingsLabel);
+        
+        this.revalidate();
     }
     
     @Override

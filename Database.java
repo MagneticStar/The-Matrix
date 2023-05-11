@@ -2,6 +2,8 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.swing.JPanel;
+
 public class Database {
      // Parameters
           // Simulation 
@@ -17,7 +19,7 @@ public class Database {
 
           public final static double mutationChance = 0.05; // The chance of mutation, must be between 0 and 1 (inclusive)
           public final static double bitMutationAverage = (1.08665/Math.pow(mutationChance,0.531384)-0.0435476);
-          public final static int genomeLength = 64;
+          public final static int genomeLength = 16;
 
           // Trackers
           public static int currentGenerationTick; // How many ticks have passed this generation
@@ -32,6 +34,7 @@ public class Database {
           public static boolean startNextGeneration = false;
           public static boolean autoStartGeneration = true;
           public static boolean generationFinished = false;
+          public static boolean saveAndExit = false;
      
           // Brain Screen
           public static int brainScreenSizeX = 30;
@@ -39,6 +42,7 @@ public class Database {
 
           // Visuals
           public final static Color simulationScreenColor = Color.black;
+          public static JPanel visualPanel = null;
 
           // Random
           public final static Random random = new Random();

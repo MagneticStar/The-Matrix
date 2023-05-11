@@ -9,7 +9,12 @@ public class BrainPanel extends JPanel {
     private JComboBox<String> searchDropDown;
     private int currentlySelectedCreatureIndex = -1;
 
-    public void selectionBox(){
+    public BrainPanel() {
+        setBackground(Color.BLACK);
+        addComponents();
+    }
+
+    private void addComponents(){
         searchDropDown = new JComboBox<String>(Screens.creatureNames);
         searchDropDown.addActionListener(new ActionListener() {
             @Override
@@ -20,12 +25,8 @@ public class BrainPanel extends JPanel {
             repaint();
             }
         });
-        Screens.brainPanel.add(searchDropDown);
-        Screens.brainPanel.revalidate();
-    }
-
-    public BrainPanel() {
-        setBackground(Color.BLACK);
+        this.add(searchDropDown);
+        this.revalidate();
     }
     
     @Override

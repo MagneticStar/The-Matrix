@@ -1,13 +1,15 @@
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+
+import javax.swing.JPanel;
 public class Main {
    
     public static void main(String[] args) {
         startSimulation();
     }
 
-    public static void tick(SimulationPanel panel, int i) {
+    public static void tick(JPanel panel, int i) {
         // movement loop
         for(Creature creature : Database.creaturesList){
             determineNeuronActivation(creature).motorMethod.invoke(creature);
@@ -22,14 +24,13 @@ public class Main {
         // }
         
         // Time between ticks
-        if(Database.doVisuals){
-            panel.repaint();
-            // try {
-            //     Thread.sleep(20);
-            // } catch (InterruptedException e) {
-            //     e.printStackTrace();
-            // }
-        }
+        panel.repaint();
+        Screens.splitPane.setDividerLocation(650);
+        // try {
+        //     Thread.sleep(20);
+        // } catch (InterruptedException e) {
+        //     e.printStackTrace();
+        // }
         Screens.guiPanel.updateLabel();
     }
     public static void startSimulation() {
@@ -49,7 +50,7 @@ public class Main {
         
         for(Database.currentGeneration = 0; Database.currentGeneration < Database.simulationLength; Database.currentGeneration++){
             // Debug
-            System.out.println("Generation: "+(Database.currentGeneration+1));
+            // System.out.println("Generation: "+(Database.currentGeneration+1));
                 
             // Repopulate with food
             while(Database.foodsList.size()<Database.amountOfFood){
@@ -63,9 +64,9 @@ public class Main {
 
             // Simulate the Generation
             for (Database.currentGenerationTick = 0; Database.currentGenerationTick < Database.generationLength; Database.currentGenerationTick++) {
-                tick(Screens.simulationPanel, Database.currentGenerationTick);
+                tick(Database.visualPanel, Database.currentGenerationTick);
             }
-            if (true) {
+            if (Database.saveAndExit) {
                 try {
                     FileOutputStream file = new FileOutputStream("t.tmp");
                     ObjectOutputStream out = new ObjectOutputStream(file);
@@ -73,8 +74,10 @@ public class Main {
                         out.writeObject(c.getGenome().getDNA());
                     }
                     out.close();
+
+                    System.exit(0);
                 } catch (Exception e) {
-                    System.out.println(e);
+                    System.out.println("Save failed: "+e);
                 }
             }
             
@@ -108,7 +111,7 @@ public class Main {
             Database.reproducedLastGeneration = reproductionCount;
 
             // Debug
-            System.out.println(reproductionCount+" creatures reproduced!");
+            // System.out.println(reproductionCount+" creatures reproduced!");
 
             // Fill the rest of the new generation with random creatures
             for(int i = newGeneration.size(); i<Database.generationSize; i++){
