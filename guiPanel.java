@@ -22,7 +22,7 @@ public class guiPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
             // Sets the neuron map panel to the neuron map of the selected subject. The string manipulation is to avoid searching for the index of the subject
-            currentlySelectedSubjectIndex = Integer.parseInt(searchDropDown.getSelectedItem().toString().substring(searchDropDown.getSelectedItem().toString().indexOf(" ")+1));
+            currentlySelectedCreatureIndex = Integer.parseInt(searchDropDown.getSelectedItem().toString().substring(searchDropDown.getSelectedItem().toString().indexOf(" ")+1));
             
             repaint();
             }
