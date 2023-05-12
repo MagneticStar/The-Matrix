@@ -1,12 +1,9 @@
 import java.awt.Color;
-import java.util.ArrayList;
 import java.util.Random;
 
 public class Database {
      
-     public static  ArrayList<Food> foodsList = new ArrayList<Food>();
-     public static ArrayList<Creature> creaturesList = new ArrayList<Creature>();
-
+     
      // Parameters
           // Simulation 
           public final static int generationSize = 1000; // How many creatures should there be at the start of a new generation

@@ -1,13 +1,15 @@
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Random;
 
 public class Genome{
     public static final int genomeLength = 16;
     private static final int geneLength = 32;
     private int oscillatorPeriod = Database.random.nextInt(1,Database.generationLength+1);
-    private String DNA;
+    private BitSet DNA;
     public Creature creature;
     private Color color;
     private Neuron[] neurons;
@@ -25,7 +27,7 @@ public class Genome{
     }
 
     // Creates a new neuron map based on the inputed DNA
-    public Genome(Creature creature, String DNA){
+    public Genome(Creature creature, BitSet DNA){
         this.creature = creature;
         this.DNA = DNA;
         interpretDNA();
@@ -69,7 +71,7 @@ public class Genome{
     public int getOscillatorPeriod(){
         return this.oscillatorPeriod;
     }
-    public String getDNA(){
+    public BitSet getDNA(){
         return this.DNA;
     }
 
@@ -128,13 +130,8 @@ public class Genome{
     private void generateDNA(){
         // Each DNA strand is comprised of genomeLength genes of size geneLength.
         // There are no spaces in each DNA String as geneLength can be used to find each gene mathematically.
-
-        DNA = "";
-
-        for (int i = 0; i < genomeLength; i++) {
-            for(int j=0; j<geneLength; j++){
-                DNA+=Database.random.nextInt(0,2);
-            }
+        for (int i = 0; i < geneLength * genomeLength) {
+            DNA.set(i, Database.random.nextBoolean());
         }
     }
 

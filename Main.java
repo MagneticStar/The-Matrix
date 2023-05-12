@@ -1,3 +1,5 @@
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.BitSet;
 
@@ -111,8 +113,7 @@ public class Main {
             }
 
             // Debug
-            System.out.println(newGeneration.size()+" creatures reproduced!");
-            System.out.println(bestPerformance);
+            System.out.println(newGeneration.length+" creatures reproduced!");
             // Fill the rest of the new generation with random creatures
             for(int i = 0; i< newGeneration.length; i++){
                 if (newGeneration[i] == null){
@@ -191,10 +192,6 @@ public class Main {
                 startingPositions.add(new Coor(i, j));
             }
         }
-
-        Database.creatureCoordinates = new ArrayList<Coor>();
-        Database.waterCoordinates = new ArrayList<Coor>();
-        Database.foodCoordinates = new ArrayList<Coor>();
         
         for(int i = 0; i < Database.creaturesList.length; i++){
             if (Database.creaturesList[i] != null) {

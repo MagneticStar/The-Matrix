@@ -7,16 +7,16 @@ import javax.swing.JPanel;
 public class BrainPanel extends JPanel {
     
     private JComboBox<String> searchDropDown;
-    private int currentlySelectedSubjectIndex = 0;
+    private int currentlySelectedCreatureIndex = 0;
 
     public void selectionBox(){
-        searchDropDown = new JComboBox<String>(Screens.subNames);
+        searchDropDown = new JComboBox<String>(Screens.creatureNames);
         searchDropDown.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
             // Sets the neuron map panel to the neuron map of the selected subject. The string manipulation is to avoid searching for the index of the subject
-            currentlySelectedSubjectIndex = Integer.parseInt(searchDropDown.getSelectedItem().toString().substring(searchDropDown.getSelectedItem().toString().indexOf(" ")+1));
-            Database.brainScreenSizeY = Database.creaturesList.get(currentlySelectedSubjectIndex).getGenome().getNeurons().length;
+            currentlySelectedCreatureIndex = Integer.parseInt(searchDropDown.getSelectedItem().toString().substring(searchDropDown.getSelectedItem().toString().indexOf(" ")+1));
+            Database.brainScreenSizeY = Database.creaturesList[currentlySelectedCreatureIndex].getGenome().getNeurons().length;
             repaint();
             }
         });
@@ -38,7 +38,6 @@ public class BrainPanel extends JPanel {
         if (Database.creaturesList.length == 0 || currentlySelectedCreatureIndex == -1 || Database.creaturesList[currentlySelectedCreatureIndex] == null) {
             return;
         }
-        Creature subject = Database.creaturesList.get(currentlySelectedSubjectIndex);
         
         Neuron[] neurons = Database.creaturesList[currentlySelectedCreatureIndex].getGenome().getNeurons();
         Database.brainScreenSizeY = neurons.length;
