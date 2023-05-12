@@ -3,9 +3,10 @@ import javax.swing.JSplitPane;
 
 public class Screens {
 
-    public static BrainFrame brainFrame = new BrainFrame();
+    public static DataFrame dataFrame = new DataFrame();
     public static BrainPanel brainPanel;
     public static guiPanel guiPanel;
+    public static GraphPanel graphPanel;
     public static animationPanel animationPanel;
     public static SimulationPanel simulationPanel;
     public static JSplitPane splitPane;
@@ -19,6 +20,7 @@ public class Screens {
         for(int i=1; i<creatureNames.length; i++){
             creatureNames[i] = String.format("Creature %04d",i);
         }
+        graphPanel = new GraphPanel();
         brainPanel = new BrainPanel();
         guiPanel = new guiPanel();
         animationPanel = new animationPanel();
@@ -27,8 +29,8 @@ public class Screens {
         // Brain Frame
         FlowLayout flowLayout = new FlowLayout(FlowLayout.LEADING);
         brainPanel.setLayout(flowLayout);
-        brainFrame.add(brainPanel);
-        brainFrame.setVisible(true);
+        dataFrame.add(graphPanel);
+        dataFrame.setVisible(true);
 
         // Simulation Frame
         splitPane = new JSplitPane();
@@ -39,7 +41,7 @@ public class Screens {
         splitPane.setRightComponent(guiPanel);
         simulationFrame.add(splitPane);      
         simulationFrame.setVisible(true);
+
         Database.visualPanel = simulationPanel;
-        
     }
 }

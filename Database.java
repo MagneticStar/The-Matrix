@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 import javax.swing.JPanel;
@@ -28,7 +29,7 @@ public class Database {
           public static int[][] foodLocations;
           public static  ArrayList<Food> foodsList = new ArrayList<Food>();
           public static ArrayList<Creature> creaturesList = new ArrayList<Creature>();
-          public static int reproducedLastGeneration = 0;
+          public static ArrayList<Integer> reproducedLastGeneration = new ArrayList<Integer>(Arrays.asList(0));
 
           public static boolean doVisuals = true;
           public static boolean startNextGeneration = false;

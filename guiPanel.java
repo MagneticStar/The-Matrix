@@ -30,7 +30,7 @@ public class guiPanel extends JPanel {
     public void updateLabel(){
         trackersText = "<br/><br/>Current Step: "+(Database.currentGenerationTick+1);
         trackersText += "<br/>Current Generation: "+(Database.currentGeneration+1);
-        trackersText += "<br/>Reproduced Last Generation: "+Database.reproducedLastGeneration;
+        trackersText += "<br/>Reproduced Last Generation: "+Database.reproducedLastGeneration.get(Database.currentGeneration);
         trackersText += "<br/>Food Count: "+Database.foodsList.size()+"</html>";
 
         settingsLabelText = settingsText+trackersText;

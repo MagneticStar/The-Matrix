@@ -51,6 +51,8 @@ public class Main {
         for(Database.currentGeneration = 0; Database.currentGeneration < Database.simulationLength; Database.currentGeneration++){
             // Debug
             // System.out.println("Generation: "+(Database.currentGeneration+1));
+
+            Screens.graphPanel.repaint();
                 
             // Repopulate with food
             while(Database.foodsList.size()<Database.amountOfFood){
@@ -108,7 +110,7 @@ public class Main {
                     newGeneration.addAll(creature.reproduce());
                 }
             }
-            Database.reproducedLastGeneration = reproductionCount;
+            Database.reproducedLastGeneration.add(reproductionCount);
 
             // Debug
             // System.out.println(reproductionCount+" creatures reproduced!");
