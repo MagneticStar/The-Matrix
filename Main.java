@@ -1,8 +1,5 @@
 import java.util.ArrayList;
-<<<<<<< Updated upstream
-=======
 import java.util.BitSet;
->>>>>>> Stashed changes
 
 public class Main {
    
@@ -18,35 +15,11 @@ public class Main {
                 determineNeuronActivation(Database.creaturesList[j]).motorMethod.invoke(Database.creaturesList[j]);
             }
         }
-<<<<<<< Updated upstream
-        // // temporary killing mechanism for hunger
-        // for (int j = 0; j < Database.creaturesList.size(); j++) {
-        //     Database.creaturesList.get(j).decrementHunger();
-        //     if (Database.creaturesList.get(j).getHunger() < 0) {
-        //         Database.creaturesList.remove(j);
-        //         j--;
-        //     }
-        // }
-        
-        // Time between ticks
-        if(Database.currentGeneration > 0){
-=======
         // Do Visuals check
         if(Database.doVisuals){
->>>>>>> Stashed changes
             panel.repaint();
         }
     }
-<<<<<<< Updated upstream
-    public static void simulation() {
-        // Add Food
-        for (int i = 0; i < Database.amountOfFood; i++) {
-            Database.foodsList.add(new Food());
-        }
-        // Create creatureCount creatures
-        for (int i = 0; i < Database.generationSize; i++) {
-        Database.creaturesList.add(new Creature());
-=======
 
     public static void startSimulation() {
         boolean SerialInput = false;
@@ -71,7 +44,6 @@ public class Main {
             // for (Creature c : Database.creaturesList) {
             //     System.out.println(c);
             // }
->>>>>>> Stashed changes
         }
         // Run the simulation
         for(Database.currentGeneration = 0; Database.currentGeneration < Database.simulationLength; Database.currentGeneration++){
@@ -80,13 +52,8 @@ public class Main {
             System.out.println("Generation: "+(Database.currentGeneration+1));
             
             // Repopulate with food
-<<<<<<< Updated upstream
-            while(Database.foodsList.size()<Database.startingFoodCount){
-                Database.foodsList.add(new Food());
-=======
             for (int i = 0; i < Database.foodsList.length; i++) {
                 Database.foodsList[i] = new Food();
->>>>>>> Stashed changes
             }
 
             // Gives every instantiated creature and food a unique position
@@ -98,18 +65,6 @@ public class Main {
             for (Database.currentGenerationTick = 0; Database.currentGenerationTick < Database.generationLength; Database.currentGenerationTick++) {
                 tick(Screens.simulationPanel, Database.currentGenerationTick);
             }
-<<<<<<< Updated upstream
-
-            // Survival Criteria Check (Needs to be changed to hunger or something)
-            ArrayList<Creature> newGeneration = new ArrayList<Creature>();
-
-            int bestPerformance = 0;
-            for(Creature creature : Database.creaturesList){
-                // Check whether they get to reproduce or not
-                newGeneration.addAll(creature.reproduce());
-                if (creature.getFoodCountAll() > bestPerformance) {
-                    bestPerformance = creature.getFoodCountAll();
-=======
             // Serialize the genes for a generation
             if (false) {
                 try {
@@ -152,7 +107,6 @@ public class Main {
                             newGeneration[j] = temp[j];
                         }
                     }
->>>>>>> Stashed changes
                 }
             }
 
@@ -242,17 +196,6 @@ public class Main {
         Database.waterCoordinates = new ArrayList<Coor>();
         Database.foodCoordinates = new ArrayList<Coor>();
         
-<<<<<<< Updated upstream
-        for(Creature creature : Database.creaturesList){
-            Coor coor = startingPositions.remove(Database.random.nextInt(0,startingPositions.size()));
-            creature.setPos(coor);
-            Database.creatureCoordinates.add(coor);
-        }
-        for(Food food : Database.foodsList){
-            Coor coor = startingPositions.remove(Database.random.nextInt(0,startingPositions.size()));
-            food.setPos(coor);
-            Database.foodCoordinates.add(coor);
-=======
         for(int i = 0; i < Database.creaturesList.length; i++){
             if (Database.creaturesList[i] != null) {
                 Coor coor = startingPositions.remove(Database.random.nextInt(0,startingPositions.size()));
@@ -266,7 +209,6 @@ public class Main {
                 Database.foodsList[i].setPos(coor);
                 Database.foodLocations[Database.foodsList[i].getPosX()][Database.foodsList[i].getPosY()]+=1;
             }
->>>>>>> Stashed changes
         }
     }
 }

@@ -12,8 +12,6 @@ public class guiPanel extends JPanel {
         setBackground(Database.simulationScreenColor);
     }
 
-<<<<<<< Updated upstream
-=======
     public void updateLabel(){
         trackersText = "<br/><br/>Current Step: "+(Database.currentGenerationTick+1);
         trackersText += "<br/>Current Generation: "+(Database.currentGeneration+1);
@@ -26,7 +24,6 @@ public class guiPanel extends JPanel {
         repaint();
     }
 
->>>>>>> Stashed changes
     public void addComponents(){
         searchDropDown = new JComboBox<String>(Screens.subNames);
         searchDropDown.addActionListener(new ActionListener() {

@@ -102,18 +102,9 @@ public class Genome{
             coordinateDistanceMax[i] = ((highestNeuronCoordinate[i]-averageNeuronCoordinate[i])+(averageNeuronCoordinate[i]-lowestNeuronCoordinate[i]))/2; //JACKSON
         }
 
-<<<<<<< Updated upstream
-        // Debug
-        // System.out.println(coordinateDistanceMax[0]+ "," + coordinateDistanceMax[1] + "," + coordinateDistanceMax[2]);
-        // System.out.println(averageNeuronCoordinate[0]+ "," + averageNeuronCoordinate[1] + "," + averageNeuronCoordinate[2]);
-
-        for(int i=0; i<Database.creaturesList.size(); i++){
-            int[] rgb = new int[3];
-=======
         for(int i=0; i<Database.creaturesList.length; i++){
             if (Database.creaturesList[i] != null) {
                 int[] rgb = new int[3];
->>>>>>> Stashed changes
             for(int j =0; j<3; j++){
                 double distance = (Math.abs(averageNeuronCoordinate[j]-neuronCoordinates[i][j])/(double)coordinateDistanceMax[j]);
                 // double multiplier = 255 / (Math.abs(averageNeuronCoordinate[j]-neuronCoordinates[i][j])/(double)coordinateDistanceMax[j]); //JACKSON
@@ -175,19 +166,6 @@ public class Genome{
             Neuron neuron;
             
             // parses the DNA by splicing it using the format described above
-<<<<<<< Updated upstream
-            String gene = DNA.substring(i*geneLength,(i+1)*geneLength);
-            int neuronType = Integer.parseInt(gene.substring(0,2),2);
-            int neuronID = Integer.parseInt(gene.substring(2,6),2);
-            int sourceType = Integer.parseInt(gene.substring(6,7),2);
-            int sourceID = Integer.parseInt(gene.substring(7,11),2);
-            int sinkType = Integer.parseInt(gene.substring(11,12),2);
-            int sinkID = Integer.parseInt(gene.substring(12,16),2);
-            int sinkWeight = Integer.parseInt(gene.substring(16,geneLength),2);
-
-            // Debug
-            // System.out.println("");
-=======
             BitSet gene = DNA.get(i, i+geneLength);
             
             int neuronType = 0;
@@ -233,7 +211,6 @@ public class Genome{
                     sinkWeight+= 1 * Math.pow(2, j-16);
                 }
             }
->>>>>>> Stashed changes
             
             if(neuronType <= 1){
                 // Neuron is an internal neuron
@@ -311,28 +288,9 @@ public class Genome{
                         replacementNeuron = new Sensor(creature, BASESINKWEIGHT);
                     }
                     // Complete the incomplete internal neuron by giving it a valid sink (with a random sinkweight)
-<<<<<<< Updated upstream
-                    emptyNeuron.addSink(randomNeuron, Database.random.nextInt(0,(int)Math.pow(2, 16)));
-                    randomNeuron.addSource(emptyNeuron);
-                } 
-
-                // Debug
-                // System.out.println("Complete "+emptyNeuron.toString());
-                // System.out.print("Sources:");
-                // for(Neuron source : emptyNeuron.getSources()){
-                //     System.out.print(" ["+source.toString()+","+new ArrayList<Neuron>(source.getSinks().keySet()).toString()+"]");
-                // }
-                // System.out.println();
-                // System.out.print("Sinks:");
-                // for(Neuron sink : new ArrayList<>(emptyNeuron.getSinks().keySet())){
-                //     System.out.print(" ["+sink.toString()+","+sink.getSources().toString()+"]");
-                // }
-                // System.out.println();
-=======
                     emptyNeuron.addSink(replacementNeuron, BASESINKWEIGHT);
                     replacementNeuron.addSource(emptyNeuron);
                 }
->>>>>>> Stashed changes
             }
             else if(emptyNeuron.getClassType().equals("Sensor")){
                 sensors.add(emptyNeuron);

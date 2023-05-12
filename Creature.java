@@ -1,9 +1,5 @@
 import java.awt.*;
-<<<<<<< Updated upstream
-import java.util.ArrayList;
-=======
 import java.util.BitSet;
->>>>>>> Stashed changes
 
 public class Creature extends ScreenObject{
     private Genome genome;
@@ -58,19 +54,6 @@ public class Creature extends ScreenObject{
                 // Mutate
                 if(Database.random.nextDouble(0,1)<Database.mutationChance){
 
-<<<<<<< Updated upstream
-                String newDNA = getGenome().getDNA();
-                int dnaLength = getGenome().getDNA().length();
-                // Debug
-                int bitMutationTotal = (int) (dnaLength/Database.bitMutationAverage);
-
-
-                while(bitMutationTotal>0){
-                    int randomBit = Database.random.nextInt(dnaLength);
-                    newDNA = newDNA.substring(0, randomBit) + ((Integer.parseInt(newDNA.substring(randomBit, randomBit+1))+1)%2) + newDNA.substring(randomBit+1);
-                    bitMutationTotal--;
-                }
-=======
                     BitSet newDNA = getGenome().getDNA();
                     int dnaLength = getGenome().getDNA().length();
                     // Debug
@@ -82,7 +65,6 @@ public class Creature extends ScreenObject{
                     //     newDNA = newDNA.substring(0, randomBit) + ((Integer.parseInt(newDNA.substring(randomBit, randomBit+1))+1)%2) + newDNA.substring(randomBit+1);
                     //     bitMutationTotal--;
                     // }
->>>>>>> Stashed changes
 
                     // Create the new genome with the newDNA
                     newGenome = new Genome(this,newDNA);
