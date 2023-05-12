@@ -1,4 +1,8 @@
 import java.awt.*;
+<<<<<<< HEAD
+=======
+import java.util.ArrayList;
+>>>>>>> main
 import java.util.BitSet;
 
 public class Creature extends ScreenObject{
@@ -13,6 +17,10 @@ public class Creature extends ScreenObject{
     public Creature(Genome genome){
         super();
         this.genome = genome;
+    }
+    public Creature(BitSet DNA) {
+        super();
+        this.genome = new Genome(this, DNA);
     }
     public Creature(Color color,Coor position){
         super(color, position);
@@ -54,6 +62,7 @@ public class Creature extends ScreenObject{
                 // Mutate
                 if(Database.random.nextDouble(0,1)<Database.mutationChance){
 
+<<<<<<< HEAD
                     BitSet newDNA = getGenome().getDNA();
                     int dnaLength = getGenome().getDNA().length();
                     // Debug
@@ -81,6 +90,28 @@ public class Creature extends ScreenObject{
                 }
                 newCreatures[index] = newCreature;
                 index++;
+=======
+                BitSet newDNA = getGenome().getDNA();
+                int dnaLength = getGenome().getDNA().length();
+                // Debug
+                int bitMutationTotal = (int) (dnaLength/Database.bitMutationAverage);
+
+
+                // while(bitMutationTotal>0){
+                //     int randomBit = Database.random.nextInt(dnaLength);
+                //     newDNA = newDNA.substring(0, randomBit) + ((Integer.parseInt(newDNA.substring(randomBit, randomBit+1))+1)%2) + newDNA.substring(randomBit+1);
+                //     bitMutationTotal--;
+                // }
+
+                // Create the new genome with the newDNA
+                genome = new Genome(this,newDNA);
+
+                // Create the new creature with the new genome 
+                creature = new Creature(genome);
+
+                // Let genome know it's creature
+                genome.creature = creature;
+>>>>>>> main
             }
         }
         return newCreatures;

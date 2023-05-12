@@ -3,6 +3,12 @@ import javax.swing.JPanel;
 
 public class SimulationPanel extends JPanel{
 
+    private static int CREATURE_SPRITE_WIDTH = 10;
+    private static int CREATURE_SPRITE_HEIGHT = 10;
+    private static int FOOD_SPRITE_WIDTH = 4;
+    private static int FOOD_SPRITE_HEIGHT = 4;
+    private static int HIGHLIGHT_CIRCLE_DIAMETER = 30;
+
     public SimulationPanel() {
         setBackground(Database.simulationScreenColor);
     }
@@ -12,7 +18,7 @@ public class SimulationPanel extends JPanel{
         super.paintComponent(g);
         // Where all graphics are rendered
         highlightSubject(g);
-        drawSub(g);
+        drawCreature(g);
         drawFood(g);
     }
 
@@ -43,9 +49,6 @@ public class SimulationPanel extends JPanel{
         
         Creature creature = Database.creaturesList[creatureIndex];
         g.setColor(Color.red);
-        g.fillOval(creature.getPrintPos().x()-15, creature.getPrintPos().y()-15, 30, 30);
-        
-        
-        
+        g.fillOval(creature.getPrintPos().x()-HIGHLIGHT_CIRCLE_DIAMETER/2, creature.getPrintPos().y()-HIGHLIGHT_CIRCLE_DIAMETER/2, HIGHLIGHT_CIRCLE_DIAMETER, HIGHLIGHT_CIRCLE_DIAMETER);
     }
 }

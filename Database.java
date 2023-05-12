@@ -44,7 +44,4 @@ public class Database {
 
           // Random
           public final static Random random = new Random();
-          // public final static int hungerCounter = 30;
-     
-     
 }

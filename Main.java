@@ -1,13 +1,20 @@
+<<<<<<< HEAD
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.BitSet;
 
+=======
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.BitSet;
+>>>>>>> main
 public class Main {
-   
     public static void main(String[] args) {
-        Screens.createScreens();
-        simulation();
+        startSimulation();
     }
 
     public static void tick(SimulationPanel panel, int i) {
@@ -17,20 +24,45 @@ public class Main {
                 determineNeuronActivation(Database.creaturesList[j]).motorMethod.invoke(Database.creaturesList[j]);
             }
         }
+<<<<<<< HEAD
         // Do Visuals check
+=======
+        // // temporary killing mechanism for hunger
+        // for (int j = 0; j < Database.creaturesList.size(); j++) {
+        //     Database.creaturesList.get(j).decrementHunger();
+        //     if (Database.creaturesList.get(j).getHunger() < 0) {
+        //         Database.creaturesList.remove(j);
+        //         j--;
+        //     }
+        // }
+        
+        // Time between ticks
+>>>>>>> main
         if(Database.doVisuals){
             panel.repaint();
         }
+        Screens.guiPanel.updateLabel();
     }
+<<<<<<< HEAD
 
     public static void startSimulation() {
         boolean SerialInput = false;
+=======
+    public static void startSimulation() {
+        // ADD SERIALIZATION CHECK HERE
+        boolean SerialInput = true;
+>>>>>>> main
         if (SerialInput){
             try {
                 FileInputStream file = new FileInputStream("t.tmp");
                 ObjectInputStream in = new ObjectInputStream(file);
+<<<<<<< HEAD
                 for (int i = 0; i < Database.creaturesList.length; i++) {
                     Database.creaturesList[i] = new Creature((BitSet)in.readObject());
+=======
+                for (int i = 0; i < Database.generationSize; i++) {
+                    Database.creaturesList.add(new Creature((BitSet)in.readObject()));
+>>>>>>> main
                 }
                 in.close();
             } catch (Exception e) {
@@ -40,22 +72,35 @@ public class Main {
         }
         else{
             // Create generation 0
+<<<<<<< HEAD
             for (int i = 0; i < Database.creaturesList.length; i++) {
                 Database.creaturesList[i] = new Creature();
             }
             // for (Creature c : Database.creaturesList) {
             //     System.out.println(c);
             // }
+=======
+            for (int i = 0; i < Database.generationSize; i++) {
+                Database.creaturesList.add(new Creature());
+            }
+>>>>>>> main
         }
-        // Run the simulation
+
+        Screens.createScreens();
+        
         for(Database.currentGeneration = 0; Database.currentGeneration < Database.simulationLength; Database.currentGeneration++){
             Screens.brainPanel.repaint();
             // Debug
             System.out.println("Generation: "+(Database.currentGeneration+1));
-            
+                
             // Repopulate with food
+<<<<<<< HEAD
             for (int i = 0; i < Database.foodsList.length; i++) {
                 Database.foodsList[i] = new Food();
+=======
+            while(Database.foodsList.size()<Database.amountOfFood){
+                Database.foodsList.add(new Food());
+>>>>>>> main
             }
 
             // Gives every instantiated creature and food a unique position
@@ -78,6 +123,7 @@ public class Main {
                     out.close();
                 } catch (Exception e) {
                     System.out.println(e);
+<<<<<<< HEAD
                 }
             }
 
@@ -109,11 +155,47 @@ public class Main {
                             newGeneration[j] = temp[j];
                         }
                     }
+=======
+>>>>>>> main
                 }
             }
+            
+            
+
+            Database.generationFinished = true;
+            // Wait till next generation should be run
+            while(true){
+                if(Database.autoStartGeneration || Database.startNextGeneration){
+                    break;
+                }
+                
+                Screens.simulationPanel.repaint();
+                try {
+                    Thread.sleep(2);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            Database.startNextGeneration = false;
+
+            int reproductionCount = 0;
+            ArrayList<Creature> newGeneration = new ArrayList<Creature>();
+            for(Creature creature : Database.creaturesList){
+                // Survival Criteria Check
+                if(creature.getFoodCount() >= Database.minimumFoodEaten){
+                    reproductionCount++;
+                    newGeneration.addAll(creature.reproduce());
+                }
+            }
+            Database.reproducedLastGeneration = reproductionCount;
 
             // Debug
+<<<<<<< HEAD
             System.out.println(newGeneration.length+" creatures reproduced!");
+=======
+            System.out.println(reproductionCount+" creatures reproduced!");
+
+>>>>>>> main
             // Fill the rest of the new generation with random creatures
             for(int i = 0; i< newGeneration.length; i++){
                 if (newGeneration[i] == null){
@@ -192,6 +274,7 @@ public class Main {
                 startingPositions.add(new Coor(i, j));
             }
         }
+<<<<<<< HEAD
         
         for(int i = 0; i < Database.creaturesList.length; i++){
             if (Database.creaturesList[i] != null) {
@@ -206,6 +289,21 @@ public class Main {
                 Database.foodsList[i].setPos(coor);
                 Database.foodLocations[Database.foodsList[i].getPosX()][Database.foodsList[i].getPosY()]+=1;
             }
+=======
+
+        Database.foodLocations = new int[Database.worldSize][Database.worldSize];
+        Database.creatureLocations = new int[Database.worldSize][Database.worldSize];
+        
+        for(Creature creature : Database.creaturesList){
+            Coor coor = startingPositions.remove(Database.random.nextInt(0,startingPositions.size()));
+            creature.setPos(coor);
+            Database.creatureLocations[creature.getPosX()][creature.getPosY()]+=1;
+        }
+        for(Food food : Database.foodsList){
+            Coor coor = startingPositions.remove(Database.random.nextInt(0,startingPositions.size()));
+            food.setPos(coor);
+            Database.foodLocations[food.getPosX()][food.getPosY()]+=1;
+>>>>>>> main
         }
     }
 }

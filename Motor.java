@@ -38,24 +38,24 @@ public class Motor extends Neuron{
     ////////////////////////////////////////////////////////
 
     private static void MoveUp(Creature creature){
-        Database.creatureCoordinates.remove(creature.getPos());
+        Database.creatureLocations[creature.getPosX()][creature.getPosY()]-=1;
         creature.setPosY((creature.getPosY() + 1) % Database.worldSize);
-        Database.creatureCoordinates.add(creature.getPos());
+        Database.creatureLocations[creature.getPosX()][creature.getPosY()]+=1;
     }
     private static void MoveDown(Creature creature){
-        Database.creatureCoordinates.remove(creature.getPos());
-        creature.setPosY((creature.getPosY() - 1) % Database.worldSize);
-        Database.creatureCoordinates.add(creature.getPos());
+        Database.creatureLocations[creature.getPosX()][creature.getPosY()]-=1;
+        creature.setPosY((creature.getPosY() - 1 + Database.worldSize) % Database.worldSize);
+        Database.creatureLocations[creature.getPosX()][creature.getPosY()]+=1;
     }
     private static void MoveLeft(Creature creature){
-        Database.creatureCoordinates.remove(creature.getPos());
-        creature.setPosX((creature.getPosX() - 1) % Database.worldSize);
-        Database.creatureCoordinates.add(creature.getPos());
+        Database.creatureLocations[creature.getPosX()][creature.getPosY()]-=1;
+        creature.setPosX((creature.getPosX() - 1 + Database.worldSize) % Database.worldSize);
+        Database.creatureLocations[creature.getPosX()][creature.getPosY()]+=1;
     }
     private static void MoveRight(Creature creature){
-        Database.creatureCoordinates.remove(creature.getPos());
+        Database.creatureLocations[creature.getPosX()][creature.getPosY()]-=1;
         creature.setPosX((creature.getPosX() + 1) % Database.worldSize);
-        Database.creatureCoordinates.add(creature.getPos());
+        Database.creatureLocations[creature.getPosX()][creature.getPosY()]+=1;
     }
     private static void DoNothing(Creature creature) {
         // Only meant as a default method as it serves no value
@@ -76,6 +76,8 @@ public class Motor extends Neuron{
                 creature.ateFood();
                 // Database.foodLocations[Database.foodsList[i].getPosX()][Database.foodsList[i].getPosY()]-=1;
                 // Database.foodsList[i] = null;
+                Database.foodsList.remove(food);
+                Database.foodLocations[food.getPosX()][food.getPosY()]-=1;
                 break;
             }
         }
