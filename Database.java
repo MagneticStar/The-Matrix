@@ -24,7 +24,6 @@ public class Database {
           public final static double mutationChance = 0.05; // The chance of mutation, must be between 0 and 1 (inclusive)
           public final static double bitMutationAverage = (1.08665/Math.pow(mutationChance,0.531384)-0.0435476);
           public final static int genomeLength = 16;
-          public final static int genomeLength = 16;
 
           // Trackers
           public static int currentGenerationTick; // How many ticks have passed this generation
