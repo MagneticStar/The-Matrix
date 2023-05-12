@@ -31,17 +31,13 @@ public class guiPanel extends JPanel {
         trackersText = "<br/><br/>Current Step: "+(Database.currentGenerationTick+1);
         trackersText += "<br/>Current Generation: "+(Database.currentGeneration+1);
         trackersText += "<br/>Reproduced Last Generation: "+Database.reproducedLastGeneration.get(Database.currentGeneration);
-        trackersText += "<br/>Food Count: "+Database.foodsList.size()+"</html>";
+        trackersText += "<br/>Food Count: "+Database.foodsList.length+"</html>";
 
         settingsLabelText = settingsText+trackersText;
         
-        settingsLabel.setText(settingsLabelText);
-        repaint();
     }
 
     public void addComponents(){
-
-        // Combobox
         highlightComboBox = new JComboBox<String>(Screens.creatureNames);
         highlightComboBox.addActionListener(new ActionListener() {
             @Override

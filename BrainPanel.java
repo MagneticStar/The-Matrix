@@ -7,7 +7,7 @@ import javax.swing.JPanel;
 public class BrainPanel extends JPanel {
     
     private JComboBox<String> searchDropDown;
-    private int currentlySelectedCreatureIndex = -1;
+    private int currentlySelectedCreatureIndex = 0;
 
     public BrainPanel() {
         setBackground(Color.BLACK);
@@ -36,11 +36,11 @@ public class BrainPanel extends JPanel {
         drawNeuron(g);
     }
     public void drawNeuron(Graphics g) {
-        if (Database.creaturesList.size() == 0 || currentlySelectedCreatureIndex == -1) {
+        if (Database.creaturesList.length == 0 || currentlySelectedCreatureIndex == -1 || Database.creaturesList[currentlySelectedCreatureIndex] == null) {
             return;
         }
         
-        Neuron[] neurons = Database.creaturesList.get(currentlySelectedCreatureIndex).getGenome().getNeurons();
+        Neuron[] neurons = Database.creaturesList[currentlySelectedCreatureIndex].getGenome().getNeurons();
         Database.brainScreenSizeY = neurons.length;
         
         int i = 1;

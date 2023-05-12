@@ -13,7 +13,7 @@ public class Screens {
     public static Translation brainWorldToScreen = new Translation(Database.brainScreenSizeX, Database.brainScreenSizeY);
     public static SimulationFrame simulationFrame = new SimulationFrame();
     public static Translation SimulationWorldToScreen = new Translation(Database.worldSize, Database.worldSize);
-    public static String[] creatureNames = new String[Database.creaturesList.size()+1];
+    public static String[] creatureNames = new String[Database.creaturesList.length+1];
     
     public static void createScreens() {
         creatureNames[0] = "None Selected";
@@ -31,6 +31,9 @@ public class Screens {
         brainPanel.setLayout(flowLayout);
         dataFrame.add(graphPanel);
         dataFrame.setVisible(true);
+        for(int i=0; i<Database.creaturesList.length; i++){
+            creatureNames[i] = String.format("Creature %04d",i);
+        }
 
         // Simulation Frame
         splitPane = new JSplitPane();
