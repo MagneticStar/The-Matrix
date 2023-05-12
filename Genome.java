@@ -3,18 +3,13 @@ import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Random;
-
 
 public class Genome{
     public static final int genomeLength = Database.genomeLength;
     private static final int geneLength = 32;
     private int oscillatorPeriod = Database.random.nextInt(1,Database.generationLength+1);
-<<<<<<< HEAD
     private BitSet DNA;
-=======
     private BitSet DNA = new BitSet(geneLength * geneLength);
->>>>>>> main
     public Creature creature;
     private Color color;
     private Neuron[] neurons;
@@ -32,6 +27,7 @@ public class Genome{
     }
 
     // Creates a new neuron map based on the inputed DNA
+    public Genome(Creature creature, BitSet DNA){
     public Genome(Creature creature, BitSet DNA){
         this.creature = creature;
         this.DNA = DNA;
@@ -104,14 +100,9 @@ public class Genome{
             coordinateDistanceMax[i] = ((highestNeuronCoordinate[i]-averageNeuronCoordinate[i])+(averageNeuronCoordinate[i]-lowestNeuronCoordinate[i]))/2; //JACKSON
         }
 
-<<<<<<< HEAD
         for(int i=0; i<Database.creaturesList.length; i++){
             if (Database.creaturesList[i] != null) {
                 int[] rgb = new int[3];
-=======
-        for(int i=0; i<Database.creaturesList.size(); i++){
-            int[] rgb = new int[3];
->>>>>>> main
             for(int j =0; j<3; j++){
                 double distance = (Math.abs(averageNeuronCoordinate[j]-neuronCoordinates[i][j])/(double)coordinateDistanceMax[j]);
                 // double multiplier = 255 / (Math.abs(averageNeuronCoordinate[j]-neuronCoordinates[i][j])/(double)coordinateDistanceMax[j]); //JACKSON
@@ -132,12 +123,8 @@ public class Genome{
 
     private void generateDNA(){
         // Each DNA strand is comprised of genomeLength genes of size geneLength.
-<<<<<<< HEAD
         // There are no spaces in each DNA String as geneLength can be used to find each gene mathematically.
-        for (int i = 0; i < geneLength * genomeLength) {
-=======
-        for (int i = 0; i < genomeLength; i++) {
->>>>>>> main
+        for (int i = 0; i < geneLength * genomeLength; i++) {
             DNA.set(i, Database.random.nextBoolean());
         }
     }
@@ -164,6 +151,9 @@ public class Genome{
         ArrayList<Neuron> sensors = new ArrayList<Neuron>();
 
         for(int i=0; i<genomeLength; i++){
+            // Debug
+            // Database.creaturesList.add(new Creature(new Genome(this.subject,this.DNA,neurons)));
+
             Neuron neuron;
             
             // parses the DNA by splicing it using the format described above
@@ -175,68 +165,41 @@ public class Genome{
                     neuronType += 1 * Math.pow(2, j);
                 }
             }
-<<<<<<< HEAD
             
             int neuronID = 0;
             for (int j = 2; j < 6; j++) {
                 if (gene.get(j)) {
                     neuronID += 1 * Math.pow(2, j-2);
-=======
-            int neuronID = 0;
-            for (int j = 2; j < 6; j++) {
-                if (gene.get(j)) {
-                    neuronID += 1 * Math.pow(2, j);
->>>>>>> main
                 }
             }
             int sourceType = 0;
             for (int j = 6; j < 7; j++) {
                 if (gene.get(j)) {
-<<<<<<< HEAD
                     sourceType += 1 * Math.pow(2, j-6);
-=======
-                    sourceType += 1 * Math.pow(2, j);
->>>>>>> main
                 }
             }
             int sourceID = 0;
             for (int j = 7; j < 11; j++) {
                 if (gene.get(j)) {
-<<<<<<< HEAD
                     sourceID += 1 * Math.pow(2, j-7);
-=======
-                    sourceID += 1 * Math.pow(2, j);
->>>>>>> main
                 }
             }
             int sinkType = 0;
             for (int j = 11; j < 12; j++) {
                 if (gene.get(j)) {
-<<<<<<< HEAD
                     sinkType += 1 * Math.pow(2, j-11);
-=======
-                    sinkType += 1 * Math.pow(2, j);
->>>>>>> main
                 }
             }
             int sinkID = 0;
             for (int j = 12; j < 16; j++) {
                 if (gene.get(j)) {
-<<<<<<< HEAD
                     sinkID += 1 * Math.pow(2, j-12);
-=======
-                    sinkID += 1 * Math.pow(2, j);
->>>>>>> main
                 }
             }
             int sinkWeight = 0;
             for (int j = 16; j < geneLength; j++) {
                 if (gene.get(j)) {
-<<<<<<< HEAD
                     sinkWeight+= 1 * Math.pow(2, j-16);
-=======
-                    sinkWeight+= 1 * Math.pow(2, j);
->>>>>>> main
                 }
             }
             
@@ -271,6 +234,19 @@ public class Genome{
         for(Neuron emptyNeuron:emptyNeurons){
             // Empty sensors and motors are valid and simply need to be added to the list, only internals need extra
             if(emptyNeuron instanceof Internal){
+                // Debug
+                // System.out.println("Empty "+emptyNeuron.toString());
+                // System.out.print("Sources:");
+                // for(Neuron source : emptyNeuron.getSources()){
+                //     System.out.print(" ["+source.toString()+","+new ArrayList<Neuron>(source.getSinks().keySet()).toString()+"]");
+                // }
+                // System.out.println();
+                // System.out.print("Sinks:");
+                // for(Neuron sink : new ArrayList<>(emptyNeuron.getSinks().keySet())){
+                //     System.out.print(" ["+sink.toString()+","+sink.getSources().toString()+"]");
+                // }
+                // System.out.println();
+
                 if(emptyNeuron.getSources().size() == 0){
                     // Get a random neuron that isnt a motor
                     Neuron replacementNeuron = null;
@@ -298,23 +274,22 @@ public class Genome{
                         replacementNeuron = new Sensor(creature, BASESINKWEIGHT);
                     }
                     // Complete the incomplete internal neuron by giving it a valid sink (with a random sinkweight)
-<<<<<<< HEAD
                     emptyNeuron.addSink(replacementNeuron, BASESINKWEIGHT);
                     replacementNeuron.addSource(emptyNeuron);
                 }
-=======
-                    emptyNeuron.addSink(randomNeuron, Database.random.nextInt(0,(int)Math.pow(2, 16)));
-                    randomNeuron.addSource(emptyNeuron);
-                } 
-
->>>>>>> main
             }
             else if(emptyNeuron.getClassType().equals("Sensor")){
                 sensors.add(emptyNeuron);
             }
             neurons.add(emptyNeuron);
         }
-        
+        // Debug
+        // Database.creaturesList.add(new Creature(new Genome(this.subject,this.DNA,neurons)));
+        // for(Neuron neuron : neurons){
+        //     if(findSourceSinkError(neuron,false,0)){
+        //         System.out.println("Uh Ohh");
+        //     }
+        // }
         for(Neuron neuron : neurons){
             String toPrint = "";
             Boolean print = false;
