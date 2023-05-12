@@ -1,9 +1,11 @@
-import java.util.ArrayList;
-
 public class Sensor extends Neuron{
 
     public SensorMethod sensorMethod; 
+<<<<<<< Updated upstream
     public static int numberOfSensorMethods = 5; // Update this when creating new Sensor methods
+=======
+    public static int numberOfSensorMethods = 6; // Update this when creating new Sensor methods
+>>>>>>> Stashed changes
     public int methodID;
     private static int searchDepth = 0;
 
@@ -14,9 +16,17 @@ public class Sensor extends Neuron{
             case 0: this.sensorMethod = Sensor::nearestFoodDistance; break;
             case 1: this.sensorMethod = Sensor::detectFoodXDirection; break;
             case 2: this.sensorMethod = Sensor::detectFoodYDirection; break;
+<<<<<<< Updated upstream
             case 3: this.sensorMethod = Sensor::Oscillator; break;
             // case 4: this.sensorMethod = Sensor::nearestCreatureDistance; break;
             case 4: this.sensorMethod = Sensor::random; break;
+=======
+            case 3: this.sensorMethod = Sensor::nearestCreatureDistance; break;
+            case 4: this.sensorMethod = Sensor::detectCreatureXDirection; break;
+            case 5: this.sensorMethod = Sensor::detectCreatureYDirection; break;
+            // case 6: this.sensorMethod = Sensor::Oscillator; break;
+            // case 7: this.sensorMethod = Sensor::random; break;
+>>>>>>> Stashed changes
         }
     }
     

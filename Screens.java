@@ -11,7 +11,11 @@ public class Screens {
     public static SimulationFrame simulationFrame = new SimulationFrame();
     public static SimulationPanel simulationPanel = new SimulationPanel();
     public static Translation SimulationWorldToScreen = new Translation(Database.worldSize, Database.worldSize);
+<<<<<<< Updated upstream
     public static String[] subNames = new String[Database.creaturesList.size()];
+=======
+    public static String[] creatureNames = new String[Database.creaturesList.length+1];
+>>>>>>> Stashed changes
     
     public static void createScreens() {
         // Brain Frame

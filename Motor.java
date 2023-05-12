@@ -62,8 +62,8 @@ public class Motor extends Neuron{
     }
 
     private static void Eat(Creature creature) {
-        for (Food food : Database.foodsList) {
-            if (creature.getPos().equals(food.getPos())) {
+        for (int i = 0; i < Database.foodsList.length; i++) {
+            if (Database.foodsList[i] != null && (creature.getPos().equals(Database.foodsList[i].getPos()) || true)) {
                 // for (int i = 0; i < 10 ; i++) {
                 //     creature.incrementHunger();
                 // }
@@ -74,8 +74,13 @@ public class Motor extends Neuron{
                 // System.out.println("Ate Food");
 
                 creature.ateFood();
+<<<<<<< Updated upstream
                 // Database.foodsList.remove(food);
                 // Database.foodCoordinates.remove(food.getPos());
+=======
+                // Database.foodLocations[Database.foodsList[i].getPosX()][Database.foodsList[i].getPosY()]-=1;
+                // Database.foodsList[i] = null;
+>>>>>>> Stashed changes
                 break;
             }
         }

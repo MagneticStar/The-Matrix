@@ -1,5 +1,9 @@
 import java.awt.*;
+<<<<<<< Updated upstream
 import java.util.ArrayList;
+=======
+import java.util.BitSet;
+>>>>>>> Stashed changes
 
 public class Creature extends ScreenObject{
     private Genome genome;
@@ -41,20 +45,20 @@ public class Creature extends ScreenObject{
     }
 
     // Methods
-    public ArrayList<Creature> reproduce(){
-        // Debug
-        // System.out.println("Reproduced!");
+    public Creature[] reproduce(){
 
-        ArrayList<Creature> newCreatures = new ArrayList<Creature>();
-        
-        while(this.foodEaten>=Database.minimumFoodEaten){
+        Creature[] newCreatures = new Creature[Database.generationSize];
+        int index = 0;
+        while(this.foodEaten>=Database.minimumFoodEaten && index < Database.generationSize - 1){
             foodEaten--;
-            Genome genome;
-            Creature creature;
+            for (int i = 0; i < Database.repoductionPerCreature; i++) {
+                Genome newGenome;
+                Creature newCreature;
 
-            // Mutate
-            if(Database.random.nextDouble(0,1)<Database.mutationChance){
+                // Mutate
+                if(Database.random.nextDouble(0,1)<Database.mutationChance){
 
+<<<<<<< Updated upstream
                 String newDNA = getGenome().getDNA();
                 int dnaLength = getGenome().getDNA().length();
                 // Debug
@@ -66,22 +70,36 @@ public class Creature extends ScreenObject{
                     newDNA = newDNA.substring(0, randomBit) + ((Integer.parseInt(newDNA.substring(randomBit, randomBit+1))+1)%2) + newDNA.substring(randomBit+1);
                     bitMutationTotal--;
                 }
+=======
+                    BitSet newDNA = getGenome().getDNA();
+                    int dnaLength = getGenome().getDNA().length();
+                    // Debug
+                    int bitMutationTotal = (int) (dnaLength/Database.bitMutationAverage);
 
-                // Create the new genome with the newDNA
-                genome = new Genome(this,newDNA);
 
-                // Create the new creature with the new genome 
-                creature = new Creature(genome);
+                    // while(bitMutationTotal>0){
+                    //     int randomBit = Database.random.nextInt(dnaLength);
+                    //     newDNA = newDNA.substring(0, randomBit) + ((Integer.parseInt(newDNA.substring(randomBit, randomBit+1))+1)%2) + newDNA.substring(randomBit+1);
+                    //     bitMutationTotal--;
+                    // }
+>>>>>>> Stashed changes
 
-                // Let genome know it's creature
-                genome.creature = creature;
+                    // Create the new genome with the newDNA
+                    newGenome = new Genome(this,newDNA);
+
+                    // Create the new creature with the new genome 
+                    newCreature = new Creature(genome);
+
+                    // Let genome know it's creature
+                    newGenome.creature = newCreature;
+                }
+                // Don't Mutate
+                else{
+                    newCreature = new Creature(genome);
+                }
+                newCreatures[index] = newCreature;
+                index++;
             }
-            // Don't Mutate
-            else{
-                creature = this;
-                creature.clearFood();
-            }
-            newCreatures.add(creature);
         }
         return newCreatures;
     }
@@ -95,5 +113,9 @@ public class Creature extends ScreenObject{
 
     public void clearFood(){
         foodEaten = 0;
+    }
+    @Override
+    public String toString() {
+        return genome.getDNA().toString();
     }
 }
