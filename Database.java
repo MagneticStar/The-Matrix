@@ -29,8 +29,8 @@ public class Database {
           // Trackers
           public static int currentGenerationTick; // How many ticks have passed this generation
           public static int currentGeneration; // How many generations have passed this simulation
-          public static int[][] creatureLocations;
-          public static int[][] foodLocations;
+          public static int[][] creatureLocations = new int[worldSize][worldSize];
+          public static int[][] foodLocations = new int[worldSize][worldSize];
           public static Food[] foodsList = new Food[amountOfFood];
           public static Creature[] creaturesList = new Creature[generationSize];
           public static ArrayList<Integer> reproducedLastGeneration = new ArrayList<Integer>(Arrays.asList(0));

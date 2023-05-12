@@ -8,7 +8,6 @@ public class Genome{
     public static final int genomeLength = Database.genomeLength;
     private static final int geneLength = 32;
     private int oscillatorPeriod = Database.random.nextInt(1,Database.generationLength+1);
-    private BitSet DNA;
     private BitSet DNA = new BitSet(geneLength * geneLength);
     public Creature creature;
     private Color color;
@@ -27,7 +26,6 @@ public class Genome{
     }
 
     // Creates a new neuron map based on the inputed DNA
-    public Genome(Creature creature, BitSet DNA){
     public Genome(Creature creature, BitSet DNA){
         this.creature = creature;
         this.DNA = DNA;
