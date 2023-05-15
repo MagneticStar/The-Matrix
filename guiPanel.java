@@ -119,10 +119,11 @@ public class GUIPanel extends JPanel {
         c.gridx = 1;
         c.gridy = 1;
         this.add(startGenerationsCheckBox,c);
-        c.gridx = 1;
+        c.gridx = 0;
         c.gridy = 2;
+        c.gridwidth = 2;
         this.add(settingsLabel,c);
-        c.gridx = 1;
+        c.gridx = 0;
         c.gridy = 3;
         this.add(saveSimulationCheckbox,c);
         

@@ -73,8 +73,6 @@ public class Main {
             // Debug
             // System.out.println("Generation: "+(Database.currentGeneration+1));
 
-            Screens.graphPanel.repaint();
-
             // Gives every instantiated creature and food a unique position
             populateSimulationSpace();
             // Gives every creature a color based on their composition of neurons

@@ -9,7 +9,6 @@ public class Screens {
     public static DataFrame dataFrame = new DataFrame();
     public static BrainPanel brainPanel;
     public static GUIPanel guiPanel;
-    public static GraphPanel graphPanel;
     public static animationPanel animationPanel;
     public static SimulationPanel simulationPanel;
     public static JSplitPane splitPane;
@@ -23,7 +22,6 @@ public class Screens {
         for(int i=1; i<creatureNames.length; i++){
             creatureNames[i] = String.format("Creature %04d",i);
         }
-        graphPanel = new GraphPanel();
         brainPanel = new BrainPanel();
         guiPanel = new GUIPanel();
         animationPanel = new animationPanel();
@@ -31,7 +29,7 @@ public class Screens {
 
         // Brain Frame
         brainPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
-        dataFrame.add(graphPanel);
+        dataFrame.add(brainPanel);
         dataFrame.setVisible(true);
         for(int i=0; i<Database.creaturesList.length; i++){
             creatureNames[i] = String.format("Creature %04d",i);
