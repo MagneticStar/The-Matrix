@@ -1,3 +1,4 @@
+import java.io.DataInput;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
@@ -31,7 +32,7 @@ public class Main {
         
         // Time between ticks
         panel.repaint();
-        Screens.splitPane.setDividerLocation(650);
+        Screens.splitPane.setDividerLocation(600);
         // try {
         //     Thread.sleep(20);
         // } catch (InterruptedException e) {
@@ -73,11 +74,6 @@ public class Main {
             // System.out.println("Generation: "+(Database.currentGeneration+1));
 
             Screens.graphPanel.repaint();
-                
-            // Repopulate with food
-            for (int i = 0; i < Database.foodsList.length; i++) {
-                Database.foodsList[i] = new Food();
-            }
 
             // Gives every instantiated creature and food a unique position
             populateSimulationSpace();
@@ -139,7 +135,7 @@ public class Main {
             // System.out.println(reproductionCount+" creatures reproduced!");
 
             // Fill the rest of the new generation with random creatures
-            for(int i = 0; i< newGeneration.length; i++){
+            for(int i = reproductionCount-1; i< newGeneration.length; i++){
                 if (newGeneration[i] == null){
                 newGeneration[i] = new Creature();
                 }
@@ -211,12 +207,16 @@ public class Main {
     private static void populateSimulationSpace(){
         // Generate all the possible starting positions
         ArrayList<Coor> startingPositions = new ArrayList<Coor>();
-        for(int i = 0; i<Database.worldSize; i++){
-            for(int j = 0; j<Database.worldSize; j++){
-                startingPositions.add(new Coor(i, j));
+        for(int x = 0; x<Database.worldSize; x++){
+            for(int y = 0; y<Database.worldSize; y++){
+                startingPositions.add(new Coor(x, y));
             }
         }
         
+        Database.creatureLocations = new int[Database.worldSize][Database.worldSize];
+        Database.foodLocations = new int[Database.worldSize][Database.worldSize];
+        Database.currentFoodCount = Database.startingFoodCount;
+
         for(int i = 0; i < Database.creaturesList.length; i++){
             if (Database.creaturesList[i] != null) {
                 Coor coor = startingPositions.remove(Database.random.nextInt(0,startingPositions.size()));
@@ -224,12 +224,10 @@ public class Main {
                 Database.creatureLocations[Database.creaturesList[i].getPosX()][Database.creaturesList[i].getPosY()]+=1;
             }
         }
-        for(int i = 0; i < Database.foodsList.length; i++){
-            if (Database.foodsList[i] != null) {
-                Coor coor = startingPositions.remove(Database.random.nextInt(0,startingPositions.size()));
-                Database.foodsList[i].setPos(coor);
-                Database.foodLocations[Database.foodsList[i].getPosX()][Database.foodsList[i].getPosY()]+=1;
-            }
+
+        for(int i = 0; i < Database.startingFoodCount; i++){
+            Coor coor = startingPositions.remove(Database.random.nextInt(0,startingPositions.size()));
+            Database.foodLocations[coor.x()][coor.y()]+=1;
         }
     }
 }

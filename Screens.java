@@ -1,11 +1,14 @@
+import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+
+import javax.swing.BoxLayout;
 import javax.swing.JSplitPane;
 
 public class Screens {
 
     public static DataFrame dataFrame = new DataFrame();
     public static BrainPanel brainPanel;
-    public static guiPanel guiPanel;
+    public static GUIPanel guiPanel;
     public static GraphPanel graphPanel;
     public static animationPanel animationPanel;
     public static SimulationPanel simulationPanel;
@@ -22,13 +25,12 @@ public class Screens {
         }
         graphPanel = new GraphPanel();
         brainPanel = new BrainPanel();
-        guiPanel = new guiPanel();
+        guiPanel = new GUIPanel();
         animationPanel = new animationPanel();
         simulationPanel = new SimulationPanel();
 
         // Brain Frame
-        FlowLayout flowLayout = new FlowLayout(FlowLayout.LEADING);
-        brainPanel.setLayout(flowLayout);
+        brainPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
         dataFrame.add(graphPanel);
         dataFrame.setVisible(true);
         for(int i=0; i<Database.creaturesList.length; i++){
@@ -38,7 +40,7 @@ public class Screens {
         // Simulation Frame
         splitPane = new JSplitPane();
         splitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
-        splitPane.setDividerLocation(650);
+        splitPane.setDividerLocation(600);
         splitPane.setDividerSize(0);
         splitPane.setLeftComponent(simulationPanel);
         splitPane.setRightComponent(guiPanel);

@@ -8,7 +8,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class guiPanel extends JPanel {
+public class GUIPanel extends JPanel {
 
     private JComboBox<String> highlightComboBox;
     private JCheckBox startGenerationsCheckBox;
@@ -21,9 +21,9 @@ public class guiPanel extends JPanel {
     private String settingsLabelText;
     public static int currentlySelectedCreatureIndex = -1;
 
-    public guiPanel() {
-        setBackground(Database.simulationScreenColor);
-
+    public GUIPanel() {
+        this.setLayout(new GridBagLayout());
+        setBackground(Color.black);
         addComponents();
     }
 
@@ -31,10 +31,10 @@ public class guiPanel extends JPanel {
         trackersText = "<br/><br/>Current Step: "+(Database.currentGenerationTick+1);
         trackersText += "<br/>Current Generation: "+(Database.currentGeneration+1);
         trackersText += "<br/>Reproduced Last Generation: "+Database.reproducedLastGeneration.get(Database.currentGeneration);
-        trackersText += "<br/>Food Count: "+Database.foodsList.length+"</html>";
+        trackersText += "<br/>Food Count: "+Database.currentFoodCount+"</html>";
 
         settingsLabelText = settingsText+trackersText;
-        
+        settingsLabel.setText(settingsLabelText);
     }
 
     public void addComponents(){
@@ -105,12 +105,26 @@ public class guiPanel extends JPanel {
         settingsLabel.setForeground(Color.WHITE);
         
         // Add the components (order matters)
-        this.add(highlightComboBox);
-        this.add(startGenerationButton);
-        this.add(showVisualsCheckBox);
-        this.add(startGenerationsCheckBox);
-        this.add(saveSimulationCheckbox);
-        this.add(settingsLabel);
+        GridBagConstraints c = new GridBagConstraints();
+        c.anchor = GridBagConstraints.CENTER;
+        c.gridx = 0;
+        c.gridy = 0;
+        this.add(highlightComboBox,c);
+        c.gridx = 0;
+        c.gridy = 1;
+        this.add(startGenerationButton,c);
+        c.gridx = 1;
+        c.gridy = 0;
+        this.add(showVisualsCheckBox,c);    
+        c.gridx = 1;
+        c.gridy = 1;
+        this.add(startGenerationsCheckBox,c);
+        c.gridx = 1;
+        c.gridy = 2;
+        this.add(settingsLabel,c);
+        c.gridx = 1;
+        c.gridy = 3;
+        this.add(saveSimulationCheckbox,c);
         
         this.revalidate();
     }
