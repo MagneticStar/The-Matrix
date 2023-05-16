@@ -66,9 +66,10 @@ public class Motor extends Neuron{
     }
 
     private static void Eat(Creature creature) {
-        creature.ateFood();
         if (Database.foodLocations[creature.getPosX()][creature.getPosY()] > 0) {
+            creature.ateFood();
             Database.foodLocations[creature.getPosX()][creature.getPosY()] --;
+            Database.currentFoodCount--;
         }
     }
 }

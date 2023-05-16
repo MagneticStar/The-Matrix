@@ -1,16 +1,13 @@
-import java.io.DataInput;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-
 import javax.swing.JPanel;
 import java.util.BitSet;
 
 public class Main {
     public static void main(String[] args) {
-
         startSimulation();
     }
 
@@ -21,16 +18,14 @@ public class Main {
                 determineNeuronActivation(Database.creaturesList[j]).motorMethod.invoke(Database.creaturesList[j]);
             }
         }
-        
-        // Time between ticks
         panel.repaint();
-        Screens.splitPane.setDividerLocation(600);
+        Screens.guiPanel.updateLabel();
+        Screens.splitPane.setDividerLocation(1000);
         // try {
         //     Thread.sleep(20);
         // } catch (InterruptedException e) {
         //     e.printStackTrace();
         // }
-        Screens.guiPanel.updateLabel();
     }
 
     public static void startSimulation() {
@@ -46,16 +41,12 @@ public class Main {
             } catch (Exception e) {
                 System.out.println(e);
             }
-            
         }
         else{
             // Create generation 0
             for (int i = 0; i < Database.creaturesList.length; i++) {
                 Database.creaturesList[i] = new Creature();
             }
-            // for (Creature c : Database.creaturesList) {
-            //     System.out.println(c);
-            // }
         }
 
         Screens.createScreens();
@@ -63,7 +54,7 @@ public class Main {
         for(Database.currentGeneration = 0; Database.currentGeneration < Database.simulationLength; Database.currentGeneration++){
             Screens.brainPanel.repaint();
             // Debug
-            System.out.println("Generation: "+(Database.currentGeneration+1));
+            // System.out.println("Generation: "+(Database.currentGeneration+1));
 
             // Gives every instantiated creature and food a unique position
             populateSimulationSpace();
@@ -74,6 +65,7 @@ public class Main {
             for (Database.currentGenerationTick = 0; Database.currentGenerationTick < Database.generationLength; Database.currentGenerationTick++) {
                 tick(Database.visualPanel, Database.currentGenerationTick);
             }
+
             if (Database.saveAndExit) {
                 try {
                     FileOutputStream file = new FileOutputStream("t.tmp");
@@ -82,7 +74,6 @@ public class Main {
                         out.writeObject(c.getGenome().getDNA());
                     }
                     out.close();
-
                     System.exit(0);
                 } catch (Exception e) {
                     System.out.println("Save failed: "+e);
@@ -95,7 +86,6 @@ public class Main {
                 if(Database.autoStartGeneration || Database.startNextGeneration){
                     break;
                 }
-                
                 Screens.simulationPanel.repaint();
             }
             Database.startNextGeneration = false;
@@ -107,8 +97,9 @@ public class Main {
                     // Survival Criteria Check
                     Creature survivalCheckCreature = Database.creaturesList[i];
                     boolean survives = survivalCheckCreature.getFoodCount() >= Database.minimumFoodEaten && 
-                    survivalCheckCreature.getMoveCount() > 10;
+                    survivalCheckCreature.getMoveCount() < 50;
                     
+
                     if(survives){
                         reproductionCount++;
                         Creature[] temp = Database.creaturesList[i].reproduce();
@@ -117,13 +108,12 @@ public class Main {
                             newGeneration.add(temp[j]);
                         }
                     }
-
                 }
             }
             Database.reproducedLastGeneration.add(reproductionCount);
 
             // Debug
-            System.out.println(reproductionCount+" creatures reproduced!");
+            // System.out.println(reproductionCount+" creatures reproduced!");
             
             for (int i = 0; i < Database.creaturesList.length; i++) {
                 if (newGeneration.size() != 0) {
@@ -133,11 +123,6 @@ public class Main {
                     Database.creaturesList[i] = new Creature(); 
                 }
             }
-            int amount = 0;
-            for (Creature c : Database.creaturesList) {
-                if (c != null) {amount++;}
-            }
-            System.out.println(amount);
         }
     }
 
@@ -148,33 +133,29 @@ public class Main {
         for(Sensor sensor : creature.getGenome().getSensors()){
             if(checkedSensors[sensor.methodID] == null){
                 // This sensor type hasnt been run yet for this creature
-                sensor.addValue(sensor.sensorMethod.invoke(creature));
+                try {
+                    sensor.addValue(sensor.sensorMethod.invoke(creature));
+                } catch (Exception e) {
+                    // will throw exceptions if an object is not found or if there is a NullPointerException
+                    sensor.addValue(0.0);
+                }
                 checkedSensors[sensor.methodID] = sensor;
             }
             else{
                 // This sensor type has been run for this creature
                 sensor.addValue(checkedSensors[sensor.methodID].getValues().get(0));
             }
-
             iterateThroughNeuronChain(sensor);
         }
-
         Motor highestValueMotor = new Motor();
-        
         for(Motor motor : creature.getGenome().getMotors()){
             if(highestValueMotor.getMaxValue() < motor.getMaxValue()){
                 highestValueMotor = motor;
             }
         }
-        // System.out.println(highestValueMotor.getMaxValue());
-        
         for (Neuron neuron : creature.getGenome().getNeurons()) {
             neuron.clearValues();
         }
-
-        // Debug
-        // System.out.println(highestValueMotor.getMaxValue());
-
         return highestValueMotor;
     }
 
@@ -190,9 +171,6 @@ public class Main {
             if(sink instanceof Internal && sink.getSources().size() == sink.getValues().size()){
                 iterateThroughNeuronChain(sink);
             }
-
-            // Debug
-            // System.out.println(sink.toString()+" "+sink.getValues().size()+"/"+sink.getSources().size());
         }
     }
 

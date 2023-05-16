@@ -1,7 +1,4 @@
-import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-
-import javax.swing.BoxLayout;
 import javax.swing.JSplitPane;
 
 public class Screens {
@@ -38,13 +35,13 @@ public class Screens {
         // Simulation Frame
         splitPane = new JSplitPane();
         splitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
-        splitPane.setDividerLocation(600);
+        splitPane.setDividerLocation(1000);
         splitPane.setDividerSize(0);
         splitPane.setLeftComponent(simulationPanel);
         splitPane.setRightComponent(guiPanel);
         simulationFrame.add(splitPane);      
         simulationFrame.setVisible(true);
-
+        
         Database.visualPanel = simulationPanel;
     }
 }

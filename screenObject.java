@@ -5,7 +5,6 @@ class ScreenObject {
     private Color color;
 
     public ScreenObject() {
-        color = Color.WHITE;
         position = new Coor(Database.worldSize/2, Database.worldSize/2);
     }
 
@@ -15,7 +14,6 @@ class ScreenObject {
     }
 
     public ScreenObject(Coor position){
-        color = Color.WHITE;
         this.position = position;
     }
 

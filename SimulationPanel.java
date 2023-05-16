@@ -7,7 +7,7 @@ public class SimulationPanel extends JPanel{
     private final static int CREATURE_SPRITE_HEIGHT = 10;
     private final static int FOOD_SPRITE_WIDTH = 4;
     private final static int FOOD_SPRITE_HEIGHT = 4;
-    private final static Color FOOD_COLOR = Color.GREEN;
+    private final static Color FOOD_COLOR = Color.RED;
     private final static int HIGHLIGHT_CIRCLE_DIAMETER = 30;
 
     public SimulationPanel() {

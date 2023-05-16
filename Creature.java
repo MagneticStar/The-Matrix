@@ -60,7 +60,6 @@ public class Creature extends ScreenObject implements Cloneable{
             System.out.println(e);
             return null;
         }
-        
     }
         
 
@@ -89,6 +88,5 @@ public class Creature extends ScreenObject implements Cloneable{
             System.out.println(e);
             return null;
         }
-        
     }
 }

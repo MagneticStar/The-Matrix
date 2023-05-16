@@ -14,7 +14,6 @@ public class animationPanel extends JPanel {
 
     public animationPanel() {
         setBackground(Database.simulationScreenColor);
-
         animationLabel = new JLabel("Calculating.");
         animationLabel.setForeground(Color.WHITE);
         animationLabel.setSize(40, 80);
@@ -38,5 +37,4 @@ public class animationPanel extends JPanel {
         animationLabel.setText("Calculating"+".".repeat(periods));
         repaint();
     }
-
 }

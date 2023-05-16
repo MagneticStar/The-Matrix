@@ -1,8 +1,8 @@
 import javax.swing.JFrame;
 
 public class DataFrame extends JFrame{
-    private int height = 500;
-    private int width = 1000;
+    private int height = 1000;
+    private int width = 1500;
 
     public DataFrame() {
         this.setSize(width, height);

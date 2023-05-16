@@ -1,6 +1,5 @@
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.DataBuffer;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -43,12 +42,8 @@ public class GUIPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
             // Sets the neuron map panel to the neuron map of the selected subject. The string manipulation is to avoid searching for the index of the subject
-            // currentlySelectedCreatureIndex = Integer.parseInt(highlightComboBox.getSelectedItem().toString().substring(highlightComboBox.getSelectedItem().toString().indexOf(" ")+1));
             currentlySelectedCreatureIndex = highlightComboBox.getSelectedIndex()-1;
             repaint();
-
-            // Debug
-            // System.out.println(Database.creaturesList.get(currentlySelectedCreatureIndex).getPos().toString());
         }});
 
         // Checkbox
@@ -135,7 +130,4 @@ public class GUIPanel extends JPanel {
         super.paintComponent(g);
         // Where all graphics are rendered
     }
-
-    
-
 }
