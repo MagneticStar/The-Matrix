@@ -5,9 +5,9 @@ import java.util.HashSet;
 import java.util.Map;
 
 public class Genome implements Cloneable{
-    public static final int genomeLength = Database.genomeLength;
-    private static final int geneLength = 32;
-    private int oscillatorPeriod = Database.random.nextInt(1,Database.generationLength+1);
+    public static int genomeLength;
+    private static int geneLength = 32;
+    private int oscillatorPeriod;
     private BitSet DNA = new BitSet(geneLength * geneLength);
     private Color color;
     private Neuron[] neurons;
@@ -21,12 +21,16 @@ public class Genome implements Cloneable{
     public Genome(){
         generateDNA(); 
         interpretDNA();
+        genomeLength = Main.loaded.genomeLength;
+        oscillatorPeriod = Main.loaded.random.nextInt(1,Main.loaded.generationLength+1);
     }
 
     // Creates a new neuron map based on the inputed DNA
     public Genome(BitSet DNA){
         this.DNA = DNA;
         interpretDNA();
+        genomeLength = Main.loaded.genomeLength;
+        oscillatorPeriod = Main.loaded.random.nextInt(1,Main.loaded.generationLength+1);
     }
 
     public Color getColor(){
@@ -55,16 +59,16 @@ public class Genome implements Cloneable{
     }
 
     public static void calculateColor(){
-        int[][] creatureNeuronAmounts = new int[Database.generationSize][3];
+        int[][] creatureNeuronAmounts = new int[Main.loaded.generationSize][3];
         double[] averageNeuronCoordinate = {0,0,0};
         int[] coordinateDistanceMax = new int[3]; 
         int[] lowestNeuronCoordinate = {genomeLength,genomeLength,genomeLength};
         int[] highestNeuronCoordinate = {genomeLength,genomeLength,genomeLength};
         
-        for(int i=0; i<Database.generationSize; i++){
-            if (Database.creaturesList[i] != null) {
+        for(int i=0; i<Main.loaded.generationSize; i++){
+            if (Main.loaded.creaturesList[i] != null) {
                 // assigns a value to each indice of the array equal to the amount of said type of neuron the creature has
-                int[] neuronListLengths = {Database.creaturesList[i].getGenome().getSensors().size(),Database.creaturesList[i].getGenome().getInternals().size(),Database.creaturesList[i].getGenome().getMotors().size()};
+                int[] neuronListLengths = {Main.loaded.creaturesList[i].getGenome().getSensors().size(),Main.loaded.creaturesList[i].getGenome().getInternals().size(),Main.loaded.creaturesList[i].getGenome().getMotors().size()};
                 for(int j = 0; j<3; j++){
                     // assigns the array of amounts of neurons to the indice for that creature
                     creatureNeuronAmounts[i][j] = neuronListLengths[j];
@@ -85,7 +89,7 @@ public class Genome implements Cloneable{
 
         for(int i=0; i<3; i++){
             // gives a truncated average by dividing 
-            averageNeuronCoordinate[i] = averageNeuronCoordinate[i]/(double)Database.generationSize; 
+            averageNeuronCoordinate[i] = averageNeuronCoordinate[i]/(double)Main.loaded.generationSize; 
             // checks if the highest value or lowest value is furthest from the average
             if ((double)highestNeuronCoordinate[i] - averageNeuronCoordinate[i] > averageNeuronCoordinate[i] - (double)lowestNeuronCoordinate[i]) {
                 // highest is farther
@@ -97,8 +101,8 @@ public class Genome implements Cloneable{
             }
         }
 
-        for(int i=0; i<Database.creaturesList.length; i++){
-            if (Database.creaturesList[i] != null) {
+        for(int i=0; i<Main.loaded.creaturesList.length; i++){
+            if (Main.loaded.creaturesList[i] != null) {
                 int[] rgb = new int[3];
                 for(int j =0; j<3; j++){
                     // takes the distance of the creature from the minimum distance (a value between 0 and highestNeuronCoordinate[j] - lowestNeuronCoordinate[j] ) and divides by <<. 
@@ -106,8 +110,8 @@ public class Genome implements Cloneable{
                     double locationInRange = (double)(creatureNeuronAmounts[i][j] - lowestNeuronCoordinate[j]) / (highestNeuronCoordinate[j] - lowestNeuronCoordinate[j]);
                     rgb[j] = (int) (255*(locationInRange)); 
                 }
-            Database.creaturesList[i].getGenome().setColor(new Color(rgb[0], rgb[1],rgb[2]));
-            Database.creaturesList[i].setColor(Database.creaturesList[i].getGenome().getColor());
+                Main.loaded.creaturesList[i].getGenome().setColor(new Color(rgb[0], rgb[1],rgb[2]));
+            Main.loaded.creaturesList[i].setColor(Main.loaded.creaturesList[i].getGenome().getColor());
             }
         }
     }
@@ -116,7 +120,7 @@ public class Genome implements Cloneable{
         // Each DNA strand is comprised of genomeLength genes of size geneLength.
         // There are no spaces in each DNA String as geneLength can be used to find each gene mathematically.
         for (int i = 0; i < geneLength * genomeLength; i++) {
-            DNA.set(i, Database.random.nextBoolean());
+            DNA.set(i, Main.loaded.random.nextBoolean());
         }
     }
 
@@ -259,7 +263,7 @@ public class Genome implements Cloneable{
         for(Neuron neuron : neurons){
             String toPrint = "";
             Boolean print = false;
-            toPrint+="Subject "+Database.creaturesList.length+":\n";
+            toPrint+="Subject "+Main.loaded.creaturesList.length+":\n";
             toPrint+="Neuron "+neuron.toString()+":\n";
             toPrint+="Sources:\n";
             for(Neuron source : neuron.getSources()){

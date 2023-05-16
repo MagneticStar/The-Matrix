@@ -9,12 +9,17 @@ public class Screens {
     public static animationPanel animationPanel;
     public static SimulationPanel simulationPanel;
     public static JSplitPane splitPane;
-    public static Translation brainWorldToScreen = new Translation(Database.brainScreenSizeX, Database.brainScreenSizeY);
+    public static Translation brainWorldToScreen;
     public static SimulationFrame simulationFrame = new SimulationFrame();
-    public static Translation SimulationWorldToScreen = new Translation(Database.worldSize, Database.worldSize);
-    public static String[] creatureNames = new String[Database.creaturesList.length+1];
+    public static Translation SimulationWorldToScreen;
+    public static String[] creatureNames;
     
     public static void createScreens() {
+
+        brainWorldToScreen = new Translation(Main.loaded.brainScreenSizeX, Main.loaded.brainScreenSizeY);
+        SimulationWorldToScreen = new Translation(Main.loaded.worldSize, Main.loaded.worldSize);
+        creatureNames = new String[Main.loaded.creaturesList.length+1];
+
         creatureNames[0] = "None Selected";
         for(int i=1; i<creatureNames.length; i++){
             creatureNames[i] = String.format("Creature %04d",i);
@@ -28,7 +33,7 @@ public class Screens {
         brainPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
         dataFrame.add(brainPanel);
         dataFrame.setVisible(true);
-        for(int i=0; i<Database.creaturesList.length; i++){
+        for(int i=0; i<Main.loaded.creaturesList.length; i++){
             creatureNames[i] = String.format("Creature %04d",i);
         }
 
@@ -42,6 +47,6 @@ public class Screens {
         simulationFrame.add(splitPane);      
         simulationFrame.setVisible(true);
         
-        Database.visualPanel = simulationPanel;
+        Main.loaded.visualPanel = simulationPanel;
     }
 }

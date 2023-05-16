@@ -30,41 +30,41 @@ public class Sensor extends Neuron{
     ////////////////////////////////////////////////////////
 
     public static double nearestFoodDistance(Creature creature) throws Exception{
-        int[] coorOfFoundObject = findNearestObject(creature.getPosX(), creature.getPosY(), Database.foodLocations);
+        int[] coorOfFoundObject = findNearestObject(creature.getPosX(), creature.getPosY(), Main.loaded.foodLocations);
         double distance = distance(coorOfFoundObject, creature);
         // returns a value between 1 and 0
-        return 1-(distance/Database.worldSize);
+        return 1-(distance/Main.loaded.worldSize);
     }
 
     private static double detectFoodXDirection (Creature creature) throws Exception{
-        int[] coorOfFoundObject = findNearestObject(creature.getPosX(), creature.getPosY(), Database.foodLocations);
+        int[] coorOfFoundObject = findNearestObject(creature.getPosX(), creature.getPosY(), Main.loaded.foodLocations);
         return directionX(coorOfFoundObject[0], creature);
     }
 
     private static double detectFoodYDirection (Creature creature) throws Exception{
-        int[] coorOfFoundObject = findNearestObject(creature.getPosX(), creature.getPosY(), Database.foodLocations);
+        int[] coorOfFoundObject = findNearestObject(creature.getPosX(), creature.getPosY(), Main.loaded.foodLocations);
         return directionY(coorOfFoundObject[1], creature);
     }
 
     private static double nearestCreatureDistance(Creature creature) throws Exception{
-        int[] coorOfFoundObject = findNearestObject(creature.getPosX(), creature.getPosY(), Database.creatureLocations);
+        int[] coorOfFoundObject = findNearestObject(creature.getPosX(), creature.getPosY(), Main.loaded.creatureLocations);
         double distance = distance(coorOfFoundObject, creature);
               // returns a value between 1 and 0
-        return 1-(distance/Database.worldSize);
+        return 1-(distance/Main.loaded.worldSize);
     }
 
     private static double detectCreatureXDirection (Creature creature) throws Exception{
-        int[] coorOfFoundObject = findNearestObject(creature.getPosX(), creature.getPosY(), Database.creatureLocations);
+        int[] coorOfFoundObject = findNearestObject(creature.getPosX(), creature.getPosY(), Main.loaded.creatureLocations);
         return directionX(coorOfFoundObject[0], creature);
     }
 
     private static double detectCreatureYDirection (Creature creature) throws Exception{
-        int[] indexOfFoundObject = findNearestObject(creature.getPosX(), creature.getPosY(), Database.creatureLocations);
+        int[] indexOfFoundObject = findNearestObject(creature.getPosX(), creature.getPosY(), Main.loaded.creatureLocations);
         return directionY(indexOfFoundObject[1], creature);
     }
     
     private static double Oscillator(Creature creature) {
-        if(Database.currentGenerationTick%creature.getGenome().getOscillatorPeriod()==0){
+        if(Main.loaded.currentGenerationTick%creature.getGenome().getOscillatorPeriod()==0){
             return 1;
         }
         else{
@@ -73,7 +73,7 @@ public class Sensor extends Neuron{
     }
 
     private static double random(Creature creature){
-        return Database.random.nextDouble(-1,1);
+        return Main.loaded.random.nextDouble(-1,1);
     }
 
     ////////////////////////////////////////////////////////
@@ -86,48 +86,48 @@ public class Sensor extends Neuron{
             return new int[]{centerX,centerY};
         }
         for(int i=0; i<searchDepth; i++){
-            if(objectLocations[centerX][(centerY+i)%Database.worldSize] > 0){ // Check Above
-                return new int[]{centerX,(centerY+i)%Database.worldSize};
+            if(objectLocations[centerX][(centerY+i)%Main.loaded.worldSize] > 0){ // Check Above
+                return new int[]{centerX,(centerY+i)%Main.loaded.worldSize};
             }
             
-            if(objectLocations[((centerX+i)%Database.worldSize)%Database.worldSize][centerY] > 0){ // Check Right
-                return new int[]{(centerX+i)%Database.worldSize,centerY};
+            if(objectLocations[((centerX+i)%Main.loaded.worldSize)%Main.loaded.worldSize][centerY] > 0){ // Check Right
+                return new int[]{(centerX+i)%Main.loaded.worldSize,centerY};
             }
             
-            if(objectLocations[((centerX-i)+Database.worldSize)%Database.worldSize][centerY] > 0){ // Check Left
-                return new int[]{((centerX-i)+Database.worldSize)%Database.worldSize,centerY};
+            if(objectLocations[((centerX-i)+Main.loaded.worldSize)%Main.loaded.worldSize][centerY] > 0){ // Check Left
+                return new int[]{((centerX-i)+Main.loaded.worldSize)%Main.loaded.worldSize,centerY};
             }
              
-            if(objectLocations[centerX][((centerY-i)+Database.worldSize)%Database.worldSize] > 0){ // Check Below
-                return new int[]{centerX,((centerY-i)+Database.worldSize)%Database.worldSize};
+            if(objectLocations[centerX][((centerY-i)+Main.loaded.worldSize)%Main.loaded.worldSize] > 0){ // Check Below
+                return new int[]{centerX,((centerY-i)+Main.loaded.worldSize)%Main.loaded.worldSize};
             }
             
             for(int j=1; j<i+1;j++){
-                if(objectLocations[(centerX+j)%Database.worldSize][(centerY+i)%Database.worldSize] > 0){ // Check Above Right
-                    return new int[]{(centerX+j)%Database.worldSize,(centerY+i)%Database.worldSize};
+                if(objectLocations[(centerX+j)%Main.loaded.worldSize][(centerY+i)%Main.loaded.worldSize] > 0){ // Check Above Right
+                    return new int[]{(centerX+j)%Main.loaded.worldSize,(centerY+i)%Main.loaded.worldSize};
                 }
-                if(objectLocations[((centerX-j)+Database.worldSize)%Database.worldSize][(centerY+i)%Database.worldSize] > 0){ // Check Above Left
-                    return new int[]{((centerX-j)+Database.worldSize)%Database.worldSize,(centerY+i)%Database.worldSize};
+                if(objectLocations[((centerX-j)+Main.loaded.worldSize)%Main.loaded.worldSize][(centerY+i)%Main.loaded.worldSize] > 0){ // Check Above Left
+                    return new int[]{((centerX-j)+Main.loaded.worldSize)%Main.loaded.worldSize,(centerY+i)%Main.loaded.worldSize};
                 }  
-                if(objectLocations[(centerX+j)%Database.worldSize][((centerY-i)+Database.worldSize)%Database.worldSize] > 0){ // Check Below Right
-                    return new int[]{(centerX+j)%Database.worldSize,((centerY-i)+Database.worldSize)%Database.worldSize};
+                if(objectLocations[(centerX+j)%Main.loaded.worldSize][((centerY-i)+Main.loaded.worldSize)%Main.loaded.worldSize] > 0){ // Check Below Right
+                    return new int[]{(centerX+j)%Main.loaded.worldSize,((centerY-i)+Main.loaded.worldSize)%Main.loaded.worldSize};
                 } 
-                if(objectLocations[((centerX-j)+Database.worldSize)%Database.worldSize][((centerY-i)+Database.worldSize)%Database.worldSize] > 0){ // Check Below Left
-                    return new int[]{((centerX-j)+Database.worldSize)%Database.worldSize,((centerY-i)+Database.worldSize)%Database.worldSize};
+                if(objectLocations[((centerX-j)+Main.loaded.worldSize)%Main.loaded.worldSize][((centerY-i)+Main.loaded.worldSize)%Main.loaded.worldSize] > 0){ // Check Below Left
+                    return new int[]{((centerX-j)+Main.loaded.worldSize)%Main.loaded.worldSize,((centerY-i)+Main.loaded.worldSize)%Main.loaded.worldSize};
                 }
 
                 if(j < i){
-                    if(objectLocations[(centerX+i)%Database.worldSize][(centerY+j)%Database.worldSize] > 0){ // Check Right Above
-                        return new int[]{(centerX+i)%Database.worldSize,(centerY+j)%Database.worldSize};
+                    if(objectLocations[(centerX+i)%Main.loaded.worldSize][(centerY+j)%Main.loaded.worldSize] > 0){ // Check Right Above
+                        return new int[]{(centerX+i)%Main.loaded.worldSize,(centerY+j)%Main.loaded.worldSize};
                     } 
-                    if(objectLocations[(centerX+i)%Database.worldSize][((centerY-j)+Database.worldSize)%Database.worldSize] > 0){ // Check Right Below
-                        return new int[]{(centerX+i)%Database.worldSize,((centerY-j)+Database.worldSize)%Database.worldSize};
+                    if(objectLocations[(centerX+i)%Main.loaded.worldSize][((centerY-j)+Main.loaded.worldSize)%Main.loaded.worldSize] > 0){ // Check Right Below
+                        return new int[]{(centerX+i)%Main.loaded.worldSize,((centerY-j)+Main.loaded.worldSize)%Main.loaded.worldSize};
                     } 
-                    if(objectLocations[((centerX-i)+Database.worldSize)%Database.worldSize][(centerY+j)%Database.worldSize] > 0){ // Check Left Above
-                        return new int[]{((centerX-i)+Database.worldSize)%Database.worldSize,(centerY+j)%Database.worldSize};
+                    if(objectLocations[((centerX-i)+Main.loaded.worldSize)%Main.loaded.worldSize][(centerY+j)%Main.loaded.worldSize] > 0){ // Check Left Above
+                        return new int[]{((centerX-i)+Main.loaded.worldSize)%Main.loaded.worldSize,(centerY+j)%Main.loaded.worldSize};
                     }
-                    if(objectLocations[((centerX-i)+Database.worldSize)%Database.worldSize][((centerY-j)+Database.worldSize)%Database.worldSize] > 0){ // Check Left Below
-                        return new int[]{((centerX-i)+Database.worldSize)%Database.worldSize,((centerY-j)+Database.worldSize)%Database.worldSize};
+                    if(objectLocations[((centerX-i)+Main.loaded.worldSize)%Main.loaded.worldSize][((centerY-j)+Main.loaded.worldSize)%Main.loaded.worldSize] > 0){ // Check Left Below
+                        return new int[]{((centerX-i)+Main.loaded.worldSize)%Main.loaded.worldSize,((centerY-j)+Main.loaded.worldSize)%Main.loaded.worldSize};
                     }
                 }
             }
@@ -170,8 +170,8 @@ public class Sensor extends Neuron{
         int x = creature.getPosX();
         int y = creature.getPosY();
         // find shortest distance along each axis
-            int xDifference = Math.min(Math.abs(coor[0] - x), Math.abs(coor[0] - (x - Database.worldSize)));
-            int yDifference = Math.min(Math.abs(coor[1] - y), Math.abs(coor[1] - (y - Database.worldSize)));
+            int xDifference = Math.min(Math.abs(coor[0] - x), Math.abs(coor[0] - (x - Main.loaded.worldSize)));
+            int yDifference = Math.min(Math.abs(coor[1] - y), Math.abs(coor[1] - (y - Main.loaded.worldSize)));
         // using Pyth theorem
         return Math.sqrt(Math.pow(xDifference, 2) + Math.pow(yDifference, 2));
     }

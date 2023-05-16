@@ -35,12 +35,12 @@ public class BrainPanel extends JPanel {
         drawNeuron(g);
     }
     public void drawNeuron(Graphics g) {
-        if (Database.creaturesList.length == 0 || currentlySelectedCreatureIndex == -1 || Database.creaturesList[currentlySelectedCreatureIndex] == null) {
+        if (Main.loaded.creaturesList.length == 0 || currentlySelectedCreatureIndex == -1 || Main.loaded.creaturesList[currentlySelectedCreatureIndex] == null) {
             return;
         }
         
-        Neuron[] neurons = Database.creaturesList[currentlySelectedCreatureIndex].getGenome().getNeurons();
-        Database.brainScreenSizeY = neurons.length;
+        Neuron[] neurons = Main.loaded.creaturesList[currentlySelectedCreatureIndex].getGenome().getNeurons();
+        Main.loaded.brainScreenSizeY = neurons.length;
         
         int i = 1;
         int ic = 0;
