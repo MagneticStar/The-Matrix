@@ -14,15 +14,15 @@ public class Database {
           public final static int startingFoodCount = 1000; // how many foods should be initially created
           public final static int minimumFoodEaten = 1; // The minimum number of food a creature must eat to reproduce at the end of a generation
           
-          public final static int generationLength = 200; // How many ticks each generation is
-          public final static int simulationLength = 1000; // How many generations there should be
+          public final static int generationLength = 100; // How many ticks each generation is
+          public final static int simulationLength = 100; // How many generations there should be
 
           public final static int worldSize = 128; // The size of the square world
 
           public final static int repoductionPerCreature = 1; // the amount of creatures a creature makes when reproducing
           public final static double mutationChance = 0.05; // The chance of mutation, must be between 0 and 1 (inclusive)
           public final static double bitMutationAverage = (1.08665/Math.pow(mutationChance,0.531384)-0.0435476);
-          public final static int genomeLength = 64;
+          public final static int genomeLength = 128;
 
           // Trackers
           public static int currentGenerationTick; // How many ticks have passed this generation
