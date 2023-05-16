@@ -29,7 +29,7 @@ public class Database {
           public static int currentGeneration; // How many generations have passed this simulation
           public static int currentFoodCount = startingFoodCount;
           public static int[][] creatureLocations = new int[worldSize][worldSize];
-          public static int[][] foodLocations = new int[worldSize][worldSize];
+          public static int[][] foodLocations = new int[worldSize][worldSize]; // x,y
           public static Creature[] creaturesList = new Creature[generationSize];
           public static ArrayList<Integer> reproducedLastGeneration = new ArrayList<Integer>(Arrays.asList(0));
 
