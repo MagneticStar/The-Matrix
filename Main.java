@@ -10,14 +10,42 @@ public class Main {
     public static Database initial = new Database();
     public static Database loaded;
     public static void main(String[] args) {
-        startSimulation();
+        boolean SerialInput = false;
+        if (SerialInput){
+            try {
+                FileInputStream file = new FileInputStream(initial.fileName);
+                ObjectInputStream in = new ObjectInputStream(file);
+                
+                loaded = (Database)((Database)in.readObject()).clone();
+                for (int i = 0; i < loaded.creaturesList.length; i++) {
+                    loaded.creaturesList[i] = new Creature((BitSet)in.readObject());
+                }
+                in.close();
+            } catch (Exception e) {
+                System.out.println(e);
+                loaded = initial;
+                // Create generation 0
+                for (int i = 0; i < loaded.creaturesList.length; i++) {
+                    loaded.creaturesList[i] = new Creature();
+                }
+            }
+        }
+        else{
+            // Create generation 0
+            for (int i = 0; i < loaded.creaturesList.length; i++) {
+                loaded.creaturesList[i] = new Creature();
+            }
+        }
+
+        Screens.createScreens();
+        Screens.switchSimulationScreen();
     }
 
     public static void tick(JPanel panel, int i) {
         // movement loop
-        for(int j = 0; j < loaded.creaturesList.length; j++){
-            if (loaded.creaturesList[j] != null) {
-                determineNeuronActivation(loaded.creaturesList[j]).motorMethod.invoke(loaded.creaturesList[j]);
+        for(int j = 0; j < Database.creaturesList.length; j++){
+            if (Database.creaturesList[j] != null) {
+                determineNeuronActivation(Database.creaturesList[j]).motorMethod.invoke(Database.creaturesList[j]);
             }
         }
         panel.repaint();
@@ -31,8 +59,8 @@ public class Main {
     }
 
     public static void startSimulation() {
-        
-        if (initial.LOADFILE){
+        boolean SerialInput = false;
+        if (SerialInput){
             try {
                 FileInputStream file = new FileInputStream(initial.fileName);
                 ObjectInputStream in = new ObjectInputStream(file);
