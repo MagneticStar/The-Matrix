@@ -11,7 +11,7 @@ public class Database {
      // Parameters
           // Simulation 
           public final static int generationSize = 1000; // How many creatures should there be at the start of a new generation
-          public final static int amountOfFood = 1000; // how many foods should be initially created
+          public final static int startingFoodCount = 100; // how many foods should be initially created
           public final static int minimumFoodEaten = 1; // The minimum number of food a creature must eat to reproduce at the end of a generation
           
           public final static int generationLength = 200; // How many ticks each generation is
@@ -22,14 +22,14 @@ public class Database {
           public final static int repoductionPerCreature = 2; // the amount of creatures a creature makes when reproducing
           public final static double mutationChance = 0.05; // The chance of mutation, must be between 0 and 1 (inclusive)
           public final static double bitMutationAverage = (1.08665/Math.pow(mutationChance,0.531384)-0.0435476);
-          public final static int genomeLength = 16;
+          public final static int genomeLength = 64;
 
           // Trackers
           public static int currentGenerationTick; // How many ticks have passed this generation
           public static int currentGeneration; // How many generations have passed this simulation
+          public static int currentFoodCount = startingFoodCount;
           public static int[][] creatureLocations = new int[worldSize][worldSize];
           public static int[][] foodLocations = new int[worldSize][worldSize];
-          public static Food[] foodsList = new Food[amountOfFood];
           public static Creature[] creaturesList = new Creature[generationSize];
           public static ArrayList<Integer> reproducedLastGeneration = new ArrayList<Integer>(Arrays.asList(0));
 

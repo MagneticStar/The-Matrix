@@ -3,11 +3,12 @@ import javax.swing.JPanel;
 
 public class SimulationPanel extends JPanel{
 
-    private static int CREATURE_SPRITE_WIDTH = 10;
-    private static int CREATURE_SPRITE_HEIGHT = 10;
-    private static int FOOD_SPRITE_WIDTH = 4;
-    private static int FOOD_SPRITE_HEIGHT = 4;
-    private static int HIGHLIGHT_CIRCLE_DIAMETER = 30;
+    private final static int CREATURE_SPRITE_WIDTH = 10;
+    private final static int CREATURE_SPRITE_HEIGHT = 10;
+    private final static int FOOD_SPRITE_WIDTH = 4;
+    private final static int FOOD_SPRITE_HEIGHT = 4;
+    private final static Color FOOD_COLOR = Color.GREEN;
+    private final static int HIGHLIGHT_CIRCLE_DIAMETER = 30;
 
     public SimulationPanel() {
         setBackground(Database.simulationScreenColor);
@@ -30,17 +31,21 @@ public class SimulationPanel extends JPanel{
             }
         }
     }
+
     public void drawFood(Graphics g) {
-        for(int i=0; i<Database.foodsList.length; i++){
-            if (Database.foodsList[i] != null) {
-            g.setColor(Database.foodsList[i].getColor());
-            g.fillRect(Database.foodsList[i].getPrintPos().x() - FOOD_SPRITE_WIDTH/2, Database.foodsList[i].getPrintPos().y() - FOOD_SPRITE_HEIGHT/2, FOOD_SPRITE_WIDTH, FOOD_SPRITE_HEIGHT);
+        for(int x=0; x<Database.worldSize; x++){
+            for(int y=0; y<Database.worldSize; y++){
+                if(Database.foodLocations[x][y] > 0){
+                    Coor printPostion = Food.getPrintPos(x, y);
+                    g.setColor(FOOD_COLOR);
+                    g.fillRect(printPostion.x() - FOOD_SPRITE_WIDTH/2, printPostion.y() - FOOD_SPRITE_HEIGHT/2, FOOD_SPRITE_WIDTH, FOOD_SPRITE_HEIGHT);
+                }   
             }
         }
     }
 
     public void highlightSubject(Graphics g){
-        int creatureIndex = guiPanel.currentlySelectedCreatureIndex;
+        int creatureIndex = GUIPanel.currentlySelectedCreatureIndex;
 
         int NONE_SELECTED = -1;
         if(creatureIndex == NONE_SELECTED || Database.creaturesList[creatureIndex] == null){
