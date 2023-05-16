@@ -8,27 +8,6 @@ import java.util.BitSet;
 
 public class Main {
     public static void main(String[] args) {
-        startSimulation();
-    }
-
-    public static void tick(JPanel panel, int i) {
-        // movement loop
-        for(int j = 0; j < Database.creaturesList.length; j++){
-            if (Database.creaturesList[j] != null) {
-                determineNeuronActivation(Database.creaturesList[j]).motorMethod.invoke(Database.creaturesList[j]);
-            }
-        }
-        panel.repaint();
-        Screens.guiPanel.updateLabel();
-        Screens.splitPane.setDividerLocation(1000);
-        // try {
-        //     Thread.sleep(20);
-        // } catch (InterruptedException e) {
-        //     e.printStackTrace();
-        // }
-    }
-
-    public static void startSimulation() {
         boolean SerialInput = false;
         if (SerialInput){
             try {
@@ -50,6 +29,27 @@ public class Main {
         }
 
         Screens.createScreens();
+        Screens.switchSimulationScreen();
+    }
+
+    public static void tick(JPanel panel, int i) {
+        // movement loop
+        for(int j = 0; j < Database.creaturesList.length; j++){
+            if (Database.creaturesList[j] != null) {
+                determineNeuronActivation(Database.creaturesList[j]).motorMethod.invoke(Database.creaturesList[j]);
+            }
+        }
+        panel.repaint();
+        Screens.guiPanel.updateLabel();
+        Screens.splitPane.setDividerLocation(1000);
+        // try {
+        //     Thread.sleep(20);
+        // } catch (InterruptedException e) {
+        //     e.printStackTrace();
+        // }
+    }
+
+    public static void startSimulation() {
         
         for(Database.currentGeneration = 0; Database.currentGeneration < Database.simulationLength; Database.currentGeneration++){
             Screens.brainPanel.repaint();
