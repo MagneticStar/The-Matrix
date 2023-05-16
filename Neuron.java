@@ -2,7 +2,7 @@ import java.util.HashMap;
 import java.awt.Color;
 import java.util.ArrayList;
 
-public abstract class Neuron extends ScreenObject{
+public abstract class Neuron extends ScreenObject implements Cloneable{
     private ArrayList<Neuron> sources = new ArrayList<Neuron>();
     private HashMap<Neuron,Integer> sinks = new HashMap<Neuron,Integer>();
     private String type;
@@ -74,5 +74,9 @@ public abstract class Neuron extends ScreenObject{
         Screens.brainWorldToScreen.setWorld(Screens.brainPanel.getWidth(), Screens.brainPanel.getHeight());
         int[] ans = Screens.brainWorldToScreen.translate(this.getPos().matrix());
         return new Coor(ans[0], ans[1]);
+    }
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

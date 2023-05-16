@@ -4,12 +4,11 @@ import java.util.BitSet;
 import java.util.HashSet;
 import java.util.Map;
 
-public class Genome{
+public class Genome implements Cloneable{
     public static final int genomeLength = Database.genomeLength;
     private static final int geneLength = 32;
     private int oscillatorPeriod = Database.random.nextInt(1,Database.generationLength+1);
     private BitSet DNA = new BitSet(geneLength * geneLength);
-    public Creature creature;
     private Color color;
     private Neuron[] neurons;
     private ArrayList<Sensor> sensors = new ArrayList<Sensor>();
@@ -19,22 +18,19 @@ public class Genome{
     private int BASESINKWEIGHT = 32;
     // Debug Vars
 
-    public Genome(Creature creature){
-        this.creature = creature;
+    public Genome(){
         generateDNA(); 
         interpretDNA();
     }
 
     // Creates a new neuron map based on the inputed DNA
-    public Genome(Creature creature, BitSet DNA){
-        this.creature = creature;
+    public Genome(BitSet DNA){
         this.DNA = DNA;
         interpretDNA();
     }
 
     // Copies a Genome
     public Genome(Genome genome){
-        this.creature = genome.creature;
         this.color = genome.getColor();
         this.oscillatorPeriod = genome.getOscillatorPeriod();
         this.sensors = genome.getSensors();
@@ -210,7 +206,7 @@ public class Genome{
             }
             else if(neuronType == 2){
                 // Neuron is a sensor neuron
-                neuron = new Sensor(creature,neuronID);
+                neuron = new Sensor(neuronID);
                 sensors.add(neuron);
                 replaceEmptyNeuron(neuron, emptyNeurons);
                 emptyNeurons.add(createSink(sinkType, sinkID, sinkWeight, neuron));
@@ -269,7 +265,7 @@ public class Genome{
                         }
                     }
                     if (replacementNeuron == null) {
-                        replacementNeuron = new Sensor(creature, BASESINKWEIGHT);
+                        replacementNeuron = new Sensor(BASESINKWEIGHT);
                     }
                     // Complete the incomplete internal neuron by giving it a valid sink (with a random sinkweight)
                     emptyNeuron.addSink(replacementNeuron, BASESINKWEIGHT);
@@ -396,7 +392,7 @@ public class Genome{
         }
         else{
             // Source is a sensor neuron
-            source = new Sensor(creature,sourceID);
+            source = new Sensor(sourceID);
             // System.out.println("Sensor");
         }
 
@@ -449,5 +445,10 @@ public class Genome{
             }
         }
         return emptyNeurons;
+    }
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        Genome clone = (Genome)super.clone();
+        return clone;
     }
 }

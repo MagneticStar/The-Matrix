@@ -20,14 +20,6 @@ public class Main {
                 determineNeuronActivation(Database.creaturesList[j]).motorMethod.invoke(Database.creaturesList[j]);
             }
         }
-        // // temporary killing mechanism for hunger
-        // for (int j = 0; j < Database.creaturesList.size(); j++) {
-        //     Database.creaturesList.get(j).decrementHunger();
-        //     if (Database.creaturesList.get(j).getHunger() < 0) {
-        //         Database.creaturesList.remove(j);
-        //         j--;
-        //     }
-        // }
         
         // Time between ticks
         panel.repaint();
@@ -70,7 +62,7 @@ public class Main {
         for(Database.currentGeneration = 0; Database.currentGeneration < Database.simulationLength; Database.currentGeneration++){
             Screens.brainPanel.repaint();
             // Debug
-            // System.out.println("Generation: "+(Database.currentGeneration+1));
+            System.out.println("Generation: "+(Database.currentGeneration+1));
 
             Screens.graphPanel.repaint();
                 
@@ -111,45 +103,47 @@ public class Main {
                 }
                 
                 Screens.simulationPanel.repaint();
-                try {
-                    Thread.sleep(2);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
             }
             Database.startNextGeneration = false;
 
             int reproductionCount = 0;
-            Creature[] newGeneration = new Creature[Database.generationSize];
+            ArrayList<Creature> newGeneration = new ArrayList<Creature>();
             for(int i = 0; i < Database.creaturesList.length; i++){
                 if (Database.creaturesList[i] != null){
                     // Survival Criteria Check
-                    if(Database.creaturesList[i].getFoodCount() >= Database.minimumFoodEaten){
+                    Creature survivalCheckCreature = Database.creaturesList[i];
+                    boolean survives = survivalCheckCreature.getFoodCount() >= Database.minimumFoodEaten && 
+                    survivalCheckCreature.getMoveCount() > 10;
+                    
+                    if(survives){
                         reproductionCount++;
                         Creature[] temp = Database.creaturesList[i].reproduce();
                         for (int j = 0; j < temp.length; j++) {
-                            newGeneration[j] = temp[j];
+                            if (temp[j] != null)
+                            newGeneration.add(temp[j]);
                         }
                     }
+
                 }
             }
             Database.reproducedLastGeneration.add(reproductionCount);
 
             // Debug
-            // System.out.println(reproductionCount+" creatures reproduced!");
-
-            // Fill the rest of the new generation with random creatures
-            for(int i = 0; i< newGeneration.length; i++){
-                if (newGeneration[i] == null){
-                newGeneration[i] = new Creature();
+            System.out.println(reproductionCount+" creatures reproduced!");
+            
+            for (int i = 0; i < Database.creaturesList.length; i++) {
+                if (newGeneration.size() != 0) {
+                    Database.creaturesList[i] = (Creature)newGeneration.get((i + newGeneration.size()) % newGeneration.size()).clone();
+                }
+                else {
+                    Database.creaturesList[i] = new Creature(); 
                 }
             }
-            for (int i = 0; i < Database.creaturesList.length; i++) {
-                Database.creaturesList[i] = newGeneration[i];
+            int amount = 0;
+            for (Creature c : Database.creaturesList) {
+                if (c != null) {amount++;}
             }
-            // for (Creature c : Database.creaturesList) {
-            //     System.out.println(c);
-            // }
+            System.out.println(amount);
         }
     }
 

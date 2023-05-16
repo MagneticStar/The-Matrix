@@ -5,7 +5,7 @@ public class Sensor extends Neuron{
     public int methodID;
     private static int searchDepth = 10;
 
-    public Sensor(Creature s, int methodID) {
+    public Sensor(int methodID) {
         super("Sensor");
         this.methodID = methodID%(numberOfSensorMethods);
         switch(this.methodID){

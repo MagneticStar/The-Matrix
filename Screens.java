@@ -29,7 +29,7 @@ public class Screens {
         // Brain Frame
         FlowLayout flowLayout = new FlowLayout(FlowLayout.LEADING);
         brainPanel.setLayout(flowLayout);
-        dataFrame.add(graphPanel);
+        dataFrame.add(brainPanel);
         dataFrame.setVisible(true);
         for(int i=0; i<Database.creaturesList.length; i++){
             creatureNames[i] = String.format("Creature %04d",i);

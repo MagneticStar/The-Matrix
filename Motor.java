@@ -41,41 +41,34 @@ public class Motor extends Neuron{
         Database.creatureLocations[creature.getPosX()][creature.getPosY()]-=1;
         creature.setPosY((creature.getPosY() + 1) % Database.worldSize);
         Database.creatureLocations[creature.getPosX()][creature.getPosY()]+=1;
+        creature.moved();
     }
     private static void MoveDown(Creature creature){
         Database.creatureLocations[creature.getPosX()][creature.getPosY()]-=1;
         creature.setPosY((creature.getPosY() - 1 + Database.worldSize) % Database.worldSize);
         Database.creatureLocations[creature.getPosX()][creature.getPosY()]+=1;
+        creature.moved();
     }
     private static void MoveLeft(Creature creature){
         Database.creatureLocations[creature.getPosX()][creature.getPosY()]-=1;
         creature.setPosX((creature.getPosX() - 1 + Database.worldSize) % Database.worldSize);
         Database.creatureLocations[creature.getPosX()][creature.getPosY()]+=1;
+        creature.moved();
     }
     private static void MoveRight(Creature creature){
         Database.creatureLocations[creature.getPosX()][creature.getPosY()]-=1;
         creature.setPosX((creature.getPosX() + 1) % Database.worldSize);
         Database.creatureLocations[creature.getPosX()][creature.getPosY()]+=1;
+        creature.moved();
     }
     private static void DoNothing(Creature creature) {
         // Only meant as a default method as it serves no value
     }
 
     private static void Eat(Creature creature) {
+        creature.ateFood();
         for (int i = 0; i < Database.foodsList.length; i++) {
-            if (Database.foodsList[i] != null && (creature.getPos().equals(Database.foodsList[i].getPos()) || true)) {
-                // for (int i = 0; i < 10 ; i++) {
-                //     creature.incrementHunger();
-                // }
-                // creature.setHunger(10);
-                // Database.foodsList.remove(food);
-                // creature.setHunger(100);
-                // Debug
-                // System.out.println("Ate Food");
-
-                creature.ateFood();
-                // Database.foodLocations[Database.foodsList[i].getPosX()][Database.foodsList[i].getPosY()]-=1;
-                // Database.foodsList[i] = null;
+            if (Database.foodsList[i] != null && (creature.getPos().equals(Database.foodsList[i].getPos()))) {
                 Database.foodLocations[Database.foodsList[i].getPosX()][Database.foodsList[i].getPosY()]-=1;
                 Database.foodsList[i] = null;
                 break;
