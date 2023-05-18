@@ -47,7 +47,7 @@ public class GUIPanel extends JPanel {
         }});
 
         // Checkbox
-        startGenerationsCheckBox = new JCheckBox("Automatically Start Generations",Database.autoStartGeneration);
+        startGenerationsCheckBox = new JCheckBox("Automatically Start Generations",Main.loaded.autoStartGeneration);
         startGenerationsCheckBox.setForeground(Color.white);
         startGenerationsCheckBox.setBackground(Color.black);
         startGenerationsCheckBox.addActionListener(new ActionListener() {
@@ -58,7 +58,7 @@ public class GUIPanel extends JPanel {
         }});
 
         // Checkbox
-        showVisualsCheckBox = new JCheckBox("Show Visuals",Database.doVisuals);
+        showVisualsCheckBox = new JCheckBox("Show Visuals",Main.loaded.doVisuals);
         showVisualsCheckBox.setForeground(Color.white);
         showVisualsCheckBox.setBackground(Color.black);
         showVisualsCheckBox.addActionListener(new ActionListener() {
@@ -77,7 +77,7 @@ public class GUIPanel extends JPanel {
         }});
 
         // Checkbox
-        saveSimulationCheckbox = new JCheckBox("Save and Exit",Database.saveAndExit);
+        saveSimulationCheckbox = new JCheckBox("Save and Exit",Main.loaded.saveAndExit);
         saveSimulationCheckbox.setForeground(Color.white);
         saveSimulationCheckbox.setBackground(Color.black);
         saveSimulationCheckbox.addActionListener(new ActionListener() {

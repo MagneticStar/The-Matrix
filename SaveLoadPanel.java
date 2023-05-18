@@ -7,66 +7,51 @@ public class SaveLoadPanel extends JPanel{
     private JButton oldFileButton;
     private JTextField newFileTextField;
 
-    public SaveLoadPanel() {
+    public SaveLoadPanel(boolean save) {
         this.setLayout(new GridBagLayout());
         setBackground(Color.black);
-        addComponents();
-        updateComponents();
+        addComponents(save);
     }
-
-    public void updateComponents(){
-        try{
-            this.remove(oldFileButton);
-        }
-        catch(Exception e){
-
-        }
+    public void addComponents(boolean save){
         // Save File
-        if(Database.saveAndExit){
+        if(save){
             // Button
             oldFileButton = new JButton("Save to Old File");
             oldFileButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            // Save to old file
-            Main.startSimulation();
-            repaint();
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // Save to old file
             }});
-
+            // Button
+            newFileButton = new JButton("Create New File");
+            newFileButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    String fileName = newFileTextField.getText();
+                    // Create New File
+            }});
         }
         // Load File
         else{
             // Button
             oldFileButton = new JButton("Load Old File");
             oldFileButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            // Load Old File
-            Main.startSimulation();
-            repaint();
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // Load Old File
+                    Main.startSimulation();
+            }});
+
+            // Button
+            newFileButton = new JButton("Create New File");
+            newFileButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    String fileName = newFileTextField.getText();
+                    // Create New File
+                    Main.startSimulation();
             }});
         }
-
-        GridBagConstraints c = new GridBagConstraints();
-        c.anchor = GridBagConstraints.CENTER;
-        c.gridx = 0;
-        c.gridy = 1;
-        c.insets = new Insets(0, 10, 0, 10);
-        this.add(oldFileButton,c);
-    }
-
-    public void addComponents(){
-        // Button
-        newFileButton = new JButton("Create New File");
-        newFileButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            String fileName = newFileTextField.getText();
-            // Create New File
-            Main.startSimulation();
-            repaint();
-        }});
-
         // Textfield
         newFileTextField = new JTextField(20);
         newFileTextField.setForeground(Color.black);
@@ -75,13 +60,17 @@ public class SaveLoadPanel extends JPanel{
         // Add the components (order matters)
         GridBagConstraints c = new GridBagConstraints();
         c.anchor = GridBagConstraints.CENTER;
-        c.insets = new Insets(0, 10, 0, 10);
-        c.gridx = 1;
-        c.gridy = 1;
-        this.add(newFileButton,c);
+        c.insets = new Insets(0, 0, 0, 10);
         c.gridx = 2;
         c.gridy = 1;
         this.add(newFileTextField,c);
+        c.insets = new Insets(0, 10, 0, 10);
+        c.gridx = 0;
+        c.gridy = 1;
+        this.add(oldFileButton,c);
+        c.gridx = 1;
+        c.gridy = 1;
+        this.add(newFileButton,c);
         
         this.revalidate();
     }
