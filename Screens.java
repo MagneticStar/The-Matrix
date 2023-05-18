@@ -35,8 +35,8 @@ public class Screens {
         guiPanel = new GUIPanel();
         animationPanel = new animationPanel();
         simulationPanel = new SimulationPanel();
-        savePanel = new SaveLoadPanel(true);
-        loadPanel = new SaveLoadPanel(false);
+        savePanel = new SaveLoadPanel("save");
+        loadPanel = new SaveLoadPanel("load");
 
         // Brain Frame
         brainPanel.setLayout(new FlowLayout(FlowLayout.LEADING));

@@ -7,51 +7,57 @@ public class SaveLoadPanel extends JPanel{
     private JButton oldFileButton;
     private JTextField newFileTextField;
 
-    public SaveLoadPanel(boolean save) {
+    public SaveLoadPanel(String panelType) {
         this.setLayout(new GridBagLayout());
         setBackground(Color.black);
-        addComponents(save);
-    }
-    public void addComponents(boolean save){
-        // Save File
-        if(save){
-            // Button
-            oldFileButton = new JButton("Save to Old File");
-            oldFileButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    // Save to old file
-            }});
-            // Button
-            newFileButton = new JButton("Create New File");
-            newFileButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    String fileName = newFileTextField.getText();
-                    // Create New File
-            }});
-        }
-        // Load File
-        else{
-            // Button
-            oldFileButton = new JButton("Load Old File");
-            oldFileButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    // Load Old File
-                    Main.startSimulation();
-            }});
 
-            // Button
-            newFileButton = new JButton("Create New File");
-            newFileButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    String fileName = newFileTextField.getText();
-                    // Create New File
-                    Main.startSimulation();
-            }});
+        if(panelType.equals("save")){
+            createSaveComponents();
         }
+        else{
+            createLoadComponents();
+        }
+        addComponents();
+    }
+
+    public void createSaveComponents(){
+        // Button
+        oldFileButton = new JButton("Save to Old File");
+        oldFileButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Save to old file
+        }});
+        // Button
+        newFileButton = new JButton("Create New File");
+        newFileButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String fileName = newFileTextField.getText();
+                // Create New File
+        }});
+    }
+    public void createLoadComponents(){
+        // Button
+        oldFileButton = new JButton("Load Old File");
+        oldFileButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Load Old File
+                Main.startSimulation();
+        }});
+
+        // Button
+        newFileButton = new JButton("Create New File");
+        newFileButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String fileName = newFileTextField.getText();
+                // Create New File
+                Main.startSimulation();
+        }});
+    }
+    public void addComponents(){
         // Textfield
         newFileTextField = new JTextField(20);
         newFileTextField.setForeground(Color.black);
