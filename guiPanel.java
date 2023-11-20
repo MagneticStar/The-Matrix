@@ -72,7 +72,7 @@ public class GUIPanel extends JPanel {
             else{
                 Main.loaded.visualPanel = Screens.animationPanel;
             }
-            Screens.splitPane.setLeftComponent(Main.loaded.visualPanel);
+            Screens.simulationSplitPane.setLeftComponent(Main.loaded.visualPanel);
             repaint();
         }});
 

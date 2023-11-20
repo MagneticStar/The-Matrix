@@ -48,7 +48,7 @@ public class Main {
         }
         panel.repaint();
         Screens.guiPanel.updateLabel();
-        Screens.splitPane.setDividerLocation(1000);
+        Screens.simulationSplitPane.setDividerLocation(1000);
         // try {
         //     Thread.sleep(20);
         // } catch (InterruptedException e) {
@@ -57,8 +57,9 @@ public class Main {
     }
 
     public static void startSimulation() {
-        Screens.mainPanelManager.show(Screens.mainPanel, "simulation");
-        
+
+        Screens.setContent("Simulation");
+        System.out.println("a");
         for(loaded.currentGeneration = 0; loaded.currentGeneration < loaded.simulationLength; loaded.currentGeneration++){
             Screens.brainPanel.repaint();
             // Debug
@@ -75,7 +76,7 @@ public class Main {
             }
 
             if (loaded.saveAndExit) {
-                Screens.mainPanelManager.show(Screens.mainPanel, "save");
+                Screens.setContent("Save");
                 try {
                     FileOutputStream file = new FileOutputStream(loaded.fileName);
                     ObjectOutputStream out = new ObjectOutputStream(file);

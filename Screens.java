@@ -12,10 +12,8 @@ public class Screens {
     public static animationPanel animationPanel;
     public static SimulationPanel simulationPanel;
     public static SaveLoadPanel savePanel;
-    public static SaveLoadPanel loadPanel;
-    public static CardLayout mainPanelManager = new CardLayout();
-    public static JPanel mainPanel = new JPanel(mainPanelManager);
-    public static JSplitPane splitPane;
+    public static SaveLoadPanel loadPanel;    
+    public static JSplitPane simulationSplitPane;
     public static Translation brainWorldToScreen;
     public static SimulationFrame simulationFrame = new SimulationFrame();
     public static Translation SimulationWorldToScreen;
@@ -47,21 +45,32 @@ public class Screens {
         }
 
         // Simulation Frame
-        splitPane = new JSplitPane();
-        splitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
-        splitPane.setDividerLocation(1000);
-        splitPane.setDividerSize(0);
-        splitPane.setLeftComponent(simulationPanel);
-        splitPane.setRightComponent(guiPanel);
+        simulationSplitPane = new JSplitPane();
+        simulationSplitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
+        simulationSplitPane.setDividerLocation(1000);
+        simulationSplitPane.setDividerSize(0);
+        simulationSplitPane.setLeftComponent(simulationPanel);
+        simulationSplitPane.setRightComponent(guiPanel);
 
-        mainPanel.add(splitPane, "simulation");
-        mainPanel.add(savePanel, "save");
-        mainPanel.add(loadPanel, "load");
-        mainPanelManager.show(mainPanel, "load");
+        
 
-        simulationFrame.setContentPane(mainPanel);      
+        simulationFrame.add(loadPanel);      
         simulationFrame.setVisible(true);
 
         Main.loaded.visualPanel = simulationPanel;
+    }
+
+    public static void setContent(String type) {
+        switch (type) {
+            case "Simulation" : simulationFrame.remove(loadPanel);
+                                simulationFrame.add(simulationSplitPane);
+                                simulationFrame.setVisible(true);
+                                System.out.println("b");
+            break;
+            case "Save" : simulationFrame.setContentPane(savePanel);
+            break;
+            case "Load" : simulationFrame.setContentPane(loadPanel);
+            break;
+        }
     }
 }
