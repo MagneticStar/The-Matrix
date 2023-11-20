@@ -2,41 +2,18 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 
-public class SaveLoadPanel extends JPanel{
+public class MenuPanel extends JPanel{
     private JButton newFileButton;
     private JButton oldFileButton;
     private JTextField newFileTextField;
 
-    public SaveLoadPanel(String panelType) {
+    public MenuPanel() {
         this.setLayout(new GridBagLayout());
         setBackground(Color.black);
-
-        if(panelType.equals("save")){
-            createSaveComponents();
-        }
-        else{
-            createLoadComponents();
-        }
+        createLoadComponents();
         addComponents();
     }
-
-    public void createSaveComponents(){
-        // Button
-        oldFileButton = new JButton("Save to Old File");
-        oldFileButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Save to old file
-        }});
-        // Button
-        newFileButton = new JButton("Create New File");
-        newFileButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String fileName = newFileTextField.getText();
-                // Create New File
-        }});
-    }
+    
     public void createLoadComponents(){
         // Button
         oldFileButton = new JButton("Load Old File");

@@ -11,8 +11,7 @@ public class Screens {
     public static GUIPanel guiPanel;
     public static animationPanel animationPanel;
     public static SimulationPanel simulationPanel;
-    public static SaveLoadPanel savePanel;
-    public static SaveLoadPanel loadPanel;    
+    public static MenuPanel menuPanel;    
     public static JSplitPane simulationSplitPane;
     public static Translation brainWorldToScreen;
     public static SimulationFrame simulationFrame = new SimulationFrame();
@@ -33,8 +32,7 @@ public class Screens {
         guiPanel = new GUIPanel();
         animationPanel = new animationPanel();
         simulationPanel = new SimulationPanel();
-        savePanel = new SaveLoadPanel("save");
-        loadPanel = new SaveLoadPanel("load");
+        menuPanel = new MenuPanel();
 
         // Brain Frame
         brainPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
@@ -54,25 +52,20 @@ public class Screens {
 
         
 
-        simulationFrame.add(loadPanel);      
+        simulationFrame.add(menuPanel);      
         simulationFrame.setVisible(true);
 
         Main.loaded.visualPanel = simulationPanel;
     }
 
     public static void setContent(String type) {
-        
-        simulationFrame.remove(loadPanel);
-        simulationFrame.remove(savePanel);
-        simulationFrame.remove(loadPanel);
-        switch (type) {
-            case "Simulation": simulationFrame.add(simulationSplitPane);
-            break;
-            case "Save": simulationFrame.add(savePanel);
-            break;
-            case "Load" : simulationFrame.add(loadPanel);
-            break;
-            default: simulationFrame.add(loadPanel);
+        if(type.equals("Simulation")){
+            simulationFrame.remove(menuPanel);
+            simulationFrame.add(simulationSplitPane);
+        }
+        else{
+            simulationFrame.remove(simulationPanel);
+            simulationFrame.add(menuPanel);
         }
         simulationFrame.setVisible(true);
         
