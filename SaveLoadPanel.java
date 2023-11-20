@@ -44,7 +44,7 @@ public class SaveLoadPanel extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Load Old File
-                Main.startSimulation();
+                Main.startThread();
         }});
 
         // Button

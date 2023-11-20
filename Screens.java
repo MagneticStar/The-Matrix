@@ -61,16 +61,20 @@ public class Screens {
     }
 
     public static void setContent(String type) {
+        
+        simulationFrame.remove(loadPanel);
+        simulationFrame.remove(savePanel);
+        simulationFrame.remove(loadPanel);
         switch (type) {
-            case "Simulation" : simulationFrame.remove(loadPanel);
-                                simulationFrame.add(simulationSplitPane);
-                                simulationFrame.setVisible(true);
-                                System.out.println("b");
+            case "Simulation": simulationFrame.add(simulationSplitPane);
             break;
-            case "Save" : simulationFrame.setContentPane(savePanel);
+            case "Save": simulationFrame.add(savePanel);
             break;
-            case "Load" : simulationFrame.setContentPane(loadPanel);
+            case "Load" : simulationFrame.add(loadPanel);
             break;
+            default: simulationFrame.add(loadPanel);
         }
+        simulationFrame.setVisible(true);
+        
     }
 }

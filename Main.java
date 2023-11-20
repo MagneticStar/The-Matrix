@@ -1,9 +1,12 @@
+import java.util.List;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import javax.swing.JPanel;
+import javax.swing.SwingWorker;
+
 import java.util.BitSet;
 
 public class Main {
@@ -39,6 +42,20 @@ public class Main {
         Screens.createScreens();
     }
 
+    public static void startThread() {
+        SwingWorker swingWorker = new SwingWorker() {
+            @Override
+            protected String doInBackground() throws Exception {
+                startSimulation();
+                return "a";
+            }
+            @Override protected void done() {
+
+            }
+        };
+        swingWorker.execute();
+    }
+
     public static void tick(JPanel panel, int i) {
         // movement loop
         for(int j = 0; j < Main.loaded.creaturesList.length; j++){
@@ -49,17 +66,17 @@ public class Main {
         panel.repaint();
         Screens.guiPanel.updateLabel();
         Screens.simulationSplitPane.setDividerLocation(1000);
-        // try {
-        //     Thread.sleep(20);
-        // } catch (InterruptedException e) {
-        //     e.printStackTrace();
-        // }
+        try {
+            Thread.sleep(20);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void startSimulation() {
 
         Screens.setContent("Simulation");
-        System.out.println("a");
+        
         for(loaded.currentGeneration = 0; loaded.currentGeneration < loaded.simulationLength; loaded.currentGeneration++){
             Screens.brainPanel.repaint();
             // Debug
