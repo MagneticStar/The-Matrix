@@ -1,6 +1,11 @@
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.BitSet;
 
 public class MenuPanel extends JPanel{
     private JButton newFileButton;
@@ -21,6 +26,22 @@ public class MenuPanel extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Load Old File
+                try {
+                FileInputStream file = new FileInputStream(newFileTextField.getText());
+                ObjectInputStream in = new ObjectInputStream(file);
+                
+                Main.loaded = (Database)((Database)in.readObject()).clone();
+                for (int i = 0; i < Main.loaded.creaturesList.length; i++) {
+                    Main.loaded.creaturesList[i] = new Creature((BitSet)in.readObject());
+                }
+                in.close();
+            } catch (Exception exception) {
+                System.out.println(exception);
+                // Create generation 0
+                for (int i = 0; i < Main.loaded.creaturesList.length; i++) {
+                    Main.loaded.creaturesList[i] = new Creature();
+                }
+            }
                 Main.startThread();
         }});
 
@@ -31,7 +52,8 @@ public class MenuPanel extends JPanel{
             public void actionPerformed(ActionEvent e) {
                 String fileName = newFileTextField.getText();
                 // Create New File
-                Main.startSimulation();
+                Main.loaded.fileName = fileName;
+                Main.startThread();
         }});
     }
     public void addComponents(){

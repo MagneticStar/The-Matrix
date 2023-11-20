@@ -11,7 +11,7 @@ public class Database implements Cloneable, Serializable{
      
      // Parameters
           // Simulation 
-          public int generationSize = 10; // How many creatures should there be at the start of a new generation
+          public int generationSize = 2; // How many creatures should there be at the start of a new generation
           public int startingFoodCount = 1000; // how many foods should be initially created
           public int minimumFoodEaten = 1; // The minimum number of food a creature must eat to reproduce at the end of a generation
           
