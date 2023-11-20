@@ -1,7 +1,4 @@
-import java.awt.CardLayout;
 import java.awt.FlowLayout;
-
-import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
 public class Screens {
