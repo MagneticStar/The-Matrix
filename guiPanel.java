@@ -12,7 +12,7 @@ public class GUIPanel extends JPanel {
     private JComboBox<String> highlightComboBox;
     private JCheckBox startGenerationsCheckBox;
     private JCheckBox showVisualsCheckBox;
-    private JCheckBox saveSimulationCheckbox;
+    private JButton saveSimulationButton;
     private JButton startGenerationButton;
     private JLabel settingsLabel;
     private String settingsText;
@@ -76,11 +76,11 @@ public class GUIPanel extends JPanel {
             repaint();
         }});
 
-        // Checkbox
-        saveSimulationCheckbox = new JCheckBox("Save and Exit",Main.loaded.saveAndExit);
-        saveSimulationCheckbox.setForeground(Color.white);
-        saveSimulationCheckbox.setBackground(Color.black);
-        saveSimulationCheckbox.addActionListener(new ActionListener() {
+        // Button
+        saveSimulationButton = new JButton("Save and Exit");
+        saveSimulationButton.setForeground(Color.white);
+        saveSimulationButton.setBackground(Color.black);
+        saveSimulationButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Main.loaded.saveAndExit = !Main.loaded.saveAndExit;
@@ -126,7 +126,7 @@ public class GUIPanel extends JPanel {
         this.add(settingsLabel,c);
         c.gridx = 0;
         c.gridy = 3;
-        this.add(saveSimulationCheckbox,c);
+        this.add(saveSimulationButton,c);
         
         this.revalidate();
     }
