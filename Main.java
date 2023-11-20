@@ -58,17 +58,21 @@ public class Main {
 
     public static void tick(JPanel panel, int i) {
         // movement loop
-        System.out.println("Generation: b");
         for(int j = 0; j < Main.loaded.creaturesList.length; j++){
             if (Main.loaded.creaturesList[j] != null) {
-                determineNeuronActivation(Main.loaded.creaturesList[j]).motorMethod.invoke(Main.loaded.creaturesList[j]);
+                Creature creature = loaded.creaturesList[j];
+                // Do the action
+                determineNeuronActivation(creature).motorMethod.invoke(creature);
+                // Save Tick Data for viewing
+                loaded.creatureColorsForAllTicks[loaded.currentGenerationTick][creature.getPosX()][creature.getPosY()] = creature.getColor();
             }
         }
-        System.out.println("Generation: d");
+        // Save Tick Data for viewing
+        loaded.foodLocationsForAllTicks[loaded.currentGenerationTick] = loaded.foodLocations;
+        
         panel.repaint();
         Screens.guiPanel.updateLabel();
         Screens.simulationSplitPane.setDividerLocation(1000);
-        System.out.println("Generation: e");
     }
 
     public static void startSimulation() {
@@ -77,8 +81,6 @@ public class Main {
         
         for(loaded.currentGeneration = 0; loaded.currentGeneration < loaded.simulationLength; loaded.currentGeneration++){
             Screens.brainPanel.repaint();
-            // Debug
-            System.out.println("Generation: ");
 
             // Gives every instantiated creature and food a unique position
             populateSimulationSpace();
@@ -211,7 +213,7 @@ public class Main {
         }
         
         loaded.creatureLocations = new int[loaded.worldSize][loaded.worldSize];
-        loaded.foodLocations = new int[loaded.worldSize][loaded.worldSize];
+        loaded.foodLocations = new boolean[loaded.worldSize][loaded.worldSize];
         loaded.currentFoodCount = loaded.startingFoodCount;
 
         for(int i = 0; i < loaded.creaturesList.length; i++){
@@ -224,7 +226,7 @@ public class Main {
 
         for(int i = 0; i < loaded.startingFoodCount; i++){
             Coor coor = startingPositions.remove(loaded.random.nextInt(0,startingPositions.size()));
-            loaded.foodLocations[coor.x()][coor.y()]+=1;
+            loaded.foodLocations[coor.x()][coor.y()] = true;
         }
     }
 }

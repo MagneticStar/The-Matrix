@@ -53,4 +53,10 @@ class ScreenObject {
     public Color getColor() {
         return color;
     }
+
+    public static Coor getPrintPos(int x, int y) {
+        Screens.SimulationWorldToScreen.setWorld(Screens.simulationPanel.getWidth(), Screens.simulationPanel.getHeight());
+        int[] ans = Screens.SimulationWorldToScreen.translate(new int[]{x,y});
+        return new Coor(ans[0], ans[1]);
+    }
 }
