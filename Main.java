@@ -58,19 +58,17 @@ public class Main {
 
     public static void tick(JPanel panel, int i) {
         // movement loop
+        System.out.println("Generation: b");
         for(int j = 0; j < Main.loaded.creaturesList.length; j++){
             if (Main.loaded.creaturesList[j] != null) {
                 determineNeuronActivation(Main.loaded.creaturesList[j]).motorMethod.invoke(Main.loaded.creaturesList[j]);
             }
         }
+        System.out.println("Generation: d");
         panel.repaint();
         Screens.guiPanel.updateLabel();
         Screens.simulationSplitPane.setDividerLocation(1000);
-        try {
-            Thread.sleep(20);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        System.out.println("Generation: e");
     }
 
     public static void startSimulation() {
@@ -80,13 +78,13 @@ public class Main {
         for(loaded.currentGeneration = 0; loaded.currentGeneration < loaded.simulationLength; loaded.currentGeneration++){
             Screens.brainPanel.repaint();
             // Debug
-            // System.out.println("Generation: "+(Database.currentGeneration+1));
+            System.out.println("Generation: ");
 
             // Gives every instantiated creature and food a unique position
             populateSimulationSpace();
             // Gives every creature a color based on their composition of neurons
             Genome.calculateColor();
-
+            
             // Simulate the Generation
             for (loaded.currentGenerationTick = 0; loaded.currentGenerationTick < loaded.generationLength; loaded.currentGenerationTick++) {
                 tick(loaded.visualPanel, loaded.currentGenerationTick);
@@ -107,7 +105,7 @@ public class Main {
                     System.out.println("Save failed: "+e);
                 }
             }
-
+            
             loaded.generationFinished = true;
             // Wait till next generation should be run
             while(true){

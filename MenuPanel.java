@@ -42,6 +42,7 @@ public class MenuPanel extends JPanel{
                     Main.loaded.creaturesList[i] = new Creature();
                 }
             }
+                Main.loaded.visualPanel = Screens.simulationPanel;
                 Main.startThread();
         }});
 
