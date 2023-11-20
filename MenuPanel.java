@@ -1,4 +1,6 @@
 import java.awt.*;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.event.*;
 import java.io.FileInputStream;
@@ -6,10 +8,13 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.BitSet;
+import java.io.File;
+import java.io.IOException;
 
 public class MenuPanel extends JPanel{
     private JButton newFileButton;
     private JButton oldFileButton;
+    private JLabel logo;
     private JTextField newFileTextField;
 
     public MenuPanel() {
@@ -62,21 +67,31 @@ public class MenuPanel extends JPanel{
         newFileTextField = new JTextField(20);
         newFileTextField.setForeground(Color.black);
         newFileTextField.setBackground(Color.white);
+        try {         
+          ImageIcon logoIcon = (new ImageIcon(ImageIO.read(new File("Logo.png"))));
+          logo = new JLabel(logoIcon);
+        }catch (IOException ex) {}
+        
         
         // Add the components (order matters)
         GridBagConstraints c = new GridBagConstraints();
         c.anchor = GridBagConstraints.CENTER;
-        c.insets = new Insets(0, 0, 0, 10);
-        c.gridx = 2;
+        c.insets = new Insets(0, 0, 0, -350);
+        c.gridx = 0;
         c.gridy = 1;
         this.add(newFileTextField,c);
-        c.insets = new Insets(0, 10, 0, 10);
+        c.insets = new Insets(0, 0, 0, 300);
         c.gridx = 0;
         c.gridy = 1;
         this.add(oldFileButton,c);
-        c.gridx = 1;
+        c.insets = new Insets(0, 0, 0, 0);
+        c.gridx = 0;
         c.gridy = 1;
         this.add(newFileButton,c);
+        c.anchor = GridBagConstraints.PAGE_START;
+        c.gridx = 0;
+        c.gridy = 0;
+        this.add(logo,c);
         
         this.revalidate();
     }
