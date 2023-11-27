@@ -1,4 +1,4 @@
-import java.util.List;
+import java.awt.Color;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
@@ -69,16 +69,14 @@ public class Main {
         }
         // Save Tick Data for viewing
         loaded.foodLocationsForAllTicks[loaded.currentGenerationTick] = loaded.foodLocations;
-        
         panel.repaint();
         Screens.guiPanel.updateLabel();
         Screens.simulationSplitPane.setDividerLocation(1000);
     }
 
     public static void startSimulation() {
-
         Screens.setContent("Simulation");
-        
+
         for(loaded.currentGeneration = 0; loaded.currentGeneration < loaded.simulationLength; loaded.currentGeneration++){
             Screens.brainPanel.repaint();
 
@@ -86,6 +84,9 @@ public class Main {
             populateSimulationSpace();
             // Gives every creature a color based on their composition of neurons
             Genome.calculateColor();
+            // Reset Creature and Food Location Records
+            loaded.creatureColorsForAllTicks = new Color[loaded.generationLength+1][loaded.worldSize][loaded.worldSize];
+            loaded.foodLocationsForAllTicks = new int[loaded.generationLength+1][loaded.worldSize][loaded.worldSize];
             
             // Simulate the Generation
             for (loaded.currentGenerationTick = 0; loaded.currentGenerationTick < loaded.generationLength; loaded.currentGenerationTick++) {
@@ -213,7 +214,7 @@ public class Main {
         }
         
         loaded.creatureLocations = new int[loaded.worldSize][loaded.worldSize];
-        loaded.foodLocations = new boolean[loaded.worldSize][loaded.worldSize];
+        loaded.foodLocations = new int[loaded.worldSize][loaded.worldSize];
         loaded.currentFoodCount = loaded.startingFoodCount;
 
         for(int i = 0; i < loaded.creaturesList.length; i++){
@@ -226,7 +227,7 @@ public class Main {
 
         for(int i = 0; i < loaded.startingFoodCount; i++){
             Coor coor = startingPositions.remove(loaded.random.nextInt(0,startingPositions.size()));
-            loaded.foodLocations[coor.x()][coor.y()] = true;
+            loaded.foodLocations[coor.x()][coor.y()]++;
         }
     }
 }
