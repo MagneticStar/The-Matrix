@@ -37,7 +37,8 @@ public class Database implements Cloneable, Serializable{
           public Color[][][] creatureColorsForAllTicks;
           public int[][][] foodLocationsForAllTicks;
           public Creature[] creaturesList = new Creature[generationSize];
-          public ArrayList<Integer> reproducedLastGeneration = new ArrayList<Integer>(Arrays.asList(0));
+          public int reproducedLastGeneration;
+          public int foodEatenLastGeneration;
 
           public boolean doVisuals = true;
           public boolean startNextGeneration = false;
