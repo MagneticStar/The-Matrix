@@ -27,10 +27,11 @@ public class GUIPanel extends JPanel {
     }
 
     public void updateLabel(){
-        trackersText = "<br/><br/>Current Step: "+(Main.loaded.currentGenerationTick+1);
-        trackersText += "<br/>Current Generation: "+(Main.loaded.currentGeneration+1);
-        trackersText += "<br/>Reproduced Last Generation: "+Main.loaded.reproducedLastGeneration.get(Main.loaded.currentGeneration);
-        trackersText += "<br/>Food Count: "+Main.loaded.currentFoodCount+"</html>";
+        trackersText = "<br/><br/>Step: "+(Main.loaded.currentGenerationTick+1)+"/"+Main.loaded.generationLength;
+        trackersText += "<br/>Generation: "+(Main.loaded.currentGeneration+1)+"/"+Main.loaded.simulationLength;
+        trackersText += "<br/>Food: "+Main.loaded.currentFoodCount+"/"+Main.loaded.startingFoodCount;
+        trackersText += "<br/>Reproduced Last Generation: "+Main.loaded.reproducedLastGeneration+"/"+Main.loaded.generationSize;
+        trackersText += "<br/>Food Eaten Last Generation: "+Main.loaded.foodEatenLastGeneration+"/"+Main.loaded.startingFoodCount+"</html>";
 
         settingsLabelText = settingsText+trackersText;
         settingsLabel.setText(settingsLabelText);

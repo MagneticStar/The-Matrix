@@ -140,7 +140,9 @@ public class Main {
                     }
                 }
             }
-            loaded.reproducedLastGeneration.add(reproductionCount);
+
+            loaded.reproducedLastGeneration = reproductionCount;
+            loaded.foodEatenLastGeneration = loaded.currentFoodCount;
 
             // Debug
             // System.out.println(reproductionCount+" creatures reproduced!");
