@@ -5,7 +5,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import javax.swing.JPanel;
-import javax.swing.SwingWorker;
 
 import java.util.BitSet;
 
@@ -42,19 +41,6 @@ public class Main {
         Screens.createScreens();
     }
 
-    public static void startThread() {
-        SwingWorker swingWorker = new SwingWorker() {
-            @Override
-            protected String doInBackground() throws Exception {
-                startSimulation();
-                return "a";
-            }
-            @Override protected void done() {
-
-            }
-        };
-        swingWorker.execute();
-    }
 
     public static void tick(JPanel panel, int i) {
         // movement loop
@@ -75,7 +61,6 @@ public class Main {
     }
 
     public static void startSimulation() {
-        Screens.setContent("Simulation");
 
         for(loaded.currentGeneration = 0; loaded.currentGeneration < loaded.simulationLength; loaded.currentGeneration++){
             Screens.brainPanel.repaint();
@@ -94,7 +79,6 @@ public class Main {
             }
 
             if (loaded.saveAndExit) {
-                Screens.setContent("Save");
                 try {
                     FileOutputStream file = new FileOutputStream(loaded.fileName);
                     ObjectOutputStream out = new ObjectOutputStream(file);

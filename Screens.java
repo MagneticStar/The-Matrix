@@ -7,8 +7,7 @@ public class Screens {
     public static BrainPanel brainPanel;
     public static GUIPanel guiPanel;
     public static animationPanel animationPanel;
-    public static SimulationPanel simulationPanel;
-    public static MenuPanel menuPanel;    
+    public static SimulationPanel simulationPanel;  
     public static JSplitPane simulationSplitPane;
     public static Translation brainWorldToScreen;
     public static SimulationFrame simulationFrame = new SimulationFrame();
@@ -29,7 +28,6 @@ public class Screens {
         guiPanel = new GUIPanel();
         animationPanel = new animationPanel();
         simulationPanel = new SimulationPanel();
-        menuPanel = new MenuPanel();
 
         // Brain Frame
         brainPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
@@ -47,24 +45,9 @@ public class Screens {
         simulationSplitPane.setLeftComponent(simulationPanel);
         simulationSplitPane.setRightComponent(guiPanel);
 
-        
-
-        simulationFrame.add(menuPanel);      
+        simulationFrame.add(simulationSplitPane);      
         simulationFrame.setVisible(true);
 
         Main.loaded.visualPanel = simulationPanel;
-    }
-
-    public static void setContent(String type) {
-        if(type.equals("Simulation")){
-            simulationFrame.remove(menuPanel);
-            simulationFrame.add(simulationSplitPane);
-        }
-        else{
-            simulationFrame.remove(simulationPanel);
-            simulationFrame.add(menuPanel);
-        }
-        simulationFrame.setVisible(true);
-        
     }
 }
