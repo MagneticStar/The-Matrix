@@ -77,11 +77,11 @@ public class Creature extends ScreenObject implements Cloneable{
     public Object clone() {
         try {
             Creature clone = (Creature)super.clone();
-        clone.genome = (Genome)genome.clone();
-        clone.foodEaten = 0;
-        clone.foodEatenAll = this.foodEatenAll;
-        clone.moveCount = 0;
-        return clone;
+            clone.genome = (Genome)genome.clone();
+            clone.foodEaten = 0;
+            clone.foodEatenAll = this.foodEatenAll;
+            clone.moveCount = 0;
+            return clone;
         } catch (Exception e) {
             System.out.println(e);
             return null;

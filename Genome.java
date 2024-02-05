@@ -115,8 +115,10 @@ public class Genome implements Cloneable{
             if (Main.loadedDatabase.creaturesList[i] != null) {
                 int[] rgb = new int[3];
                 for(int j =0; j<3; j++){
-                    // takes the distance of the creature from the minimum distance (a value between 0 and highestNeuronCoordinate[j] - lowestNeuronCoordinate[j] ) and divides by <<. 
-                    // Value ranges from 0 to 1;
+                    /* takes the distance of the creature from the minimum distance (a value between 0 and highestNeuronCoordinate[j] - lowestNeuronCoordinate[j] ) and divides by
+                    *  greatest possible distance
+                    *  Value ranges from 0 to 1
+                    */ 
                     double locationInRange = (double)(creatureNeuronAmounts[i][j] - lowestNeuronCoordinate[j]) / (highestNeuronCoordinate[j] - lowestNeuronCoordinate[j]);
                     rgb[j] = (int) (255*(locationInRange)); 
                 }

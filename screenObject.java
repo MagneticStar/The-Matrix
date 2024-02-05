@@ -54,7 +54,7 @@ class ScreenObject {
     public Color getColor() {
         return color;
     }
-
+    // returns the screen space position of an object given its world space
     public static Coor getPrintPos(int x, int y) {
         Screens.SimulationWorldToScreen.setWorld(Screens.simulationPanel.getWidth(), Screens.simulationPanel.getHeight());
         int[] ans = Screens.SimulationWorldToScreen.translate(new int[]{x,y});

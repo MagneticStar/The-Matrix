@@ -26,7 +26,7 @@ public class SimulationPanel extends JPanel{
     }
 
     // draws Creatures and Foods to the screen
-    public void drawCreaturesAndFood(Graphics g) {
+    private void drawCreaturesAndFood(Graphics g) {
         int[][] foodLocations = Main.loadedDatabase.foodLocationsForAllTicks[Main.loadedDatabase.currentGenerationTick];
         Color[][] creatureLocations = Main.loadedDatabase.creatureColorsForAllTicks[Main.loadedDatabase.currentGenerationTick];
 
@@ -47,7 +47,7 @@ public class SimulationPanel extends JPanel{
     }
     
     // highlights a Creature on the screen with a red Circle for identification
-    public void highlightSubject(Graphics g){
+    private void highlightSubject(Graphics g){
         int creatureIndex = GUIPanel.currentlySelectedCreatureIndex;
 
         int NONE_SELECTED = -1;

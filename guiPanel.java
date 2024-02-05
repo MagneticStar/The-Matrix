@@ -37,7 +37,7 @@ public class GUIPanel extends JPanel {
         settingsLabel.setText(settingsLabelText);
     }
 
-    public void addComponents(){
+    private void addComponents(){
         highlightComboBox = new JComboBox<String>(Screens.creatureNames);
         highlightComboBox.addActionListener(new ActionListener() {
             @Override

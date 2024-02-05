@@ -21,7 +21,7 @@ public class Database implements Cloneable, Serializable{
           public int repoductionPerCreature = 1; // the amount of creatures a creature makes when reproducing
           public double mutationChance = 0.05; // The chance of mutation, must be between 0 and 1 (inclusive)
           public double bitMutationAverage = (1.08665/Math.pow(mutationChance,0.531384)-0.0435476);
-          public int genomeLength = 8; // length of a creatures DNA, controls the number of neurons
+          public int genomeLength = 256; // length of a creatures DNA, controls the number of neurons
 
           // Trackers
           public int currentGenerationTick; // How many ticks have passed this generation

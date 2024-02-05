@@ -43,7 +43,7 @@ public class Main {
     }
 
 
-    public static void tick(JPanel panel, int i) {
+    private static void tick(JPanel panel, int i) {
         // movement loop
         for(int j = 0; j < Main.loadedDatabase.creaturesList.length; j++){
             if (Main.loadedDatabase.creaturesList[j] != null) {
@@ -61,7 +61,7 @@ public class Main {
         Screens.simulationSplitPane.setDividerLocation(1000);
     }
 
-    public static void startSimulation() {
+    private static void startSimulation() {
 
         for(loadedDatabase.currentGeneration = 0; loadedDatabase.currentGeneration < loadedDatabase.simulationLength; loadedDatabase.currentGeneration++){
             Screens.brainPanel.repaint();
