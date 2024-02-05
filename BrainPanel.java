@@ -4,29 +4,29 @@ import java.util.Map;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
-// Panel for displaying Creature brains 
 public class BrainPanel extends JPanel {
     
     private JComboBox<String> searchDropDown;
-    private int currentlySelectedCreatureIndex = 0;
+    private int currentlySelectedSubjectIndex = 0;
 
-    public BrainPanel() {
-        setBackground(Color.BLACK);
-        addComponents();
-    }
-
-    private void addComponents(){
-        searchDropDown = new JComboBox<String>(Screens.creatureNames);
+    public void selectionBox(){
+        searchDropDown = new JComboBox<String>(Screens.subNames);
+        searchDropDown.setSelectedIndex(0); 
         searchDropDown.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
             // Sets the neuron map panel to the neuron map of the selected subject. The string manipulation is to avoid searching for the index of the subject
-            currentlySelectedCreatureIndex = searchDropDown.getSelectedIndex()-1;
+            currentlySelectedSubjectIndex = Integer.parseInt(searchDropDown.getSelectedItem().toString().substring(searchDropDown.getSelectedItem().toString().indexOf(" ")+1));
+            Database.brainScreenSizeY = Database.creaturesList.get(currentlySelectedSubjectIndex).getGenome().getNeurons().length;
             repaint();
             }
         });
-        this.add(searchDropDown);
-        this.revalidate();
+        Screens.brainPanel.add(searchDropDown);
+        Screens.brainPanel.revalidate();
+    }
+
+    public BrainPanel() {
+        setBackground(Color.BLACK);
     }
     
     @Override
@@ -35,38 +35,30 @@ public class BrainPanel extends JPanel {
         // Where all graphics are rendered
         drawNeuron(g);
     }
-    // draws neurons to screen
     public void drawNeuron(Graphics g) {
-        // optimization check
-        if (Main.loadedDatabase.creaturesList.length == 0 || currentlySelectedCreatureIndex == -1 || Main.loadedDatabase.creaturesList[currentlySelectedCreatureIndex] == null) {
-            return;
-        }
         
-        // create neurons array
-        Neuron[] neurons = Main.loadedDatabase.creaturesList[currentlySelectedCreatureIndex].getGenome().getNeurons();
-        // set width of screen
-        Main.loadedDatabase.brainScreenSizeY = neurons.length;
-        
+        Creature subject = Main.loadedDatabase.creaturesList[currentlySelectedSubjectIndex];
+        Neuron[] neurons = subject.getGenome().getNeurons();
         int i = 1;
-        int internalcount = 0;
-        int sensorcount = 0;
-        int motorcount = 0;
+        int ic = 0;
+        int sc = 0;
+        int mc = 0;
         for (Neuron n : neurons) {
             switch(n.getClassType()) {
                 // Internal
                 case "Internal":
-                internalNeuron(g,i,internalcount,n);
-                internalcount++;
+                internalNeuron(g,i,ic,n);
+                ic++;
                 break;
                 // Sensor
                 case "Sensor":
-                sensorNeuron(g,i,sensorcount,n);
-                sensorcount++;
+                sensorNeuron(g,i,sc,n);
+                sc++;
                 break;
                 // Motor
                 case "Motor":
-                motorNeuron(g,i,motorcount,n);
-                motorcount++;
+                motorNeuron(g,i,mc,n);
+                mc++;
                 break;
             }
             i++;
@@ -74,44 +66,43 @@ public class BrainPanel extends JPanel {
         
         // Sinks
         for (Neuron n : neurons) {
-            for (Map.Entry<Neuron, Integer> sink : n.getSinks().entrySet()) {
-                switch (sink.getKey().getClassType()) {
+            for (Map.Entry<Neuron, Integer> s : n.getSinks().entrySet()) {
+                switch (s.getKey().getClassType()) {
                     case "Internal": g.setColor(Color.green);
                     break;
                     case "Motor": g.setColor(Color.blue);
                     break;
                 }
-                g.drawLine(n.getPrintPos().x() + 10, n.getPrintPos().y() + 10, sink.getKey().getPrintPos().x() + 10, sink.getKey().getPrintPos().y() + 10);
+                g.drawLine(n.getPrintPos().x() + 10, n.getPrintPos().y() + 10, s.getKey().getPrintPos().x() + 10, s.getKey().getPrintPos().y() + 10);
+                // System.out.println(s.getKey());
             }
         }
         // Sources
         for (Neuron n : neurons) {
-            for (Neuron source : n.getSources()) {
-                switch (source.getClassType()) {
+            for (Neuron s : n.getSources()) {
+                switch (s.getClassType()) {
                     case "Internal": g.setColor(Color.magenta);
                     break;
                     case "Sensor": g.setColor(Color.red);
                     break;
                 }
-                g.drawLine(n.getPrintPos().x() + 10, n.getPrintPos().y() + 10, source.getPrintPos().x() + 10, source.getPrintPos().y() + 10);
+                g.drawLine(n.getPrintPos().x() + 10, n.getPrintPos().y() + 10, s.getPrintPos().x() + 10, s.getPrintPos().y() + 10);
             }
         }
     }
-    // draws internal neurons
+
     public void internalNeuron(Graphics g, int i, int nc, Neuron n) {
         g.setColor(Color.green);
         n.setPosX(15+((nc+i)%4)*(int)Math.pow(-1,(nc+i)%3));
         n.setPosY(i);
         g.drawOval(n.getPrintPos().x(), n.getPrintPos().y(), 20, 20);
     }
-    // draws sensor neurons
     public void sensorNeuron(Graphics g, int i, int nc, Neuron n) {
         g.setColor(Color.red);
         n.setPosX(8+((nc+i)%3)*(int)Math.pow(-1,(nc+i)%3));
         n.setPosY(i);
         g.drawOval(n.getPrintPos().x(), n.getPrintPos().y(), 20, 20);
     }
-    // draws motor neurons
     public void motorNeuron(Graphics g, int i, int nc, Neuron n) {
         g.setColor(Color.blue);
         n.setPosX(22+((nc+i)%3)*(int)Math.pow(-1,(nc+i)%3));
