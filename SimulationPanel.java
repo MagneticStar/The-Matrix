@@ -14,7 +14,7 @@ public class SimulationPanel extends JPanel{
 
     // constructor
     public SimulationPanel() {
-        setBackground(Main.loaded.simulationScreenColor);
+        setBackground(Main.loadedDatabase.simulationScreenColor);
     }
     
     @Override
@@ -27,8 +27,8 @@ public class SimulationPanel extends JPanel{
 
     // draws Creatures and Foods to the screen
     public void drawCreaturesAndFood(Graphics g) {
-        int[][] foodLocations = Main.loaded.foodLocationsForAllTicks[Main.loaded.currentGenerationTick];
-        Color[][] creatureLocations = Main.loaded.creatureColorsForAllTicks[Main.loaded.currentGenerationTick];
+        int[][] foodLocations = Main.loadedDatabase.foodLocationsForAllTicks[Main.loadedDatabase.currentGenerationTick];
+        Color[][] creatureLocations = Main.loadedDatabase.creatureColorsForAllTicks[Main.loadedDatabase.currentGenerationTick];
 
         for(int x=0; x<foodLocations.length; x++){
             for(int y=0; y<foodLocations[x].length; y++){
@@ -51,11 +51,11 @@ public class SimulationPanel extends JPanel{
         int creatureIndex = GUIPanel.currentlySelectedCreatureIndex;
 
         int NONE_SELECTED = -1;
-        if(creatureIndex == NONE_SELECTED || Main.loaded.creaturesList[creatureIndex] == null){
+        if(creatureIndex == NONE_SELECTED || Main.loadedDatabase.creaturesList[creatureIndex] == null){
             return;
         }
         
-        Creature creature = Main.loaded.creaturesList[creatureIndex];
+        Creature creature = Main.loadedDatabase.creaturesList[creatureIndex];
         g.setColor(Color.red);
         Coor printPosition = ScreenObject.getPrintPos(creature.getPosX(), creature.getPosY());
         g.fillOval(printPosition.x()-HIGHLIGHT_CIRCLE_DIAMETER/2, printPosition.y()-HIGHLIGHT_CIRCLE_DIAMETER/2, HIGHLIGHT_CIRCLE_DIAMETER, HIGHLIGHT_CIRCLE_DIAMETER);

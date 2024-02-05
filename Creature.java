@@ -47,7 +47,7 @@ public class Creature extends ScreenObject implements Cloneable{
     // returns an array of cloned creatures
     public Creature[] reproduce() {
         try {
-            int howManyRepoduce = Main.loaded.repoductionPerCreature;
+            int howManyRepoduce = Main.loadedDatabase.repoductionPerCreature;
         Creature[] copies = new Creature[howManyRepoduce];
         for (int i = 0; i < howManyRepoduce; i++) {
             copies[i] = (Creature)this.clone();

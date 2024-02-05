@@ -19,19 +19,19 @@ public class Screens {
     public static void createScreens() {
 
         // create translation objects
-        brainWorldToScreen = new Translation(Main.loaded.brainScreenSizeX, Main.loaded.brainScreenSizeY);
-        SimulationWorldToScreen = new Translation(Main.loaded.worldSize, Main.loaded.worldSize);
+        brainWorldToScreen = new Translation(Main.loadedDatabase.brainScreenSizeX, Main.loadedDatabase.brainScreenSizeY);
+        SimulationWorldToScreen = new Translation(Main.loadedDatabase.worldSize, Main.loadedDatabase.worldSize);
         
         // create a list of all creature names for identification
-        creatureNames = new String[Main.loaded.creaturesList.length+1];
+        creatureNames = new String[Main.loadedDatabase.creaturesList.length+1];
         creatureNames[0] = "None Selected";
-        for(int i=0; i<Main.loaded.creaturesList.length; i++){
+        for(int i=0; i<Main.loadedDatabase.creaturesList.length; i++){
             creatureNames[i] = String.format("Creature %04d",i);
         }
 
         // initialize all panels
         brainPanel = new BrainPanel();
-            brainPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
+        brainPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
         guiPanel = new GUIPanel();
         animationPanel = new animationPanel();
         simulationPanel = new SimulationPanel();
@@ -39,7 +39,7 @@ public class Screens {
         
         // add brainPanel to Dataframe and make it visible
         dataFrame.add(brainPanel);
-        dataFrame.setVisible(Main.loaded.showDataFrame);
+        dataFrame.setVisible(Main.loadedDatabase.showDataFrame);
         
 
         // create simulationFrame and add panels
@@ -53,6 +53,6 @@ public class Screens {
         simulationFrame.add(simulationSplitPane);      
         simulationFrame.setVisible(true);
 
-        Main.loaded.visualPanel = simulationPanel;
+        Main.loadedDatabase.visualPanel = simulationPanel;
     }
 }

@@ -6,12 +6,12 @@ class ScreenObject {
     private Color color;
 
     public ScreenObject() {
-        position = new Coor(Main.loaded.worldSize/2, Main.loaded.worldSize/2);
+        position = new Coor(Main.loadedDatabase.worldSize/2, Main.loadedDatabase.worldSize/2);
     }
 
     public ScreenObject(Color color){
         this.color = color;
-        position = new Coor(Main.loaded.worldSize/2, Main.loaded.worldSize/2);
+        position = new Coor(Main.loadedDatabase.worldSize/2, Main.loadedDatabase.worldSize/2);
     }
 
     public ScreenObject(Coor position){

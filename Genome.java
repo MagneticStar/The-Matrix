@@ -27,16 +27,16 @@ public class Genome implements Cloneable{
     public Genome(){
         generateDNA(); 
         interpretDNA();
-        genomeLength = Main.loaded.genomeLength;
-        oscillatorPeriod = Main.loaded.random.nextInt(1,Main.loaded.generationLength+1);
+        genomeLength = Main.loadedDatabase.genomeLength;
+        oscillatorPeriod = Main.loadedDatabase.random.nextInt(1,Main.loadedDatabase.generationLength+1);
     }
 
     // Creates a new neuron map based on the inputed DNA
     public Genome(BitSet DNA){
         this.DNA = DNA;
         interpretDNA();
-        genomeLength = Main.loaded.genomeLength;
-        oscillatorPeriod = Main.loaded.random.nextInt(1,Main.loaded.generationLength+1);
+        genomeLength = Main.loadedDatabase.genomeLength;
+        oscillatorPeriod = Main.loadedDatabase.random.nextInt(1,Main.loadedDatabase.generationLength+1);
     }
 
     public Color getColor(){
@@ -69,16 +69,16 @@ public class Genome implements Cloneable{
      * It allows the user to see a representation of each creatures brain and compare them to the rest of the population quickly(within the few seconds a generation may be on the screen).
      */
     public static void calculateColor(){
-        int[][] creatureNeuronAmounts = new int[Main.loaded.generationSize][3];
+        int[][] creatureNeuronAmounts = new int[Main.loadedDatabase.generationSize][3];
         double[] averageNeuronCoordinate = {0,0,0};
         int[] coordinateDistanceMax = new int[3]; 
         int[] lowestNeuronCoordinate = {genomeLength,genomeLength,genomeLength};
         int[] highestNeuronCoordinate = {genomeLength,genomeLength,genomeLength};
         
-        for(int i=0; i<Main.loaded.generationSize; i++){
-            if (Main.loaded.creaturesList[i] != null) {
+        for(int i=0; i<Main.loadedDatabase.generationSize; i++){
+            if (Main.loadedDatabase.creaturesList[i] != null) {
                 // assigns a value to each indice of the array equal to the amount of said type of neuron the creature has
-                int[] neuronListLengths = {Main.loaded.creaturesList[i].getGenome().getSensors().size(),Main.loaded.creaturesList[i].getGenome().getInternals().size(),Main.loaded.creaturesList[i].getGenome().getMotors().size()};
+                int[] neuronListLengths = {Main.loadedDatabase.creaturesList[i].getGenome().getSensors().size(),Main.loadedDatabase.creaturesList[i].getGenome().getInternals().size(),Main.loadedDatabase.creaturesList[i].getGenome().getMotors().size()};
                 for(int j = 0; j<3; j++){
                     // assigns the array of amounts of neurons to the indice for that creature
                     creatureNeuronAmounts[i][j] = neuronListLengths[j];
@@ -99,7 +99,7 @@ public class Genome implements Cloneable{
 
         for(int i=0; i<3; i++){
             // gives a truncated average by dividing 
-            averageNeuronCoordinate[i] = averageNeuronCoordinate[i]/(double)Main.loaded.generationSize; 
+            averageNeuronCoordinate[i] = averageNeuronCoordinate[i]/(double)Main.loadedDatabase.generationSize; 
             // checks if the highest value or lowest value is furthest from the average
             if ((double)highestNeuronCoordinate[i] - averageNeuronCoordinate[i] > averageNeuronCoordinate[i] - (double)lowestNeuronCoordinate[i]) {
                 // highest is farther
@@ -111,8 +111,8 @@ public class Genome implements Cloneable{
             }
         }
 
-        for(int i=0; i<Main.loaded.creaturesList.length; i++){
-            if (Main.loaded.creaturesList[i] != null) {
+        for(int i=0; i<Main.loadedDatabase.creaturesList.length; i++){
+            if (Main.loadedDatabase.creaturesList[i] != null) {
                 int[] rgb = new int[3];
                 for(int j =0; j<3; j++){
                     // takes the distance of the creature from the minimum distance (a value between 0 and highestNeuronCoordinate[j] - lowestNeuronCoordinate[j] ) and divides by <<. 
@@ -120,8 +120,8 @@ public class Genome implements Cloneable{
                     double locationInRange = (double)(creatureNeuronAmounts[i][j] - lowestNeuronCoordinate[j]) / (highestNeuronCoordinate[j] - lowestNeuronCoordinate[j]);
                     rgb[j] = (int) (255*(locationInRange)); 
                 }
-                Main.loaded.creaturesList[i].getGenome().setColor(new Color(rgb[0], rgb[1],rgb[2]));
-            Main.loaded.creaturesList[i].setColor(Main.loaded.creaturesList[i].getGenome().getColor());
+                Main.loadedDatabase.creaturesList[i].getGenome().setColor(new Color(rgb[0], rgb[1],rgb[2]));
+            Main.loadedDatabase.creaturesList[i].setColor(Main.loadedDatabase.creaturesList[i].getGenome().getColor());
             }
         }
     }
@@ -130,7 +130,7 @@ public class Genome implements Cloneable{
         // Each DNA strand is comprised of genomeLength genes of size geneLength.
         // There are no spaces in each DNA String as geneLength can be used to find each gene mathematically.
         for (int i = 0; i < geneLength * genomeLength; i++) {
-            DNA.set(i, Main.loaded.random.nextBoolean());
+            DNA.set(i, Main.loadedDatabase.random.nextBoolean());
         }
     }
 
@@ -151,7 +151,7 @@ public class Genome implements Cloneable{
         // INTERPRET // INTERPRET // INTERPRET //
         /////////////////////////////////////////
 
-        ArrayList<Neuron> emptyNeurons = new ArrayList<Neuron>(); // Contains neurons created as a byproduct that have yet to be initialized with values
+        ArrayList<Neuron> emptyNeuronsList = new ArrayList<Neuron>(); // Contains neurons created as a byproduct that have yet to be initialized with values
         ArrayList<Neuron> neurons = new ArrayList<Neuron>();
         ArrayList<Neuron> sensors = new ArrayList<Neuron>();
 
@@ -206,22 +206,22 @@ public class Genome implements Cloneable{
             if(neuronType <= 1){
                 // Neuron is an internal neuron
                 neuron = new Internal();
-                replaceEmptyNeuron(neuron, emptyNeurons);
-                emptyNeurons.add(createSource(sourceType, sourceID, neuron));
-                emptyNeurons.add(createSink(sinkType, sinkID, sinkWeight, neuron));
+                replaceEmptyNeuron(neuron, emptyNeuronsList);
+                emptyNeuronsList.add(createSource(sourceType, sourceID, neuron));
+                emptyNeuronsList.add(createSink(sinkType, sinkID, sinkWeight, neuron));
             }
             else if(neuronType == 2){
                 // Neuron is a sensor neuron
                 neuron = new Sensor(neuronID);
                 sensors.add(neuron);
-                replaceEmptyNeuron(neuron, emptyNeurons);
-                emptyNeurons.add(createSink(sinkType, sinkID, sinkWeight, neuron));
+                replaceEmptyNeuron(neuron, emptyNeuronsList);
+                emptyNeuronsList.add(createSink(sinkType, sinkID, sinkWeight, neuron));
             }
             else{
                 // Neuron is a motor neuron
                 neuron = new Motor(neuronID);
-                replaceEmptyNeuron(neuron, emptyNeurons);
-                emptyNeurons.add(createSource(sourceType, sourceID, neuron));
+                replaceEmptyNeuron(neuron, emptyNeuronsList);
+                emptyNeuronsList.add(createSource(sourceType, sourceID, neuron));
             }
             neurons.add(neuron);
         }
@@ -230,7 +230,7 @@ public class Genome implements Cloneable{
         // FILL EMPTY // FILL EMPTY // FILL EMPTY //
         ////////////////////////////////////////////
         
-        for(Neuron emptyNeuron:emptyNeurons){
+        for(Neuron emptyNeuron:emptyNeuronsList){
             // Empty sensors and motors are valid and simply need to be added to the list, only internals need extra
             if(emptyNeuron instanceof Internal){
 
@@ -273,7 +273,7 @@ public class Genome implements Cloneable{
         for(Neuron neuron : neurons){
             String toPrint = "";
             Boolean print = false;
-            toPrint+="Subject "+Main.loaded.creaturesList.length+":\n";
+            toPrint+="Subject "+Main.loadedDatabase.creaturesList.length+":\n";
             toPrint+="Neuron "+neuron.toString()+":\n";
             toPrint+="Sources:\n";
             for(Neuron source : neuron.getSources()){
@@ -386,24 +386,24 @@ public class Genome implements Cloneable{
         return sink;
     }
 
-    private ArrayList<Neuron> replaceEmptyNeuron(Neuron newNeuron, ArrayList<Neuron> emptyNeurons){
-        for(int j=0; j<emptyNeurons.size();j++){
+    private ArrayList<Neuron> replaceEmptyNeuron(Neuron newNeuron, ArrayList<Neuron> emptyNeuronsList){
+        for(int j=0; j<emptyNeuronsList.size();j++){
             // Checks if an empty neuron is the same type of this new neuron
-            if(newNeuron.getClassType().equals(emptyNeurons.get(j).getClassType())){
+            if(newNeuron.getClassType().equals(emptyNeuronsList.get(j).getClassType())){
                 // Deletes the prexisting empty neuron and adds its sources and sinks to this new neuron
-                for(Neuron sink : new ArrayList<Neuron>(emptyNeurons.get(j).getSinks().keySet())){
+                for(Neuron sink : new ArrayList<Neuron>(emptyNeuronsList.get(j).getSinks().keySet())){
                     newNeuron.addSink(sink, BASESINKWEIGHT);
-                    sink.replaceSource(emptyNeurons.get(j), newNeuron);
+                    sink.replaceSource(emptyNeuronsList.get(j), newNeuron);
                 }
-                for(Neuron source : emptyNeurons.get(j).getSources()){
+                for(Neuron source : emptyNeuronsList.get(j).getSources()){
                     newNeuron.addSource(source);
-                    source.replaceSink(emptyNeurons.get(j), newNeuron);
+                    source.replaceSink(emptyNeuronsList.get(j), newNeuron);
                 }
-                emptyNeurons.remove(j);
+                emptyNeuronsList.remove(j);
                 break;
             }
         }
-        return emptyNeurons;
+        return emptyNeuronsList;
     }
     @Override
     public Object clone() throws CloneNotSupportedException {

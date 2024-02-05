@@ -10,30 +10,30 @@ import java.util.BitSet;
 
 public class Main {
     public static Database initial = new Database();
-    public static Database loaded = initial;
+    public static Database loadedDatabase = initial;
     public static void main(String[] args) {
-        if (loaded.LOADFILE){
+        if (loadedDatabase.LOADFILE){
             try {
                 FileInputStream file = new FileInputStream(initial.fileName);
                 ObjectInputStream in = new ObjectInputStream(file);
                 
-                loaded = (Database)in.readObject();
-                for (int i = 0; i < loaded.creaturesList.length; i++) {
-                    loaded.creaturesList[i] = new Creature((BitSet)in.readObject());
+                loadedDatabase = (Database)in.readObject();
+                for (int i = 0; i < loadedDatabase.creaturesList.length; i++) {
+                    loadedDatabase.creaturesList[i] = new Creature((BitSet)in.readObject());
                 }
                 in.close();
             } catch (Exception e) {
                 System.out.println(e);
                 // Create generation 0
-                for (int i = 0; i < loaded.creaturesList.length; i++) {
-                    loaded.creaturesList[i] = new Creature();
+                for (int i = 0; i < loadedDatabase.creaturesList.length; i++) {
+                    loadedDatabase.creaturesList[i] = new Creature();
                 }
             }
         }
         else{
             // Create generation 0
-            for (int i = 0; i < loaded.creaturesList.length; i++) {
-                loaded.creaturesList[i] = new Creature();
+            for (int i = 0; i < loadedDatabase.creaturesList.length; i++) {
+                loadedDatabase.creaturesList[i] = new Creature();
             }
         }
 
@@ -45,17 +45,17 @@ public class Main {
 
     public static void tick(JPanel panel, int i) {
         // movement loop
-        for(int j = 0; j < Main.loaded.creaturesList.length; j++){
-            if (Main.loaded.creaturesList[j] != null) {
-                Creature creature = loaded.creaturesList[j];
+        for(int j = 0; j < Main.loadedDatabase.creaturesList.length; j++){
+            if (Main.loadedDatabase.creaturesList[j] != null) {
+                Creature creature = loadedDatabase.creaturesList[j];
                 // Do the action
                 determineNeuronActivation(creature).motorMethod.invoke(creature);
                 // Save Tick Data for viewing
-                loaded.creatureColorsForAllTicks[loaded.currentGenerationTick][creature.getPosX()][creature.getPosY()] = creature.getColor();
+                loadedDatabase.creatureColorsForAllTicks[loadedDatabase.currentGenerationTick][creature.getPosX()][creature.getPosY()] = creature.getColor();
             }
         }
         // Save Tick Data for viewing
-        loaded.foodLocationsForAllTicks[loaded.currentGenerationTick] = loaded.foodLocations;
+        loadedDatabase.foodLocationsForAllTicks[loadedDatabase.currentGenerationTick] = loadedDatabase.foodLocations;
         panel.repaint();
         Screens.guiPanel.updateLabel();
         Screens.simulationSplitPane.setDividerLocation(1000);
@@ -63,7 +63,7 @@ public class Main {
 
     public static void startSimulation() {
 
-        for(loaded.currentGeneration = 0; loaded.currentGeneration < loaded.simulationLength; loaded.currentGeneration++){
+        for(loadedDatabase.currentGeneration = 0; loadedDatabase.currentGeneration < loadedDatabase.simulationLength; loadedDatabase.currentGeneration++){
             Screens.brainPanel.repaint();
 
             // Gives every instantiated creature and food a unique position
@@ -71,20 +71,26 @@ public class Main {
             // Gives every creature a color based on their composition of neurons
             Genome.calculateColor();
             // Reset Creature and Food Location Records
-            loaded.creatureColorsForAllTicks = new Color[loaded.generationLength+1][loaded.worldSize][loaded.worldSize];
-            loaded.foodLocationsForAllTicks = new int[loaded.generationLength+1][loaded.worldSize][loaded.worldSize];
+            loadedDatabase.creatureColorsForAllTicks = new Color[loadedDatabase.generationLength+1][loadedDatabase.worldSize][loadedDatabase.worldSize];
+            loadedDatabase.foodLocationsForAllTicks = new int[loadedDatabase.generationLength+1][loadedDatabase.worldSize][loadedDatabase.worldSize];
             
             // Simulate the Generation
-            for (loaded.currentGenerationTick = 0; loaded.currentGenerationTick < loaded.generationLength; loaded.currentGenerationTick++) {
-                tick(loaded.visualPanel, loaded.currentGenerationTick);
+            for (loadedDatabase.currentGenerationTick = 0; loadedDatabase.currentGenerationTick < loadedDatabase.generationLength; loadedDatabase.currentGenerationTick++) {
+                tick(loadedDatabase.visualPanel, loadedDatabase.currentGenerationTick);
+                // slow down for viewing
+                try {
+                    Thread.sleep(20);
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
             }
 
-            if (loaded.saveAndExit) {
+            if (loadedDatabase.saveAndExit) {
                 try {
-                    FileOutputStream file = new FileOutputStream(loaded.fileName);
+                    FileOutputStream file = new FileOutputStream(loadedDatabase.fileName);
                     ObjectOutputStream out = new ObjectOutputStream(file);
                     out.writeObject(new Database());
-                    for (Creature c : loaded.creaturesList) {
+                    for (Creature c : loadedDatabase.creaturesList) {
                         out.writeObject(c.getGenome().getDNA());
                     }
                     out.close();
@@ -94,30 +100,30 @@ public class Main {
                 }
             }
             
-            loaded.generationFinished = true;
+            loadedDatabase.generationFinished = true;
             // Wait till next generation should be run
             while(true){
-                if(loaded.autoStartGeneration || loaded.startNextGeneration){
+                if(loadedDatabase.autoStartGeneration || loadedDatabase.startNextGeneration){
                     break;
                 }
                 Screens.simulationPanel.repaint();
             }
-            loaded.startNextGeneration = false;
+            loadedDatabase.startNextGeneration = false;
 
             int reproductionCount = 0;
             ArrayList<Creature> newGeneration = new ArrayList<Creature>();
-            for(int i = 0; i < loaded.creaturesList.length; i++){
-                if (loaded.creaturesList[i] != null){
+            for(int i = 0; i < loadedDatabase.creaturesList.length; i++){
+                if (loadedDatabase.creaturesList[i] != null){
                     // Survival Criteria Check
-                    Creature survivalCheckCreature = loaded.creaturesList[i];
-                    boolean survives = survivalCheckCreature.getFoodCount() > loaded.minimumFoodEaten && 
+                    Creature survivalCheckCreature = loadedDatabase.creaturesList[i];
+                    boolean survives = survivalCheckCreature.getFoodCount() > loadedDatabase.minimumFoodEaten && 
                     survivalCheckCreature.getMoveCount() > 10 &&
                     survivalCheckCreature.getMoveCount() < 100;
                     
 
                     if(survives){
                         reproductionCount++;
-                        Creature[] temp = loaded.creaturesList[i].reproduce();
+                        Creature[] temp = loadedDatabase.creaturesList[i].reproduce();
                         for (int j = 0; j < temp.length; j++) {
                             if (temp[j] != null)
                             newGeneration.add(temp[j]);
@@ -126,18 +132,18 @@ public class Main {
                 }
             }
 
-            loaded.reproducedLastGeneration = reproductionCount;
-            loaded.foodEatenLastGeneration = loaded.currentFoodCount;
+            loadedDatabase.reproducedLastGeneration = reproductionCount;
+            loadedDatabase.foodEatenLastGeneration = loadedDatabase.currentFoodCount;
 
             // Debug
             // System.out.println(reproductionCount+" creatures reproduced!");
             
-            for (int i = 0; i < loaded.creaturesList.length; i++) {
+            for (int i = 0; i < loadedDatabase.creaturesList.length; i++) {
                 if (newGeneration.size() != 0) {
-                    loaded.creaturesList[i] = (Creature)newGeneration.get((i + newGeneration.size()) % newGeneration.size()).clone();
+                    loadedDatabase.creaturesList[i] = (Creature)newGeneration.get((i + newGeneration.size()) % newGeneration.size()).clone();
                 }
                 else {
-                    loaded.creaturesList[i] = new Creature(); 
+                    loadedDatabase.creaturesList[i] = new Creature(); 
                 }
             }
         }
@@ -194,27 +200,27 @@ public class Main {
     private static void populateSimulationSpace(){
         // Generate all the possible starting positions
         ArrayList<Coor> startingPositions = new ArrayList<Coor>();
-        for(int x = 0; x<loaded.worldSize; x++){
-            for(int y = 0; y<loaded.worldSize; y++){
+        for(int x = 0; x<loadedDatabase.worldSize; x++){
+            for(int y = 0; y<loadedDatabase.worldSize; y++){
                 startingPositions.add(new Coor(x, y));
             }
         }
         
-        loaded.creatureLocations = new int[loaded.worldSize][loaded.worldSize];
-        loaded.foodLocations = new int[loaded.worldSize][loaded.worldSize];
-        loaded.currentFoodCount = loaded.startingFoodCount;
+        loadedDatabase.creatureLocations = new int[loadedDatabase.worldSize][loadedDatabase.worldSize];
+        loadedDatabase.foodLocations = new int[loadedDatabase.worldSize][loadedDatabase.worldSize];
+        loadedDatabase.currentFoodCount = loadedDatabase.startingFoodCount;
 
-        for(int i = 0; i < loaded.creaturesList.length; i++){
-            if (loaded.creaturesList[i] != null) {
-                Coor coor = startingPositions.remove(loaded.random.nextInt(0,startingPositions.size()));
-                loaded.creaturesList[i].setPos(coor);
-                loaded.creatureLocations[loaded.creaturesList[i].getPosX()][loaded.creaturesList[i].getPosY()]+=1;
+        for(int i = 0; i < loadedDatabase.creaturesList.length; i++){
+            if (loadedDatabase.creaturesList[i] != null) {
+                Coor coor = startingPositions.remove(loadedDatabase.random.nextInt(0,startingPositions.size()));
+                loadedDatabase.creaturesList[i].setPos(coor);
+                loadedDatabase.creatureLocations[loadedDatabase.creaturesList[i].getPosX()][loadedDatabase.creaturesList[i].getPosY()]+=1;
             }
         }
 
-        for(int i = 0; i < loaded.startingFoodCount; i++){
-            Coor coor = startingPositions.remove(loaded.random.nextInt(0,startingPositions.size()));
-            loaded.foodLocations[coor.x()][coor.y()]++;
+        for(int i = 0; i < loadedDatabase.startingFoodCount; i++){
+            Coor coor = startingPositions.remove(loadedDatabase.random.nextInt(0,startingPositions.size()));
+            loadedDatabase.foodLocations[coor.x()][coor.y()]++;
         }
     }
 }

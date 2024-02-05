@@ -28,11 +28,11 @@ public class GUIPanel extends JPanel {
 
     // update information
     public void updateLabel(){
-        trackersText = "<br/><br/>Step: "+(Main.loaded.currentGenerationTick+1)+"/"+Main.loaded.generationLength;
-        trackersText += "<br/>Generation: "+(Main.loaded.currentGeneration+1)+"/"+Main.loaded.simulationLength;
-        trackersText += "<br/>Food: "+Main.loaded.currentFoodCount+"/"+Main.loaded.startingFoodCount;
-        trackersText += "<br/>Reproduced Last Generation: "+Main.loaded.reproducedLastGeneration+"/"+Main.loaded.generationSize;
-        trackersText += "<br/>Food Eaten Last Generation: "+Main.loaded.foodEatenLastGeneration+"/"+Main.loaded.startingFoodCount+"</html>";
+        trackersText = "<br/><br/>Step: "+(Main.loadedDatabase.currentGenerationTick+1)+"/"+Main.loadedDatabase.generationLength;
+        trackersText += "<br/>Generation: "+(Main.loadedDatabase.currentGeneration+1)+"/"+Main.loadedDatabase.simulationLength;
+        trackersText += "<br/>Food: "+Main.loadedDatabase.currentFoodCount+"/"+Main.loadedDatabase.startingFoodCount;
+        trackersText += "<br/>Reproduced Last Generation: "+Main.loadedDatabase.reproducedLastGeneration+"/"+Main.loadedDatabase.generationSize;
+        trackersText += "<br/>Food Eaten Last Generation: "+Main.loadedDatabase.foodEatenLastGeneration+"/"+Main.loadedDatabase.startingFoodCount+"</html>";
         settingsLabelText = settingsText+trackersText;
         settingsLabel.setText(settingsLabelText);
     }
@@ -48,32 +48,32 @@ public class GUIPanel extends JPanel {
         }});
 
         // Checkbox
-        startGenerationsCheckBox = new JCheckBox("Automatically Start Generations",Main.loaded.autoStartGeneration);
+        startGenerationsCheckBox = new JCheckBox("Automatically Start Generations",Main.loadedDatabase.autoStartGeneration);
         startGenerationsCheckBox.setForeground(Color.white);
         startGenerationsCheckBox.setBackground(Color.black);
         startGenerationsCheckBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Main.loaded.autoStartGeneration = !Main.loaded.autoStartGeneration;
+                Main.loadedDatabase.autoStartGeneration = !Main.loadedDatabase.autoStartGeneration;
             repaint();
         }});
 
         // Checkbox
-        showVisualsCheckBox = new JCheckBox("Show Visuals",Main.loaded.doVisuals);
+        showVisualsCheckBox = new JCheckBox("Show Visuals",Main.loadedDatabase.doVisuals);
         showVisualsCheckBox.setForeground(Color.white);
         showVisualsCheckBox.setBackground(Color.black);
         showVisualsCheckBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Main.loaded.doVisuals = !Main.loaded.doVisuals;
+                Main.loadedDatabase.doVisuals = !Main.loadedDatabase.doVisuals;
 
-            if(Main.loaded.doVisuals){
-                Main.loaded.visualPanel = Screens.simulationPanel;
+            if(Main.loadedDatabase.doVisuals){
+                Main.loadedDatabase.visualPanel = Screens.simulationPanel;
             }
             else{
-                Main.loaded.visualPanel = Screens.animationPanel;
+                Main.loadedDatabase.visualPanel = Screens.animationPanel;
             }
-            Screens.simulationSplitPane.setLeftComponent(Main.loaded.visualPanel);
+            Screens.simulationSplitPane.setLeftComponent(Main.loadedDatabase.visualPanel);
             repaint();
         }});
 
@@ -84,7 +84,7 @@ public class GUIPanel extends JPanel {
         saveSimulationButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Main.loaded.saveAndExit = !Main.loaded.saveAndExit;
+                Main.loadedDatabase.saveAndExit = !Main.loadedDatabase.saveAndExit;
             repaint();
         }});
 
@@ -93,15 +93,15 @@ public class GUIPanel extends JPanel {
         startGenerationButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            if(Main.loaded.generationFinished == true){
-                Main.loaded.generationFinished = false;
-                Main.loaded.startNextGeneration = true;
+            if(Main.loadedDatabase.generationFinished == true){
+                Main.loadedDatabase.generationFinished = false;
+                Main.loadedDatabase.startNextGeneration = true;
             }
             repaint();
         }});
 
         // Information Label
-        settingsText = "<html>Generation Size: "+Main.loaded.generationSize+"<br/>Generation Length: "+Main.loaded.generationLength+"<br/>World Size: "+Main.loaded.worldSize+"<br/>Mutation Chance: "+Main.loaded.mutationChance+"<br/>Genome Size: "+Main.loaded.genomeLength;
+        settingsText = "<html>Generation Size: "+Main.loadedDatabase.generationSize+"<br/>Generation Length: "+Main.loadedDatabase.generationLength+"<br/>World Size: "+Main.loadedDatabase.worldSize+"<br/>Mutation Chance: "+Main.loadedDatabase.mutationChance+"<br/>Genome Size: "+Main.loadedDatabase.genomeLength;
         settingsLabel = new JLabel();
         updateLabel();
         settingsLabel.setForeground(Color.WHITE);

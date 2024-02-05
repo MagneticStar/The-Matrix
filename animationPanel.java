@@ -12,7 +12,7 @@ public class animationPanel extends JPanel {
     private JLabel animationLabel;
 
     public animationPanel() {
-        setBackground(Main.loaded.simulationScreenColor);
+        setBackground(Main.loadedDatabase.simulationScreenColor);
         animationLabel = new JLabel("Calculating.");
         animationLabel.setForeground(Color.WHITE);
         animationLabel.setSize(40, 80);
