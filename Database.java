@@ -12,6 +12,7 @@ public class Database implements Cloneable, Serializable{
           public int generationSize = 1000; // How many creatures should there be at the start of a new generation
           public int startingFoodCount = 200; // how many foods should be initially created
           public int minimumFoodEaten = 2; // The minimum number of food a creature must eat to reproduce at the end of a generation
+          public int maximumDistanceMoved = 10000;
           
           public int generationLength = 100; // How many ticks each generation is
           public int simulationLength = 100; // How many generations there should be
@@ -21,7 +22,7 @@ public class Database implements Cloneable, Serializable{
           public int repoductionPerCreature = 1; // the amount of creatures a creature makes when reproducing
           public double mutationChance = 0.05; // The chance of mutation, must be between 0 and 1 (inclusive)
           public double bitMutationAverage = (1.08665/Math.pow(mutationChance,0.531384)-0.0435476);
-          public int genomeLength = 256; // length of a creatures DNA, controls the number of neurons
+          public int genomeLength = 32; // length of a creatures DNA, controls the number of neurons
 
           // Trackers
           public int currentGenerationTick; // How many ticks have passed this generation

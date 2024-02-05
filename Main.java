@@ -117,8 +117,7 @@ public class Main {
                     // Survival Criteria Check
                     Creature survivalCheckCreature = loadedDatabase.creaturesList[i];
                     boolean survives = survivalCheckCreature.getFoodCount() > loadedDatabase.minimumFoodEaten && 
-                    survivalCheckCreature.getMoveCount() > 10 &&
-                    survivalCheckCreature.getMoveCount() < 100;
+                    survivalCheckCreature.getMoveCount() < Main.loadedDatabase.maximumDistanceMoved;
                     
 
                     if(survives){

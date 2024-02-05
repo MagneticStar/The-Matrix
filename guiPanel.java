@@ -32,7 +32,7 @@ public class GUIPanel extends JPanel {
         trackersText += "<br/>Generation: "+(Main.loadedDatabase.currentGeneration+1)+"/"+Main.loadedDatabase.simulationLength;
         trackersText += "<br/>Food: "+Main.loadedDatabase.currentFoodCount+"/"+Main.loadedDatabase.startingFoodCount;
         trackersText += "<br/>Reproduced Last Generation: "+Main.loadedDatabase.reproducedLastGeneration+"/"+Main.loadedDatabase.generationSize;
-        trackersText += "<br/>Food Eaten Last Generation: "+Main.loadedDatabase.foodEatenLastGeneration+"/"+Main.loadedDatabase.startingFoodCount+"</html>";
+        trackersText += "<br/>Food left after Last Generation: "+Main.loadedDatabase.foodEatenLastGeneration+"/"+Main.loadedDatabase.startingFoodCount+"</html>";
         settingsLabelText = settingsText+trackersText;
         settingsLabel.setText(settingsLabelText);
     }
