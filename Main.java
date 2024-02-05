@@ -149,8 +149,8 @@ public class Main {
         }
     }
 
-    // extra funcs
-
+    
+    // calculates the signal values of a creatures neuron map and returns a motor neuron to activate
     private static Motor determineNeuronActivation(Creature creature){
         Sensor[] checkedSensors = new Sensor[Sensor.numberOfSensorMethods];
         for(Sensor sensor : creature.getGenome().getSensors()){

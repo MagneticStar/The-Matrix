@@ -31,16 +31,18 @@ public class Screens {
 
         // initialize all panels
         brainPanel = new BrainPanel();
+        dataFrame.add(brainPanel);
+        dataFrame.setVisible(Main.loadedDatabase.showDataFrame);
         brainPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
+        
         guiPanel = new GUIPanel();
         animationPanel = new animationPanel();
         simulationPanel = new SimulationPanel();
 
         
         // add brainPanel to Dataframe and make it visible
-        dataFrame.add(brainPanel);
-        dataFrame.setVisible(Main.loadedDatabase.showDataFrame);
         
+        brainPanel.selectionBox();
 
         // create simulationFrame and add panels
         simulationSplitPane = new JSplitPane();
