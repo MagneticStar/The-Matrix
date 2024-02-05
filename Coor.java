@@ -1,3 +1,4 @@
+// A Coordinate object
 public class Coor {
     private int[] coor = new int[2];
 
@@ -32,6 +33,7 @@ public class Coor {
     public boolean equals(Object obj) {
         return ((Coor) obj).x() == coor[0] && ((Coor) obj).y() == coor[1];
     }
+    @Override
     public String toString() {
         return coor[0] + ", " + coor[1];
     }

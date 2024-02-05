@@ -12,13 +12,12 @@ public class Main {
     public static Database initial = new Database();
     public static Database loaded = initial;
     public static void main(String[] args) {
-        boolean SerialInput = false;
-        if (SerialInput){
+        if (loaded.LOADFILE){
             try {
                 FileInputStream file = new FileInputStream(initial.fileName);
                 ObjectInputStream in = new ObjectInputStream(file);
                 
-                loaded = (Database)((Database)in.readObject()).clone();
+                loaded = (Database)in.readObject();
                 for (int i = 0; i < loaded.creaturesList.length; i++) {
                     loaded.creaturesList[i] = new Creature((BitSet)in.readObject());
                 }
@@ -39,6 +38,8 @@ public class Main {
         }
 
         Screens.createScreens();
+
+        startSimulation();
     }
 
 

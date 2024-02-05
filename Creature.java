@@ -1,6 +1,7 @@
 import java.util.BitSet;
 
 public class Creature extends ScreenObject implements Cloneable{
+
     private Genome genome;
     private int foodEaten;
     private int foodEatenAll;
@@ -32,12 +33,6 @@ public class Creature extends ScreenObject implements Cloneable{
     public Genome getGenome() {
         return this.genome;
     }
-    @Deprecated
-    public Coor getPrintPos() {
-        Screens.SimulationWorldToScreen.setWorld(Screens.simulationPanel.getWidth(), Screens.simulationPanel.getHeight());
-        int[] ans = Screens.SimulationWorldToScreen.translate(this.getPos().matrix());
-        return new Coor(ans[0], ans[1]);
-    }
     
     public int getFoodCount(){
         return foodEaten;
@@ -49,10 +44,10 @@ public class Creature extends ScreenObject implements Cloneable{
         return moveCount;
     }
 
-    // Methods
+    // returns an array of cloned creatures
     public Creature[] reproduce() {
         try {
-            int howManyRepoduce = 1;
+            int howManyRepoduce = Main.loaded.repoductionPerCreature;
         Creature[] copies = new Creature[howManyRepoduce];
         for (int i = 0; i < howManyRepoduce; i++) {
             copies[i] = (Creature)this.clone();
@@ -74,6 +69,7 @@ public class Creature extends ScreenObject implements Cloneable{
     public void clearFood(){
         foodEaten = 0;
     }
+
     @Override
     public String toString() {
         return genome.getDNA().toString();

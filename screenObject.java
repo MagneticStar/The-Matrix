@@ -1,5 +1,6 @@
 import java.awt.Color;
 
+// default class for all objects that can be drawn to the screen
 class ScreenObject {
     private Coor position;
     private Color color;

@@ -1,5 +1,5 @@
 import javax.swing.JFrame;
-
+// Screen in which simulationPanel is displayed
 public class SimulationFrame extends JFrame{
 
     private int height = 1000;

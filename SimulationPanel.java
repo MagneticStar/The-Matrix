@@ -1,6 +1,8 @@
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
 import javax.swing.JPanel;  
 
+// Panel where the simulation is rendered
 public class SimulationPanel extends JPanel{
 
     private final static int CREATURE_SPRITE_WIDTH = 10;
@@ -10,6 +12,7 @@ public class SimulationPanel extends JPanel{
     private final static Color FOOD_COLOR = Color.RED;
     private final static int HIGHLIGHT_CIRCLE_DIAMETER = 30;
 
+    // constructor
     public SimulationPanel() {
         setBackground(Main.loaded.simulationScreenColor);
     }
@@ -22,9 +25,11 @@ public class SimulationPanel extends JPanel{
         drawCreaturesAndFood(g);
     }
 
+    // draws Creatures and Foods to the screen
     public void drawCreaturesAndFood(Graphics g) {
         int[][] foodLocations = Main.loaded.foodLocationsForAllTicks[Main.loaded.currentGenerationTick];
         Color[][] creatureLocations = Main.loaded.creatureColorsForAllTicks[Main.loaded.currentGenerationTick];
+
         for(int x=0; x<foodLocations.length; x++){
             for(int y=0; y<foodLocations[x].length; y++){
                 if(foodLocations[x][y] >= 1){
@@ -40,7 +45,8 @@ public class SimulationPanel extends JPanel{
             }
         }
     }
-
+    
+    // highlights a Creature on the screen with a red Circle for identification
     public void highlightSubject(Graphics g){
         int creatureIndex = GUIPanel.currentlySelectedCreatureIndex;
 

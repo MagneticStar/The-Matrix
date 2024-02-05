@@ -1,6 +1,7 @@
 import java.awt.FlowLayout;
 import javax.swing.JSplitPane;
 
+// class that controls all screens
 public class Screens {
 
     public static DataFrame dataFrame = new DataFrame();
@@ -14,30 +15,34 @@ public class Screens {
     public static Translation SimulationWorldToScreen;
     public static String[] creatureNames;
     
+    // creates initial screens
     public static void createScreens() {
 
+        // create translation objects
         brainWorldToScreen = new Translation(Main.loaded.brainScreenSizeX, Main.loaded.brainScreenSizeY);
         SimulationWorldToScreen = new Translation(Main.loaded.worldSize, Main.loaded.worldSize);
+        
+        // create a list of all creature names for identification
         creatureNames = new String[Main.loaded.creaturesList.length+1];
-
         creatureNames[0] = "None Selected";
-        for(int i=1; i<creatureNames.length; i++){
-            creatureNames[i] = String.format("Creature %04d",i);
-        }
-        brainPanel = new BrainPanel();
-        guiPanel = new GUIPanel();
-        animationPanel = new animationPanel();
-        simulationPanel = new SimulationPanel();
-
-        // Brain Frame
-        brainPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
-        dataFrame.add(brainPanel);
-        dataFrame.setVisible(true);
         for(int i=0; i<Main.loaded.creaturesList.length; i++){
             creatureNames[i] = String.format("Creature %04d",i);
         }
 
-        // Simulation Frame
+        // initialize all panels
+        brainPanel = new BrainPanel();
+            brainPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
+        guiPanel = new GUIPanel();
+        animationPanel = new animationPanel();
+        simulationPanel = new SimulationPanel();
+
+        
+        // add brainPanel to Dataframe and make it visible
+        dataFrame.add(brainPanel);
+        dataFrame.setVisible(Main.loaded.showDataFrame);
+        
+
+        // create simulationFrame and add panels
         simulationSplitPane = new JSplitPane();
         simulationSplitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
         simulationSplitPane.setDividerLocation(1000);

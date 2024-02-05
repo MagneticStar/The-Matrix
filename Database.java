@@ -1,7 +1,5 @@
 import java.awt.Color;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 
 import javax.swing.JPanel;
@@ -11,7 +9,7 @@ public class Database implements Cloneable, Serializable{
      
      // Parameters
           // Simulation 
-          public int generationSize = 100; // How many creatures should there be at the start of a new generation
+          public int generationSize = 10; // How many creatures should there be at the start of a new generation
           public int startingFoodCount = 20; // how many foods should be initially created
           public int minimumFoodEaten = 1; // The minimum number of food a creature must eat to reproduce at the end of a generation
           
@@ -34,36 +32,28 @@ public class Database implements Cloneable, Serializable{
           public Color[][][] creatureColorsForAllTicks;
           public int[][][] foodLocationsForAllTicks;
           public Creature[] creaturesList = new Creature[generationSize];
-          public int reproducedLastGeneration;
-          public int foodEatenLastGeneration;
+          public int reproducedLastGeneration; // How many creatures reproduced last generation
+          public int foodEatenLastGeneration; // How many foods were eaten last generation
 
-          public boolean doVisuals = true;
-          public boolean startNextGeneration = false;
-          public boolean autoStartGeneration = true;
-          public boolean generationFinished = false;
-          public boolean saveAndExit = false;
+          public boolean doVisuals = true; // show visuals while runnning simulation or not
+          public boolean startNextGeneration = false; // should the program start this generation
+          public boolean autoStartGeneration = true; // start each generation at the end of the last
+          public boolean generationFinished = false; // is the generation finished
+          public boolean saveAndExit = false; // should the program save and exit at the end of this generation
      
           // Brain Screen
           public int brainScreenSizeX = 30;
           public int brainScreenSizeY = Genome.genomeLength*2;
 
           // Visuals
-          public Color simulationScreenColor = Color.white;
+          public Color simulationScreenColor = Color.white; // background color for the simuation
           public JPanel visualPanel = null;
+          public boolean showDataFrame = true;
 
           // Random
           public Random random = new Random();
           
           // Serial
           public String fileName = "x.tmp";
-          public boolean LOADFILE = true;
-
-     public Database() {
-          
-     }
-     
-     @Override
-     public Object clone() throws CloneNotSupportedException {
-          return super.clone();  
-     }
+          public boolean LOADFILE = false;
 }

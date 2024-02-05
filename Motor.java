@@ -19,8 +19,9 @@ public class Motor extends Neuron{
         this.motorMethod = Motor::DoNothing;
     }
 
+    // returns the maximum value the neuron is storing
     public double getMaxValue(){
-        double maxValue = -1000000000;
+        double maxValue = Double.MIN_VALUE;
         for(double value : super.getValues()){
             if(maxValue<value){
                 maxValue = value;
@@ -28,7 +29,8 @@ public class Motor extends Neuron{
         }
         return maxValue;
     }
-
+    
+    // interface for asking this motor neuron what method it wants to call
     public interface MotorMethod{
         void invoke(Creature subject);
     }

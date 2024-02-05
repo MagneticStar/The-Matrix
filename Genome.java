@@ -4,6 +4,12 @@ import java.util.BitSet;
 import java.util.HashSet;
 import java.util.Map;
 
+/*
+ * This is the class in charge of creating the DNA of a creature(A Bitset that will be decoded into a Neuron Map), creating the neuron map from this DNA,
+ * and calculating the output of this neuron map.  
+ */
+
+
 public class Genome implements Cloneable{
     public static int genomeLength;
     private static int geneLength = 32;
@@ -58,6 +64,10 @@ public class Genome implements Cloneable{
         return this.DNA;
     }
 
+    /*
+     * This method takes the types and amounts of neurons that each creature in the simulation has, and maps each creature to the RGB space based on those values.
+     * It allows the user to see a representation of each creatures brain and compare them to the rest of the population quickly(within the few seconds a generation may be on the screen).
+     */
     public static void calculateColor(){
         int[][] creatureNeuronAmounts = new int[Main.loaded.generationSize][3];
         double[] averageNeuronCoordinate = {0,0,0};

@@ -62,7 +62,7 @@ public class Sensor extends Neuron{
         int[] indexOfFoundObject = findNearestObject(creature.getPosX(), creature.getPosY(), Main.loaded.creatureLocations);
         return directionY(indexOfFoundObject[1], creature);
     }
-    
+    // returns a value of either 1 or -1, flipping each tick, with starting values unique to each creature
     private static double Oscillator(Creature creature) {
         if(Main.loaded.currentGenerationTick%creature.getGenome().getOscillatorPeriod()==0){
             return 1;
@@ -71,7 +71,7 @@ public class Sensor extends Neuron{
             return -1;
         }
     }
-
+    // return a random double between -1 and 1
     private static double random(Creature creature){
         return Main.loaded.random.nextDouble(-1,1);
     }
@@ -80,7 +80,7 @@ public class Sensor extends Neuron{
     // SENSOR METHOD ASSISTORS // SENSOR METHOD ASSISTORS // 
     ////////////////////////////////////////////////////////
 
-    public static int[] findNearestObject(int centerX, int centerY, int[][] objectLocations) throws Exception{
+    public static int[] findNearestObject(int centerX, int centerY, int[][] objectLocations) throws Exception {
         // Search logic
         if(objectLocations[centerX][centerY] > 0){ // Check Center
             return new int[]{centerX,centerY};
@@ -135,7 +135,7 @@ public class Sensor extends Neuron{
         Exception noObjectFound = new Exception("No Object was Found");
         throw noObjectFound;
     }
-
+    // compares the location of a creature and a position in the x axis
     public static double directionX(int posX, Creature creature) throws NullPointerException{
         // left
         if (posX < creature.getPosX()) {
@@ -150,6 +150,7 @@ public class Sensor extends Neuron{
             return 0.0;
         }
     }
+    // compares the location of a creature and a position in the y axis
     public static double directionY(int posY, Creature creature) throws NullPointerException {
         // down
         if (posY < creature.getPosY()) {
@@ -164,7 +165,10 @@ public class Sensor extends Neuron{
             return 0.0;
         }
     }
-    // distance needs to be fixed for modulus
+    /* distance() has a known bug where is cannot calculate distance between objects near a border consistant with movement in the simulation.
+     * If a creature walks right after hitting the right wall, they will appear on the left side of the screen. All other relevant methods behave 
+     * consistently with this behavior, but we have not found a good solution for distance yet which may produce unintended creature behavior
+     */
     
     public static double distance(int[] coor, Creature creature) throws NullPointerException {
         int x = creature.getPosX();

@@ -1,12 +1,12 @@
 import java.awt.*;
 import java.awt.event.*;
-
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+// Panel that displays information about the simulation 
 public class GUIPanel extends JPanel {
 
     private JComboBox<String> highlightComboBox;
@@ -26,13 +26,13 @@ public class GUIPanel extends JPanel {
         addComponents();
     }
 
+    // update information
     public void updateLabel(){
         trackersText = "<br/><br/>Step: "+(Main.loaded.currentGenerationTick+1)+"/"+Main.loaded.generationLength;
         trackersText += "<br/>Generation: "+(Main.loaded.currentGeneration+1)+"/"+Main.loaded.simulationLength;
         trackersText += "<br/>Food: "+Main.loaded.currentFoodCount+"/"+Main.loaded.startingFoodCount;
         trackersText += "<br/>Reproduced Last Generation: "+Main.loaded.reproducedLastGeneration+"/"+Main.loaded.generationSize;
         trackersText += "<br/>Food Eaten Last Generation: "+Main.loaded.foodEatenLastGeneration+"/"+Main.loaded.startingFoodCount+"</html>";
-
         settingsLabelText = settingsText+trackersText;
         settingsLabel.setText(settingsLabelText);
     }
@@ -77,7 +77,7 @@ public class GUIPanel extends JPanel {
             repaint();
         }});
 
-        // Button
+        // Save and Exit Button
         saveSimulationButton = new JButton("Save and Exit");
         saveSimulationButton.setForeground(Color.white);
         saveSimulationButton.setBackground(Color.black);
@@ -88,7 +88,7 @@ public class GUIPanel extends JPanel {
             repaint();
         }});
 
-        // Button
+        // Start Next Generation Button
         startGenerationButton = new JButton("Start Next Generation");
         startGenerationButton.addActionListener(new ActionListener() {
             @Override
@@ -100,7 +100,7 @@ public class GUIPanel extends JPanel {
             repaint();
         }});
 
-        // Label
+        // Information Label
         settingsText = "<html>Generation Size: "+Main.loaded.generationSize+"<br/>Generation Length: "+Main.loaded.generationLength+"<br/>World Size: "+Main.loaded.worldSize+"<br/>Mutation Chance: "+Main.loaded.mutationChance+"<br/>Genome Size: "+Main.loaded.genomeLength;
         settingsLabel = new JLabel();
         updateLabel();

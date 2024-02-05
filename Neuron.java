@@ -3,9 +3,21 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 public abstract class Neuron extends ScreenObject implements Cloneable{
+
+    // Sources are other neurons that can send data to this neuron
     private ArrayList<Neuron> sources = new ArrayList<Neuron>();
+
+    // Sinks are other neurons that can recieve data from this neuron
     private HashMap<Neuron,Integer> sinks = new HashMap<Neuron,Integer>();
+
+    /* the type of neuron this is(Either Sensor, Internal, or Motor)
+     * Sensor neurons can use sensor methods to get data about the enviroment
+     * Internal neurons can act as a data path, and can apply a weight modifier to the data
+     * Motor neurons can call certain action methods of a creature based on the data it recieves 
+     */ 
     private String type;
+
+    // data values stored in the neuron
     private ArrayList<Double> values = new ArrayList<Double>();
 
     public Neuron(String type) {
@@ -22,7 +34,7 @@ public abstract class Neuron extends ScreenObject implements Cloneable{
             break;
         }
     }
-
+    
     public ArrayList<Neuron> getSources(){
         return this.sources;
     }
@@ -38,9 +50,11 @@ public abstract class Neuron extends ScreenObject implements Cloneable{
     public ArrayList<Double> getValues() {
         return values;
     }
+
     public void addValue(Double value) {
         this.values.add(value);
     }
+
     public void clearValues() {
         this.values.clear();
     }
@@ -69,7 +83,7 @@ public abstract class Neuron extends ScreenObject implements Cloneable{
         this.sinks.put(replacement, this.sinks.get(initial));
         this.sinks.remove(initial);
     }
-
+    
     public Coor getPrintPos() {
         Screens.brainWorldToScreen.setWorld(Screens.brainPanel.getWidth(), Screens.brainPanel.getHeight());
         int[] ans = Screens.brainWorldToScreen.translate(this.getPos().matrix());

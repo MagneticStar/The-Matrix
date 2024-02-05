@@ -4,6 +4,7 @@ import java.util.Map;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
+// Panel for displaying Creature brains 
 public class BrainPanel extends JPanel {
     
     private JComboBox<String> searchDropDown;
@@ -34,34 +35,37 @@ public class BrainPanel extends JPanel {
         // Where all graphics are rendered
         drawNeuron(g);
     }
+    // draws neurons to screen
     public void drawNeuron(Graphics g) {
+        // optimization check
         if (Main.loaded.creaturesList.length == 0 || currentlySelectedCreatureIndex == -1 || Main.loaded.creaturesList[currentlySelectedCreatureIndex] == null) {
             return;
         }
-        
+        // create neurons array
         Neuron[] neurons = Main.loaded.creaturesList[currentlySelectedCreatureIndex].getGenome().getNeurons();
+        // set width of screen
         Main.loaded.brainScreenSizeY = neurons.length;
         
         int i = 1;
-        int ic = 0;
-        int sc = 0;
-        int mc = 0;
+        int internalcount = 0;
+        int sensorcount = 0;
+        int motorcount = 0;
         for (Neuron n : neurons) {
             switch(n.getClassType()) {
                 // Internal
                 case "Internal":
-                internalNeuron(g,i,ic,n);
-                ic++;
+                internalNeuron(g,i,internalcount,n);
+                internalcount++;
                 break;
                 // Sensor
                 case "Sensor":
-                sensorNeuron(g,i,sc,n);
-                sc++;
+                sensorNeuron(g,i,sensorcount,n);
+                sensorcount++;
                 break;
                 // Motor
                 case "Motor":
-                motorNeuron(g,i,mc,n);
-                mc++;
+                motorNeuron(g,i,motorcount,n);
+                motorcount++;
                 break;
             }
             i++;
@@ -69,43 +73,44 @@ public class BrainPanel extends JPanel {
         
         // Sinks
         for (Neuron n : neurons) {
-            for (Map.Entry<Neuron, Integer> s : n.getSinks().entrySet()) {
-                switch (s.getKey().getClassType()) {
+            for (Map.Entry<Neuron, Integer> sink : n.getSinks().entrySet()) {
+                switch (sink.getKey().getClassType()) {
                     case "Internal": g.setColor(Color.green);
                     break;
                     case "Motor": g.setColor(Color.blue);
                     break;
                 }
-                g.drawLine(n.getPrintPos().x() + 10, n.getPrintPos().y() + 10, s.getKey().getPrintPos().x() + 10, s.getKey().getPrintPos().y() + 10);
-                // System.out.println(s.getKey());
+                g.drawLine(n.getPrintPos().x() + 10, n.getPrintPos().y() + 10, sink.getKey().getPrintPos().x() + 10, sink.getKey().getPrintPos().y() + 10);
             }
         }
         // Sources
         for (Neuron n : neurons) {
-            for (Neuron s : n.getSources()) {
-                switch (s.getClassType()) {
+            for (Neuron source : n.getSources()) {
+                switch (source.getClassType()) {
                     case "Internal": g.setColor(Color.magenta);
                     break;
                     case "Sensor": g.setColor(Color.red);
                     break;
                 }
-                g.drawLine(n.getPrintPos().x() + 10, n.getPrintPos().y() + 10, s.getPrintPos().x() + 10, s.getPrintPos().y() + 10);
+                g.drawLine(n.getPrintPos().x() + 10, n.getPrintPos().y() + 10, source.getPrintPos().x() + 10, source.getPrintPos().y() + 10);
             }
         }
     }
-
+    // draws internal neurons
     public void internalNeuron(Graphics g, int i, int nc, Neuron n) {
         g.setColor(Color.green);
         n.setPosX(15+((nc+i)%4)*(int)Math.pow(-1,(nc+i)%3));
         n.setPosY(i);
         g.drawOval(n.getPrintPos().x(), n.getPrintPos().y(), 20, 20);
     }
+    // draws sensor neurons
     public void sensorNeuron(Graphics g, int i, int nc, Neuron n) {
         g.setColor(Color.red);
         n.setPosX(8+((nc+i)%3)*(int)Math.pow(-1,(nc+i)%3));
         n.setPosY(i);
         g.drawOval(n.getPrintPos().x(), n.getPrintPos().y(), 20, 20);
     }
+    // draws motor neurons
     public void motorNeuron(Graphics g, int i, int nc, Neuron n) {
         g.setColor(Color.blue);
         n.setPosX(22+((nc+i)%3)*(int)Math.pow(-1,(nc+i)%3));
