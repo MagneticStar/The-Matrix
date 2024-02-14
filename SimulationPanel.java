@@ -18,8 +18,10 @@ public class SimulationPanel extends JPanel{
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         // Where all graphics are rendered
-        highlightSubject(g);
-        drawCreaturesAndFood(g);
+        if(Main.loaded.doVisuals){
+            highlightSubject(g);
+            drawCreaturesAndFood(g);
+        }
     }
 
     public void drawCreaturesAndFood(Graphics g) {

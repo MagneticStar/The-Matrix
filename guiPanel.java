@@ -6,6 +6,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSplitPane;
 
 public class GUIPanel extends JPanel {
 
@@ -65,13 +66,6 @@ public class GUIPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Main.loaded.doVisuals = !Main.loaded.doVisuals;
-
-            if(Main.loaded.doVisuals){
-                Main.loaded.visualPanel = Screens.simulationPanel;
-            }
-            else{
-                Main.loaded.visualPanel = Screens.animationPanel;
-            }
             Screens.simulationSplitPane.setLeftComponent(Main.loaded.visualPanel);
             repaint();
         }});
