@@ -38,16 +38,29 @@ public class GUIPanel extends JPanel {
     }
 
     public void addComponents(){
+
+        // Step Selector Combobox
+        // highlightComboBox = new JComboBox<String>();
+        // highlightComboBox.addActionListener(new ActionListener() {
+        //     @Override
+        //     public void actionPerformed(ActionEvent e) {
+        //     //
+            
+        //     repaint();
+        // }});
+
+
+        // Highlight Combobox
         highlightComboBox = new JComboBox<String>(Screens.creatureNames);
         highlightComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            // Sets the neuron map panel to the neuron map of the selected subject. The string manipulation is to avoid searching for the index of the subject
+            // Sets the neuron map panel to the neuron map of the selected subject.
             currentlySelectedCreatureIndex = highlightComboBox.getSelectedIndex()-1;
             repaint();
         }});
 
-        // Checkbox
+        // Auto Start Generation Checkbox
         startGenerationsCheckBox = new JCheckBox("Automatically Start Generations",Main.loaded.autoStartGeneration);
         startGenerationsCheckBox.setForeground(Color.white);
         startGenerationsCheckBox.setBackground(Color.black);
@@ -58,7 +71,7 @@ public class GUIPanel extends JPanel {
             repaint();
         }});
 
-        // Checkbox
+        // Show Visuals Checkbox
         showVisualsCheckBox = new JCheckBox("Show Visuals",Main.loaded.doVisuals);
         showVisualsCheckBox.setForeground(Color.white);
         showVisualsCheckBox.setBackground(Color.black);
@@ -70,7 +83,7 @@ public class GUIPanel extends JPanel {
             repaint();
         }});
 
-        // Button
+        // Save and Exit Button
         saveSimulationButton = new JButton("Save and Exit");
         saveSimulationButton.setForeground(Color.white);
         saveSimulationButton.setBackground(Color.black);
@@ -81,7 +94,7 @@ public class GUIPanel extends JPanel {
             repaint();
         }});
 
-        // Button
+        // Start Generation Button
         startGenerationButton = new JButton("Start Next Generation");
         startGenerationButton.addActionListener(new ActionListener() {
             @Override
@@ -93,7 +106,7 @@ public class GUIPanel extends JPanel {
             repaint();
         }});
 
-        // Label
+        // Simulation Data Label
         settingsText = "<html>Generation Size: "+Main.loaded.generationSize+"<br/>Generation Length: "+Main.loaded.generationLength+"<br/>World Size: "+Main.loaded.worldSize+"<br/>Mutation Chance: "+Main.loaded.mutationChance+"<br/>Genome Size: "+Main.loaded.genomeLength;
         settingsLabel = new JLabel();
         updateLabel();

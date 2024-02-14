@@ -1,8 +1,8 @@
 import java.awt.Color;
 import java.io.Serializable;
+import java.util.Random;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Random;
 
 import javax.swing.JPanel;
 
@@ -23,10 +23,11 @@ public class Database implements Cloneable, Serializable{
           public int repoductionPerCreature = 1; // the amount of creatures a creature makes when reproducing
           public double mutationChance = 0.05; // The chance of mutation, must be between 0 and 1 (inclusive)
           public double bitMutationAverage = (1.08665/Math.pow(mutationChance,0.531384)-0.0435476);
-          public int genomeLength = 16;
+          public int genomeLength = 32;
 
           // Trackers
           public int currentGenerationTick; // How many ticks have passed this generation
+          public int observedGenerationTick; // Which tick, <= currentGenerationTick, is being shown in the simulation frame
           public int currentGeneration; // How many generations have passed this simulation
           public int currentFoodCount = startingFoodCount;
           public int[][] creatureLocations = new int[worldSize][worldSize];
@@ -38,8 +39,11 @@ public class Database implements Cloneable, Serializable{
 
           public boolean doVisuals = true;
           public boolean startNextGeneration = false;
+          public boolean startNextStep = false;
           public boolean autoStartGeneration = true;
+          public boolean autoStartStep = true;
           public boolean generationFinished = false;
+          public boolean stepFinished = false;
           public boolean saveAndExit = false;
      
           // Brain Screen

@@ -66,6 +66,16 @@ public class Main {
                 // Save Tick Data for viewing
                 loaded.creatureColorsForAllTicks[loaded.currentGenerationTick][creature.getPosX()][creature.getPosY()] = creature.getColor();
             }
+            loaded.stepFinished = true;
+            
+            // Wait till next step should be run
+            while(true){
+                if(loaded.autoStartStep || loaded.startNextStep){
+                    break;
+                }
+                Main.loaded.visualPanel.repaint();
+            }
+            loaded.startNextStep = false;
         }
         // Save Tick Data for viewing
         loaded.foodLocationsForAllTicks[loaded.currentGenerationTick] = loaded.foodLocations;
