@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Map;
 
 public class Genome implements Cloneable{
-    public static int genomeLength;
+    private static int genomeLength;
     private static int geneLength = 32;
     private int oscillatorPeriod;
     private BitSet DNA = new BitSet(geneLength * geneLength);

@@ -70,9 +70,9 @@ public abstract class Neuron extends ScreenObject implements Cloneable{
         this.sinks.remove(initial);
     }
 
-    public Coor getPrintPos() {
+    public static Coor getPrintPos(int x, int y) {
         Screens.brainWorldToScreen.setWorld(Screens.brainPanel.getWidth(), Screens.brainPanel.getHeight());
-        int[] ans = Screens.brainWorldToScreen.translate(this.getPos().matrix());
+        int[] ans = Screens.brainWorldToScreen.translate(new int[]{x,y});
         return new Coor(ans[0], ans[1]);
     }
     @Override
