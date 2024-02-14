@@ -43,10 +43,11 @@ public class Database implements Cloneable, Serializable{
           public boolean startNextGeneration = false;
           public boolean startNextStep = false;
           public boolean autoStartGeneration = true;
-          public boolean autoStartStep = true;
+          public boolean autoStartStep = false;
           public boolean generationFinished = false;
           public boolean stepFinished = false;
           public boolean saveAndExit = false;
+          public boolean selectedTick = false;
      
           // Brain Screen
           public int brainScreenSizeX = 30;
@@ -55,7 +56,7 @@ public class Database implements Cloneable, Serializable{
           // Visuals
           public Color simulationScreenColor = Color.white;
           public JPanel visualPanel = null;
-          public double tickDelay = 0; // The amount of time, in miliseconds, added between ticks || NOT IMPLEMENTED
+          public long tickDelay = 16; // The amount of time, in miliseconds, added between ticks
 
           // Random
           public Random random = new Random();
