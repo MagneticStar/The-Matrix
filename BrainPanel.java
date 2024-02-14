@@ -36,9 +36,9 @@ public class BrainPanel extends JPanel {
     }
     public void drawNeuron(Graphics g) {
         if (Main.loaded.creaturesList.length == 0 || currentlySelectedCreatureIndex == -1 || Main.loaded.creaturesList[currentlySelectedCreatureIndex] == null) {
+            
             return;
         }
-        
         Neuron[] neurons = Main.loaded.creaturesList[currentlySelectedCreatureIndex].getGenome().getNeurons();
         Main.loaded.brainScreenSizeY = neurons.length;
         
@@ -76,7 +76,9 @@ public class BrainPanel extends JPanel {
                     case "Motor": g.setColor(Color.blue);
                     break;
                 }
-                g.drawLine(n.getPrintPos().x() + 10, n.getPrintPos().y() + 10, s.getKey().getPrintPos().x() + 10, s.getKey().getPrintPos().y() + 10);
+                Coor printPosN = Neuron.getPrintPos(n.getPosX(), n.getPosY());
+                Coor printPosS = Neuron.getPrintPos(s.getKey().getPosX(), s.getKey().getPosY());
+                g.drawLine(printPosN.x() + 10, printPosN.y() + 10, printPosS.x() + 10, printPosS.y() + 10);
                 // System.out.println(s.getKey());
             }
         }
@@ -89,7 +91,9 @@ public class BrainPanel extends JPanel {
                     case "Sensor": g.setColor(Color.red);
                     break;
                 }
-                g.drawLine(n.getPrintPos().x() + 10, n.getPrintPos().y() + 10, s.getPrintPos().x() + 10, s.getPrintPos().y() + 10);
+                Coor printPosN = Neuron.getPrintPos(n.getPosX(), n.getPosY());
+                Coor printPosS = Neuron.getPrintPos(s.getPosX(), s.getPosY());
+                g.drawLine(printPosN.x() + 10, printPosN.y() + 10, printPosS.x() + 10, printPosS.y() + 10);
             }
         }
     }
@@ -98,18 +102,23 @@ public class BrainPanel extends JPanel {
         g.setColor(Color.green);
         n.setPosX(15+((nc+i)%4)*(int)Math.pow(-1,(nc+i)%3));
         n.setPosY(i);
-        g.drawOval(n.getPrintPos().x(), n.getPrintPos().y(), 20, 20);
+        Coor printPos = Neuron.getPrintPos(n.getPosX(), n.getPosY());
+        g.drawOval(printPos.x(), printPos.y(), 20, 20);
     }
+
     public void sensorNeuron(Graphics g, int i, int nc, Neuron n) {
         g.setColor(Color.red);
         n.setPosX(8+((nc+i)%3)*(int)Math.pow(-1,(nc+i)%3));
         n.setPosY(i);
-        g.drawOval(n.getPrintPos().x(), n.getPrintPos().y(), 20, 20);
+        Coor printPos = Neuron.getPrintPos(n.getPosX(), n.getPosY());
+        g.drawOval(printPos.x(), printPos.y(), 20, 20);
     }
+
     public void motorNeuron(Graphics g, int i, int nc, Neuron n) {
         g.setColor(Color.blue);
         n.setPosX(22+((nc+i)%3)*(int)Math.pow(-1,(nc+i)%3));
         n.setPosY(i);
-        g.drawOval(n.getPrintPos().x(), n.getPrintPos().y(), 20, 20);
+        Coor printPos = Neuron.getPrintPos(n.getPosX(), n.getPosY());
+        g.drawOval(printPos.x(), printPos.y(), 20, 20);
     }
 }

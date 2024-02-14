@@ -115,7 +115,7 @@ public class Main {
                 if(loaded.autoStartGeneration || loaded.startNextGeneration){
                     break;
                 }
-                Screens.simulationPanel.repaint();
+                Main.loaded.visualPanel.repaint();
             }
             loaded.startNextGeneration = false;
 
