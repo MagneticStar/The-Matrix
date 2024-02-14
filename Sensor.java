@@ -3,7 +3,6 @@ public class Sensor extends Neuron{
     public SensorMethod sensorMethod; 
     public static int numberOfSensorMethods = 8; // Update this when creating new Sensor methods
     public int methodID;
-    private static int searchDepth = 10;
 
     public Sensor(int methodID) {
         super("Sensor");
@@ -85,7 +84,7 @@ public class Sensor extends Neuron{
         if(objectLocations[centerX][centerY] > 0){ // Check Center
             return new int[]{centerX,centerY};
         }
-        for(int i=0; i<searchDepth; i++){
+        for(int i=0; i<Main.loaded.searchDepth; i++){
             if(objectLocations[centerX][(centerY+i)%Main.loaded.worldSize] > 0){ // Check Above
                 return new int[]{centerX,(centerY+i)%Main.loaded.worldSize};
             }

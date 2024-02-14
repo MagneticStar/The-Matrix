@@ -20,6 +20,8 @@ public class Database implements Cloneable, Serializable{
 
           public int worldSize = 128; // The size of the square world
 
+          public int searchDepth = 10; // The amount of world spaces that the sensor searchs for food or creatures as a radius
+
           public int repoductionPerCreature = 1; // the amount of creatures a creature makes when reproducing
           public double mutationChance = 0.05; // The chance of mutation, must be between 0 and 1 (inclusive)
           public double bitMutationAverage = (1.08665/Math.pow(mutationChance,0.531384)-0.0435476);
@@ -53,6 +55,7 @@ public class Database implements Cloneable, Serializable{
           // Visuals
           public Color simulationScreenColor = Color.white;
           public JPanel visualPanel = null;
+          public double tickDelay = 0; // The amount of time, in miliseconds, added between ticks || NOT IMPLEMENTED
 
           // Random
           public Random random = new Random();
@@ -60,10 +63,6 @@ public class Database implements Cloneable, Serializable{
           // Serial
           public String fileName = "x.tmp";
           public boolean LOADFILE = true;
-
-     public Database() {
-          
-     }
      
      @Override
      public Object clone() throws CloneNotSupportedException {

@@ -10,11 +10,14 @@ import javax.swing.JSplitPane;
 
 public class GUIPanel extends JPanel {
 
+    private JLabel highlightLabel;
     private JComboBox<String> highlightComboBox;
     private JCheckBox startGenerationsCheckBox;
+    private JCheckBox startStepsCheckBox;
     private JCheckBox showVisualsCheckBox;
     private JButton saveSimulationButton;
     private JButton startGenerationButton;
+    private JButton startStepButton;
     private JLabel settingsLabel;
     private String settingsText;
     private String trackersText;
@@ -70,6 +73,16 @@ public class GUIPanel extends JPanel {
                 Main.loaded.autoStartGeneration = !Main.loaded.autoStartGeneration;
             repaint();
         }});
+        // Auto Start Step Checkbox
+        startStepsCheckBox = new JCheckBox("Automatically Start Steps",Main.loaded.autoStartStep);
+        startStepsCheckBox.setForeground(Color.white);
+        startStepsCheckBox.setBackground(Color.black);
+        startStepsCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Main.loaded.autoStartStep = !Main.loaded.autoStartStep;
+            repaint();
+        }});
 
         // Show Visuals Checkbox
         showVisualsCheckBox = new JCheckBox("Show Visuals",Main.loaded.doVisuals);
@@ -105,34 +118,59 @@ public class GUIPanel extends JPanel {
             }
             repaint();
         }});
+        // Start Generation Button
+        startStepButton = new JButton("Start Next Step");
+        startStepButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            if(Main.loaded.stepFinished == true){
+                Main.loaded.stepFinished = false;
+                Main.loaded.startNextStep = true;
+            }
+            repaint();
+        }});
 
         // Simulation Data Label
         settingsText = "<html>Generation Size: "+Main.loaded.generationSize+"<br/>Generation Length: "+Main.loaded.generationLength+"<br/>World Size: "+Main.loaded.worldSize+"<br/>Mutation Chance: "+Main.loaded.mutationChance+"<br/>Genome Size: "+Main.loaded.genomeLength;
         settingsLabel = new JLabel();
         updateLabel();
         settingsLabel.setForeground(Color.WHITE);
+
+        // Highlight Label
+        highlightLabel = new JLabel();
+        highlightLabel.setText("Highlight Creature");
+        highlightLabel.setForeground(Color.WHITE);
         
         // Add the components (order matters)
         GridBagConstraints c = new GridBagConstraints();
         c.anchor = GridBagConstraints.CENTER;
         c.gridx = 0;
-        c.gridy = 0;
+        c.gridy = 1;
         this.add(highlightComboBox,c);
         c.gridx = 0;
-        c.gridy = 1;
-        this.add(startGenerationButton,c);
-        c.gridx = 1;
         c.gridy = 0;
-        this.add(showVisualsCheckBox,c);    
-        c.gridx = 1;
-        c.gridy = 1;
-        this.add(startGenerationsCheckBox,c);
+        this.add(highlightLabel,c);
         c.gridx = 0;
         c.gridy = 2;
+        this.add(startGenerationButton,c);
+        c.gridx = 0;
+        c.gridy = 3;
+        this.add(startStepButton,c);
+        c.gridx = 1;
+        c.gridy = 1;
+        this.add(showVisualsCheckBox,c);    
+        c.gridx = 1;
+        c.gridy = 2;
+        this.add(startGenerationsCheckBox,c);
+        c.gridx = 1;
+        c.gridy = 3;
+        this.add(startStepsCheckBox,c);
+        c.gridx = 0;
+        c.gridy = 4;
         c.gridwidth = 2;
         this.add(settingsLabel,c);
         c.gridx = 0;
-        c.gridy = 3;
+        c.gridy = 5;
         this.add(saveSimulationButton,c);
         
         this.revalidate();
