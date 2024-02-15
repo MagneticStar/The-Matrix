@@ -103,7 +103,8 @@ public class GUIPanel extends JPanel {
         saveSimulationButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Main.loaded.saveAndExit = !Main.loaded.saveAndExit;
+                // Main.loaded.saveAndExit = !Main.loaded.saveAndExit;
+                System.exit(1);
             repaint();
         }});
 
