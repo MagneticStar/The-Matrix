@@ -97,7 +97,7 @@ public class GUIPanel extends JPanel {
         }});
 
         // Save and Exit Button
-        saveSimulationButton = new JButton("Save and Exit");
+        saveSimulationButton = new JButton("Exit");
         saveSimulationButton.setForeground(Color.white);
         saveSimulationButton.setBackground(Color.black);
         saveSimulationButton.addActionListener(new ActionListener() {
