@@ -4,7 +4,6 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import javax.swing.JPanel;
 import javax.swing.SwingWorker;
 import java.util.concurrent.TimeUnit;
 import java.util.BitSet;
@@ -42,6 +41,7 @@ public class Main {
         Screens.createScreens();
     }
 
+    @SuppressWarnings("rawtypes")
     public static void startThread() {
         SwingWorker swingWorker = new SwingWorker() {
             @Override

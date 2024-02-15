@@ -158,7 +158,7 @@ public class MenuPanel extends JPanel{
 
         autoStartStepCheckbox = new JCheckBox();
         autoStartStepCheckbox.setText("Auto Start Step");
-        autoStartGenerationCheckbox.setSelected(Main.loaded.autoStartGeneration);
+        autoStartStepCheckbox.setSelected(Main.loaded.autoStartStep);
         autoStartStepCheckbox.setBackground(Color.BLACK);
         autoStartStepCheckbox.setForeground(Color.WHITE);
 

@@ -43,7 +43,7 @@ public class Database implements Cloneable, Serializable{
           public boolean startNextGeneration = false;
           public boolean startNextStep = false;
           public boolean autoStartGeneration = true;
-          public boolean autoStartStep = false;
+          public boolean autoStartStep = true;
           public boolean generationFinished = false;
           public boolean stepFinished = false;
           public boolean saveAndExit = false;
