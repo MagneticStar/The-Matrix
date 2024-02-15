@@ -92,6 +92,13 @@ public class GUIPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Main.loaded.doVisuals = !Main.loaded.doVisuals;
+
+            if(Main.loaded.doVisuals){
+                Main.loaded.visualPanel = Screens.simulationPanel;
+            }
+            else{
+                Main.loaded.visualPanel = Screens.animationPanel;
+            }
             Screens.simulationSplitPane.setLeftComponent(Main.loaded.visualPanel);
             repaint();
         }});

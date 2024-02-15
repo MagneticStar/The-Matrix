@@ -18,17 +18,15 @@ public class SimulationPanel extends JPanel{
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         // Where all graphics are rendered
-        if(Main.loaded.doVisuals){
-            highlightSubject(g);
-            drawCreaturesAndFood(g);
-        }
+        highlightSubject(g);
+        drawCreaturesAndFood(g);
     }
 
     public void drawCreaturesAndFood(Graphics g) {
-        int[][] foodLocations = Main.loaded.foodLocationsForAllTicks[Math.min(Main.loaded.observedGenerationTick,Main.loaded.generationLength-1)];
-        Color[][] creatureLocations = Main.loaded.creatureColorsForAllTicks[Math.min(Main.loaded.observedGenerationTick,Main.loaded.generationLength-1)];
-        for(int x=0; x<Main.loaded.worldSize; x++){
-            for(int y=0; y<Main.loaded.worldSize; y++){
+        int[][] foodLocations = Main.loaded.foodLocationsForAllTicks[Main.loaded.currentGenerationTick];
+        Color[][] creatureLocations = Main.loaded.creatureColorsForAllTicks[Main.loaded.currentGenerationTick];
+        for(int x=0; x<foodLocations.length; x++){
+            for(int y=0; y<foodLocations[x].length; y++){
                 if(foodLocations[x][y] >= 1){
                     Coor printPostion = ScreenObject.getPrintPos(x,y);
                     g.setColor(FOOD_COLOR);

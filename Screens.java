@@ -6,6 +6,7 @@ public class Screens {
     public static DataFrame dataFrame = new DataFrame();
     public static BrainPanel brainPanel;
     public static GUIPanel guiPanel;
+    public static animationPanel animationPanel;
     public static SimulationPanel simulationPanel;
     public static MenuPanel menuPanel;    
     public static JSplitPane simulationSplitPane;
@@ -26,6 +27,7 @@ public class Screens {
         }
         brainPanel = new BrainPanel();
         guiPanel = new GUIPanel();
+        animationPanel = new animationPanel();
         simulationPanel = new SimulationPanel();
         menuPanel = new MenuPanel();
 
@@ -59,7 +61,7 @@ public class Screens {
             simulationFrame.add(simulationSplitPane);
         }
         else{
-            simulationFrame.remove(simulationSplitPane);
+            simulationFrame.remove(simulationPanel);
             simulationFrame.add(menuPanel);
         }
         simulationFrame.setVisible(true);

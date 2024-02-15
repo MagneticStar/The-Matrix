@@ -52,7 +52,7 @@ public class Database implements Cloneable, Serializable{
      
           // Brain Screen
           public int brainScreenSizeX = 30;
-          public int brainScreenSizeY = genomeLength*2;
+          public int brainScreenSizeY = Genome.genomeLength*2;
 
           // Visuals
           public Color simulationScreenColor = Color.white;
