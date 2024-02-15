@@ -11,8 +11,8 @@ public class Database implements Cloneable, Serializable{
      
      // Parameters
           // Simulation 
-          public int generationSize = 100; // How many creatures should there be at the start of a new generation
-          public int startingFoodCount = 20; // how many foods should be initially created
+          public int generationSize = 1; // How many creatures should there be at the start of a new generation
+          public int startingFoodCount = 1000; // how many foods should be initially created
           public int minimumFoodEaten = 1; // The minimum number of food a creature must eat to reproduce at the end of a generation
           
           public int generationLength = 100; // How many ticks each generation is
@@ -33,9 +33,9 @@ public class Database implements Cloneable, Serializable{
           public int currentGeneration; // How many generations have passed this simulation
           public int currentFoodCount = startingFoodCount;
           public int[][] creatureLocations = new int[worldSize][worldSize];
-          public int[][] foodLocations = new int[worldSize][worldSize]; // x,y
-          public Color[][][] creatureColorsForAllTicks;
-          public int[][][] foodLocationsForAllTicks;
+          public boolean[][] foodLocations = new boolean[worldSize][worldSize]; // x,y
+          public Color[][][] creatureColorsForAllTicks = new Color[generationLength][worldSize][worldSize];
+          public boolean[][][] foodLocationsForAllTicks = new boolean[generationLength][worldSize][worldSize];
           public Creature[] creaturesList = new Creature[generationSize];
           public ArrayList<Integer> reproducedLastGeneration = new ArrayList<Integer>(Arrays.asList(0));
 

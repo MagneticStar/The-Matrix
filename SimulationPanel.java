@@ -23,19 +23,19 @@ public class SimulationPanel extends JPanel{
     }
 
     public void drawCreaturesAndFood(Graphics g) {
-        int[][] foodLocations = Main.loaded.foodLocationsForAllTicks[Main.loaded.currentGenerationTick];
+        boolean[][] foodLocations = Main.loaded.foodLocationsForAllTicks[Main.loaded.currentGenerationTick];
         Color[][] creatureLocations = Main.loaded.creatureColorsForAllTicks[Main.loaded.currentGenerationTick];
         for(int x=0; x<foodLocations.length; x++){
             for(int y=0; y<foodLocations[x].length; y++){
-                if(foodLocations[x][y] >= 1){
+                if(foodLocations[x][y]){
                     Coor printPostion = ScreenObject.getPrintPos(x,y);
                     g.setColor(FOOD_COLOR);
                     g.fillRect(printPostion.x() - FOOD_SPRITE_WIDTH/2, printPostion.y() - FOOD_SPRITE_HEIGHT/2, FOOD_SPRITE_WIDTH, FOOD_SPRITE_HEIGHT);
                 }
                 if(creatureLocations[x][y] != null){
-                    Coor printPosition = ScreenObject.getPrintPos(x,y);
+                    Coor printPostion = ScreenObject.getPrintPos(x,y);
                     g.setColor(creatureLocations[x][y]);
-                    g.fillRect(printPosition.x() - CREATURE_SPRITE_WIDTH/2, printPosition.y() - CREATURE_SPRITE_HEIGHT/2, CREATURE_SPRITE_WIDTH, CREATURE_SPRITE_HEIGHT);
+                    g.fillRect(printPostion.x() - CREATURE_SPRITE_WIDTH/2, printPostion.y() - CREATURE_SPRITE_HEIGHT/2, CREATURE_SPRITE_WIDTH, CREATURE_SPRITE_HEIGHT);
                 }   
             }
         }
@@ -51,7 +51,6 @@ public class SimulationPanel extends JPanel{
         
         Creature creature = Main.loaded.creaturesList[creatureIndex];
         g.setColor(Color.red);
-        Coor printPosition = ScreenObject.getPrintPos(creature.getPosX(), creature.getPosY());
-        g.fillOval(printPosition.x()-HIGHLIGHT_CIRCLE_DIAMETER/2, printPosition.y()-HIGHLIGHT_CIRCLE_DIAMETER/2, HIGHLIGHT_CIRCLE_DIAMETER, HIGHLIGHT_CIRCLE_DIAMETER);
+        g.fillOval(creature.getPrintPos().x()-HIGHLIGHT_CIRCLE_DIAMETER/2, creature.getPrintPos().y()-HIGHLIGHT_CIRCLE_DIAMETER/2, HIGHLIGHT_CIRCLE_DIAMETER, HIGHLIGHT_CIRCLE_DIAMETER);
     }
 }
