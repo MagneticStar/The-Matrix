@@ -19,23 +19,26 @@ public class SimulationPanel extends JPanel{
         super.paintComponent(g);
         // Where all graphics are rendered
         highlightSubject(g);
-        drawCreaturesAndFood(g);
+        drawCreature(g);
+        drawFood(g);
     }
 
-    public void drawCreaturesAndFood(Graphics g) {
-        boolean[][] foodLocations = Main.loaded.foodLocationsForAllTicks[Main.loaded.currentGenerationTick];
-        Color[][] creatureLocations = Main.loaded.creatureColorsForAllTicks[Main.loaded.currentGenerationTick];
-        for(int x=0; x<foodLocations.length; x++){
-            for(int y=0; y<foodLocations[x].length; y++){
-                if(foodLocations[x][y]){
-                    Coor printPostion = ScreenObject.getPrintPos(x,y);
+    public void drawCreature(Graphics g) {
+        for(int i = 0; i < Main.loaded.creaturesList.length; i++) {
+            if (Main.loaded.creaturesList[i] != null) {
+                g.setColor(Main.loaded.creaturesList[i].getColor());
+                g.fillRect(Main.loaded.creaturesList[i].getPrintPos().x() - CREATURE_SPRITE_WIDTH/2, Main.loaded.creaturesList[i].getPrintPos().y() - CREATURE_SPRITE_HEIGHT/2, CREATURE_SPRITE_WIDTH, CREATURE_SPRITE_HEIGHT);
+            }
+        }
+    }
+
+    public void drawFood(Graphics g) {
+        for(int x=0; x<Main.loaded.worldSize; x++){
+            for(int y=0; y<Main.loaded.worldSize; y++){
+                if(Main.loaded.foodLocations[x][y] > 0){
+                    Coor printPostion = Food.getPrintPos(x, y);
                     g.setColor(FOOD_COLOR);
                     g.fillRect(printPostion.x() - FOOD_SPRITE_WIDTH/2, printPostion.y() - FOOD_SPRITE_HEIGHT/2, FOOD_SPRITE_WIDTH, FOOD_SPRITE_HEIGHT);
-                }
-                if(creatureLocations[x][y] != null){
-                    Coor printPostion = ScreenObject.getPrintPos(x,y);
-                    g.setColor(creatureLocations[x][y]);
-                    g.fillRect(printPostion.x() - CREATURE_SPRITE_WIDTH/2, printPostion.y() - CREATURE_SPRITE_HEIGHT/2, CREATURE_SPRITE_WIDTH, CREATURE_SPRITE_HEIGHT);
                 }   
             }
         }

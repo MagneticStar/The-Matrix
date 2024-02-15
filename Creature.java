@@ -32,13 +32,11 @@ public class Creature extends ScreenObject implements Cloneable{
     public Genome getGenome() {
         return this.genome;
     }
-    @Deprecated
     public Coor getPrintPos() {
         Screens.SimulationWorldToScreen.setWorld(Screens.simulationPanel.getWidth(), Screens.simulationPanel.getHeight());
         int[] ans = Screens.SimulationWorldToScreen.translate(this.getPos().matrix());
         return new Coor(ans[0], ans[1]);
     }
-    
     public int getFoodCount(){
         return foodEaten;
     }
