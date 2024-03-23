@@ -33,116 +33,38 @@ public class Sensor extends Neuron{
     // SENSOR METHODS // SENSOR METHODS // SENSOR METHODS //
     ////////////////////////////////////////////////////////
 
-<<<<<<< Updated upstream
-    public static double nearestFoodDistance(Creature creature) {
-        int indexOfFoundObject = findNearestObject(creature.getPos(), Database.foodCoordinates);
-
-        if(indexOfFoundObject != -1){
-            double distance = distance(Database.foodCoordinates.get(indexOfFoundObject), creature);
-            if (distance != -1.0) {
-                // System.out.println("Distance: "+d+" Adjusted: "+(1-(d/Database.worldSize)));
-                return 1-(distance/Database.worldSize);
-            }
-        }
-
-        // No object found
-        return -1;
-    }
-
-    private static double nearestWaterDistance(Creature creature){
-        int indexOfFoundObject = findNearestObject(creature.getPos(), Database.waterCoordinates);
-
-        if(indexOfFoundObject != -1){
-            double distance = distance(Database.waterCoordinates.get(indexOfFoundObject), creature);
-            if (distance != -1.0) {
-                // System.out.println("Distance: "+d+" Adjusted: "+(1-(d/Database.worldSize)));
-                return 1-(distance/Database.worldSize);
-            }
-        }
-
-        // No object found
-        return -1;
-    }
-
-    private static double nearestCreatureDistance(Creature creature) {
-        int indexOfFoundObject = findNearestObject(creature.getPos(), Database.creatureCoordinates);
-
-        if(indexOfFoundObject != -1){
-            double distance = distance(Database.creatureCoordinates.get(indexOfFoundObject), creature);
-            if (distance != -1.0) {
-                // System.out.println("Distance: "+d+" Adjusted: "+(1-(d/Database.worldSize)));
-                return 1-(distance/Database.worldSize);
-            }
-        }
-
-        // No object found
-        return -1;
-    }
-
-    private static double detectFoodXDirection (Creature creature) {
-        int indexOfFoundObject = findNearestObject(creature.getPos(), Database.foodCoordinates);
-
-        if(indexOfFoundObject != -1){
-            return directionX(Database.foodCoordinates.get(indexOfFoundObject), creature);
-        }
-
-        // No object found
-        return 0;
-    }
-
-    private static double detectFoodYDirection (Creature creature) {
-        int indexOfFoundObject = findNearestObject(creature.getPos(), Database.foodCoordinates);
-
-        if(indexOfFoundObject != -1){
-            return directionY(Database.foodCoordinates.get(indexOfFoundObject), creature);
-        }
-
-        // No object found
-        return 0;
-    }
-    private static double detectWaterXDirection (Creature creature) {
-        int indexOfFoundObject = findNearestObject(creature.getPos(), Database.waterCoordinates);
-
-        if(indexOfFoundObject != -1){
-            return directionX(Database.waterCoordinates.get(indexOfFoundObject), creature);
-        }
-
-        // No object found
-        return 0;
-=======
     public static double nearestFoodDistance(Creature creature) throws Exception{
-        int[] coorOfFoundObject = findNearestObject(creature.getPosX(), creature.getPosY(), Main.loaded.worldObjects.getFoodLocationsArrayCopy());
+        int[] coorOfFoundObject = findNearestObject(creature.getPosX(), creature.getPosY(), Simulation.simulation.worldObjects.getFoodLocationsArrayCopy());
         double distance = distance(coorOfFoundObject, creature);
         // returns a value between 1 and 0
-        return 1-(distance/Main.loaded.worldSize);
+        return 1-(distance/Simulation.simulation.worldSize);
     }
 
     private static double detectFoodXDirection (Creature creature) throws Exception{
-        int[] coorOfFoundObject = findNearestObject(creature.getPosX(), creature.getPosY(), Main.loaded.worldObjects.getFoodLocationsArrayCopy());
+        int[] coorOfFoundObject = findNearestObject(creature.getPosX(), creature.getPosY(), Simulation.simulation.worldObjects.getFoodLocationsArrayCopy());
         return directionX(coorOfFoundObject[0], creature);
     }
 
     private static double detectFoodYDirection (Creature creature) throws Exception{
-        int[] coorOfFoundObject = findNearestObject(creature.getPosX(), creature.getPosY(), Main.loaded.worldObjects.getFoodLocationsArrayCopy());
+        int[] coorOfFoundObject = findNearestObject(creature.getPosX(), creature.getPosY(), Simulation.simulation.worldObjects.getFoodLocationsArrayCopy());
         return directionY(coorOfFoundObject[1], creature);
     }
 
     private static double nearestCreatureDistance(Creature creature) throws Exception{
-        int[] coorOfFoundObject = findNearestObject(creature.getPosX(), creature.getPosY(), Main.loaded.worldObjects.getCreatureLocationsArrayCopy());
+        int[] coorOfFoundObject = findNearestObject(creature.getPosX(), creature.getPosY(), Simulation.simulation.worldObjects.getCreatureLocationsArrayCopy());
         double distance = distance(coorOfFoundObject, creature);
               // returns a value between 1 and 0
-        return 1-(distance/Main.loaded.worldSize);
+        return 1-(distance/Simulation.simulation.worldSize);
     }
 
     private static double detectCreatureXDirection (Creature creature) throws Exception{
-        int[] coorOfFoundObject = findNearestObject(creature.getPosX(), creature.getPosY(), Main.loaded.worldObjects.getCreatureLocationsArrayCopy());
+        int[] coorOfFoundObject = findNearestObject(creature.getPosX(), creature.getPosY(), Simulation.simulation.worldObjects.getCreatureLocationsArrayCopy());
         return directionX(coorOfFoundObject[0], creature);
     }
 
     private static double detectCreatureYDirection (Creature creature) throws Exception{
-        int[] indexOfFoundObject = findNearestObject(creature.getPosX(), creature.getPosY(), Main.loaded.worldObjects.getCreatureLocationsArrayCopy());
+        int[] indexOfFoundObject = findNearestObject(creature.getPosX(), creature.getPosY(), Simulation.simulation.worldObjects.getCreatureLocationsArrayCopy());
         return directionY(indexOfFoundObject[1], creature);
->>>>>>> Stashed changes
     }
     
     private static double detectWaterYDirection (Creature creature) {
@@ -169,76 +91,73 @@ public class Sensor extends Neuron{
         return Database.random.nextDouble(-1,1);
     }
 
-    ////////////////////////////////////////////////////////
+     ////////////////////////////////////////////////////////
     // SENSOR METHOD ASSISTORS // SENSOR METHOD ASSISTORS // 
     ////////////////////////////////////////////////////////
 
-    public static int findNearestObject(Coor center, ArrayList<Coor> coordinatesToCheck){
+    public static int[] findNearestObject(int centerX, int centerY, int[][] objectLocations) throws Exception{
+        // Search logic
+        if(objectLocations[centerX][centerY] > 0){ // Check Center
+            return new int[]{centerX,centerY};
+        }
         for(int i=0; i<searchDepth; i++){
-            Coor check = new Coor();
-
-            // Search logic
-            check.setX(center.x());check.setY(center.y()+i); // Above
-            if(coordinatesToCheck.contains(check)){
-                return coordinatesToCheck.indexOf(check);
+            if(objectLocations[centerX][(centerY+i)%Simulation.simulation.worldSize] > 0){ // Check Above
+                return new int[]{centerX,(centerY+i)%Simulation.simulation.worldSize};
             }
-            check.setX(center.x()+i);check.setY(center.y()); // Right
-            if(coordinatesToCheck.contains(check)){
-                return coordinatesToCheck.indexOf(check);
+            
+            if(objectLocations[((centerX+i)%Simulation.simulation.worldSize)%Simulation.simulation.worldSize][centerY] > 0){ // Check Right
+                return new int[]{(centerX+i)%Simulation.simulation.worldSize,centerY};
             }
-            check.setX(center.x()-i);check.setY(center.y()); // Left
-            if(coordinatesToCheck.contains(check)){
-                return coordinatesToCheck.indexOf(check);
-            }  
-            check.setX(center.x());check.setY(center.y()-i); // Below
+            
+            if(objectLocations[((centerX-i)+Simulation.simulation.worldSize)%Simulation.simulation.worldSize][centerY] > 0){ // Check Left
+                return new int[]{((centerX-i)+Simulation.simulation.worldSize)%Simulation.simulation.worldSize,centerY};
+            }
+             
+            if(objectLocations[centerX][((centerY-i)+Simulation.simulation.worldSize)%Simulation.simulation.worldSize] > 0){ // Check Below
+                return new int[]{centerX,((centerY-i)+Simulation.simulation.worldSize)%Simulation.simulation.worldSize};
+            }
             
             for(int j=1; j<i+1;j++){
-                check.setX(center.x()+j);check.setY(center.y()+i); // Above right
-                if(coordinatesToCheck.contains(check)){
-                    return coordinatesToCheck.indexOf(check);
-                }  
-                check.setX(center.x()-j);check.setY(center.y()+i); // Above Left
-                if(coordinatesToCheck.contains(check)){
-                    return coordinatesToCheck.indexOf(check);
-                }  
-                check.setX(center.x()+j);check.setY(center.y()-i); // Below Right
-                if(coordinatesToCheck.contains(check)){
-                    return coordinatesToCheck.indexOf(check);
-                }  
-                check.setX(center.x()-j);check.setY(center.y()-i); // Below Left
-                if(coordinatesToCheck.contains(check)){
-                    return coordinatesToCheck.indexOf(check);
+                if(objectLocations[(centerX+j)%Simulation.simulation.worldSize][(centerY+i)%Simulation.simulation.worldSize] > 0){ // Check Above Right
+                    return new int[]{(centerX+j)%Simulation.simulation.worldSize,(centerY+i)%Simulation.simulation.worldSize};
                 }
+                if(objectLocations[((centerX-j)+Simulation.simulation.worldSize)%Simulation.simulation.worldSize][(centerY+i)%Simulation.simulation.worldSize] > 0){ // Check Above Left
+                    return new int[]{((centerX-j)+Simulation.simulation.worldSize)%Simulation.simulation.worldSize,(centerY+i)%Simulation.simulation.worldSize};
+                }  
+                if(objectLocations[(centerX+j)%Simulation.simulation.worldSize][((centerY-i)+Simulation.simulation.worldSize)%Simulation.simulation.worldSize] > 0){ // Check Below Right
+                    return new int[]{(centerX+j)%Simulation.simulation.worldSize,((centerY-i)+Simulation.simulation.worldSize)%Simulation.simulation.worldSize};
+                } 
+                if(objectLocations[((centerX-j)+Simulation.simulation.worldSize)%Simulation.simulation.worldSize][((centerY-i)+Simulation.simulation.worldSize)%Simulation.simulation.worldSize] > 0){ // Check Below Left
+                    return new int[]{((centerX-j)+Simulation.simulation.worldSize)%Simulation.simulation.worldSize,((centerY-i)+Simulation.simulation.worldSize)%Simulation.simulation.worldSize};
+                }
+
                 if(j < i){
-                    check.setX(center.x()+i);check.setY(center.y()+j); // Right Above
-                    if(coordinatesToCheck.contains(check)){
-                        return coordinatesToCheck.indexOf(check);
-                    }  
-                    check.setX(center.x()+i);check.setY(center.y()-j); // Right Below
-                    if(coordinatesToCheck.contains(check)){
-                        return coordinatesToCheck.indexOf(check);
-                    }  
-                    check.setX(center.x()-i);check.setY(center.y()+j); // Left Above
-                    if(coordinatesToCheck.contains(check)){
-                        return coordinatesToCheck.indexOf(check);
+                    if(objectLocations[(centerX+i)%Simulation.simulation.worldSize][(centerY+j)%Simulation.simulation.worldSize] > 0){ // Check Right Above
+                        return new int[]{(centerX+i)%Simulation.simulation.worldSize,(centerY+j)%Simulation.simulation.worldSize};
                     } 
-                    check.setX(center.x()-i);check.setY(center.y()-j); // Left Below
-                    if(coordinatesToCheck.contains(check)){
-                        return coordinatesToCheck.indexOf(check);
+                    if(objectLocations[(centerX+i)%Simulation.simulation.worldSize][((centerY-j)+Simulation.simulation.worldSize)%Simulation.simulation.worldSize] > 0){ // Check Right Below
+                        return new int[]{(centerX+i)%Simulation.simulation.worldSize,((centerY-j)+Simulation.simulation.worldSize)%Simulation.simulation.worldSize};
+                    } 
+                    if(objectLocations[((centerX-i)+Simulation.simulation.worldSize)%Simulation.simulation.worldSize][(centerY+j)%Simulation.simulation.worldSize] > 0){ // Check Left Above
+                        return new int[]{((centerX-i)+Simulation.simulation.worldSize)%Simulation.simulation.worldSize,(centerY+j)%Simulation.simulation.worldSize};
+                    }
+                    if(objectLocations[((centerX-i)+Simulation.simulation.worldSize)%Simulation.simulation.worldSize][((centerY-j)+Simulation.simulation.worldSize)%Simulation.simulation.worldSize] > 0){ // Check Left Below
+                        return new int[]{((centerX-i)+Simulation.simulation.worldSize)%Simulation.simulation.worldSize,((centerY-j)+Simulation.simulation.worldSize)%Simulation.simulation.worldSize};
                     }
                 }
             }
         }
-        return -1;
+        Exception noObjectFound = new Exception("No Object was Found");
+        throw noObjectFound;
     }
 
-    public static double directionX(Coor coor, Creature creature) {
+    public static double directionX(int posX, Creature creature) throws NullPointerException{
         // left
-        if (coor.x() < creature.getPosX()) {
+        if (posX < creature.getPosX()) {
             return -1.0;
         }
         // right
-        else if (coor.y() > creature.getPosX()) {
+        else if (posX > creature.getPosX()) {
             return 1.0;
         }
         // same
@@ -246,13 +165,13 @@ public class Sensor extends Neuron{
             return 0.0;
         }
     }
-    public static double directionY(Coor coor, Creature creature) {
+    public static double directionY(int posY, Creature creature) throws NullPointerException {
         // down
-        if (coor.y() < creature.getPosY()) {
+        if (posY < creature.getPosY()) {
             return -1.0;
         }
         // up
-        else if (coor.x() > creature.getPosY()) {
+        else if (posY > creature.getPosY()) {
             return 1.0;
         }
         // same
@@ -260,22 +179,15 @@ public class Sensor extends Neuron{
             return 0.0;
         }
     }
+    // distance needs to be fixed for modulus
     
-<<<<<<< Updated upstream
-    public static double distance(Coor coor, Creature creature) {
-=======
     public static double distance(int[] coor, Creature creature) throws NullPointerException {
         int x = creature.getPosX();
         int y = creature.getPosY();
         // find shortest distance along each axis
-        int xDifference = Math.min(Math.abs(coor[0] - x), Math.abs(coor[0] - (x - Main.loaded.worldSize)));
-        int yDifference = Math.min(Math.abs(coor[1] - y), Math.abs(coor[1] - (y - Main.loaded.worldSize)));
->>>>>>> Stashed changes
+            int xDifference = Math.min(Math.abs(coor[0] - x), Math.abs(coor[0] - (x - Simulation.simulation.worldSize)));
+            int yDifference = Math.min(Math.abs(coor[1] - y), Math.abs(coor[1] - (y - Simulation.simulation.worldSize)));
         // using Pyth theorem
-        try {
-            return Math.sqrt(Math.pow(coor.x() - creature.getPos().x(), 2) + Math.pow(coor.y() - creature.getPos().y(), 2));
-        } catch (NullPointerException e) {
-            return -1.0;
-        }    
-    } 
+        return Math.sqrt(Math.pow(xDifference, 2) + Math.pow(yDifference, 2));
+    }
 }
