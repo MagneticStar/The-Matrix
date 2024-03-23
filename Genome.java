@@ -78,6 +78,7 @@ public class Genome{
         int[] lowestNeuronCoordinate = {genomeLength,genomeLength,genomeLength};
         int[] highestNeuronCoordinate = {genomeLength,genomeLength,genomeLength};
         
+<<<<<<< Updated upstream
         for(int i=0; i<Database.generationSize; i++){
             int[] neuronListLengths = {Database.creaturesList.get(i).getGenome().getSensors().size(),Database.creaturesList.get(i).getGenome().getInternals().size(),Database.creaturesList.get(i).getGenome().getMotors().size()};
             for(int j = 0; j<3; j++){
@@ -89,6 +90,29 @@ public class Genome{
                 }
                 else if(neuronCoordinates[i][j] < lowestNeuronCoordinate[j]){
                     lowestNeuronCoordinate[j] = neuronCoordinates[i][j];
+=======
+        for(int i=0; i<Main.loaded.generationSize; i++){
+            Creature creature = Main.loaded.worldObjects.getCreature(i);
+            if(creature == null){
+                continue;
+            }
+
+            // assigns a value to each indice of the array equal to the amount of said type of neuron the creature has
+            int[] neuronListLengths = {creature.getGenome().getSensors().size(),creature.getGenome().getInternals().size(),creature.getGenome().getMotors().size()};
+            for(int j = 0; j<3; j++){
+                // assigns the array of amounts of neurons to the indice for that creature
+                creatureNeuronAmounts[i][j] = neuronListLengths[j];
+                // adds all of the amounts of each neuron type to the array tracking the average. It will be divided later
+                averageNeuronCoordinate[j]+=creatureNeuronAmounts[i][j];
+                
+                // keeps track of the greatest amount of neurons of each type
+                if(creatureNeuronAmounts[i][j] > highestNeuronCoordinate[j]){
+                    highestNeuronCoordinate[j] = creatureNeuronAmounts[i][j];
+                }
+                // keeps track of the least amount of neurons of each type
+                else if(creatureNeuronAmounts[i][j] < lowestNeuronCoordinate[j]){
+                    lowestNeuronCoordinate[j] = creatureNeuronAmounts[i][j];
+>>>>>>> Stashed changes
                 }
             }
         }
@@ -98,6 +122,7 @@ public class Genome{
             coordinateDistanceMax[i] = ((highestNeuronCoordinate[i]-averageNeuronCoordinate[i])+(averageNeuronCoordinate[i]-lowestNeuronCoordinate[i]))/2; //JACKSON
         }
 
+<<<<<<< Updated upstream
         // Debug
         // System.out.println(coordinateDistanceMax[0]+ "," + coordinateDistanceMax[1] + "," + coordinateDistanceMax[2]);
         // System.out.println(averageNeuronCoordinate[0]+ "," + averageNeuronCoordinate[1] + "," + averageNeuronCoordinate[2]);
@@ -118,6 +143,23 @@ public class Genome{
 
             Database.creaturesList.get(i).getGenome().setColor(new Color(Math.min(rgb[0],255), Math.min(rgb[1],255),Math.min(rgb[2],255)));
             Database.creaturesList.get(i).setColor(Database.creaturesList.get(i).getGenome().getColor());
+=======
+        for(int i=0; i<Main.loaded.generationSize; i++){
+            Creature creature = Main.loaded.worldObjects.getCreature(i);
+            if(creature == null){
+                continue;
+            }
+
+            int[] rgb = new int[3];
+            for(int j =0; j<3; j++){
+                // takes the distance of the creature from the minimum distance (a value between 0 and highestNeuronCoordinate[j] - lowestNeuronCoordinate[j] ) and divides by <<. 
+                // Value ranges from 0 to 1;
+                double locationInRange = (double)(creatureNeuronAmounts[i][j] - lowestNeuronCoordinate[j]) / (highestNeuronCoordinate[j] - lowestNeuronCoordinate[j]);
+                rgb[j] = (int) (255*(locationInRange)); 
+            }
+            creature.getGenome().setColor(new Color(rgb[0], rgb[1],rgb[2]));
+            creature.setColor(creature.getGenome().getColor());
+>>>>>>> Stashed changes
         }
             
 
@@ -265,6 +307,7 @@ public class Genome{
             neurons.add(emptyNeuron);
         }
         // Debug
+<<<<<<< Updated upstream
         // Database.creaturesList.add(new Creature(new Genome(this.subject,this.DNA,neurons)));
         // for(Neuron neuron : neurons){
         //     if(findSourceSinkError(neuron,false,0)){
@@ -292,6 +335,29 @@ public class Genome{
                 System.out.println(toPrint);
             }
         }
+=======
+        // for(Neuron neuron : neurons){
+        //     String toPrint = "";
+        //     Boolean print = false;
+        //     toPrint+="Subject "+Main.loaded.generationSize+":\n";
+        //     toPrint+="Neuron "+neuron.toString()+":\n";
+        //     toPrint+="Sources:\n";
+        //     for(Neuron source : neuron.getSources()){
+        //         toPrint+=(" ["+source.toString()+","+new ArrayList<Neuron>(source.getSinks().keySet()).toString()+"]");
+        //         print = !new ArrayList<Neuron>(source.getSinks().keySet()).contains(neuron);
+        //     }
+        //     toPrint+=("\n");
+        //     toPrint+=("Sinks:\n");
+        //     for(Neuron sink : new ArrayList<Neuron>(neuron.getSinks().keySet())){
+        //         toPrint+=(" ["+sink.toString()+","+sink.getSources().toString()+"]");
+        //         print = !sink.getSources().contains(neuron);
+        //     }
+        //     toPrint+=("\n");
+        //     if(print){
+        //         System.out.println(toPrint);
+        //     }
+        // }
+>>>>>>> Stashed changes
 
         /////////////////////////////////////////////////////
         // PRUNE USELESS // PRUNE USELESS // PRUNE USELESS //

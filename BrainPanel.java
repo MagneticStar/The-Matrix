@@ -36,6 +36,14 @@ public class BrainPanel extends JPanel {
         drawNeuron(g);
     }
     public void drawNeuron(Graphics g) {
+<<<<<<< Updated upstream
+=======
+        if (Main.loaded.generationSize == 0 || currentlySelectedCreatureIndex == -1 || Main.loaded.worldObjects.getCreature(currentlySelectedCreatureIndex) == null) {
+            return;
+        }
+        Neuron[] neurons = Main.loaded.worldObjects.getCreature(currentlySelectedCreatureIndex).getGenome().getNeurons();
+        Main.loaded.brainScreenSizeY = neurons.length;
+>>>>>>> Stashed changes
         
         Creature subject = Database.creaturesList.get(currentlySelectedSubjectIndex);
         Neuron[] neurons = subject.getGenome().getNeurons();

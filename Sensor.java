@@ -33,6 +33,7 @@ public class Sensor extends Neuron{
     // SENSOR METHODS // SENSOR METHODS // SENSOR METHODS //
     ////////////////////////////////////////////////////////
 
+<<<<<<< Updated upstream
     public static double nearestFoodDistance(Creature creature) {
         int indexOfFoundObject = findNearestObject(creature.getPos(), Database.foodCoordinates);
 
@@ -108,6 +109,40 @@ public class Sensor extends Neuron{
 
         // No object found
         return 0;
+=======
+    public static double nearestFoodDistance(Creature creature) throws Exception{
+        int[] coorOfFoundObject = findNearestObject(creature.getPosX(), creature.getPosY(), Main.loaded.worldObjects.getFoodLocationsArrayCopy());
+        double distance = distance(coorOfFoundObject, creature);
+        // returns a value between 1 and 0
+        return 1-(distance/Main.loaded.worldSize);
+    }
+
+    private static double detectFoodXDirection (Creature creature) throws Exception{
+        int[] coorOfFoundObject = findNearestObject(creature.getPosX(), creature.getPosY(), Main.loaded.worldObjects.getFoodLocationsArrayCopy());
+        return directionX(coorOfFoundObject[0], creature);
+    }
+
+    private static double detectFoodYDirection (Creature creature) throws Exception{
+        int[] coorOfFoundObject = findNearestObject(creature.getPosX(), creature.getPosY(), Main.loaded.worldObjects.getFoodLocationsArrayCopy());
+        return directionY(coorOfFoundObject[1], creature);
+    }
+
+    private static double nearestCreatureDistance(Creature creature) throws Exception{
+        int[] coorOfFoundObject = findNearestObject(creature.getPosX(), creature.getPosY(), Main.loaded.worldObjects.getCreatureLocationsArrayCopy());
+        double distance = distance(coorOfFoundObject, creature);
+              // returns a value between 1 and 0
+        return 1-(distance/Main.loaded.worldSize);
+    }
+
+    private static double detectCreatureXDirection (Creature creature) throws Exception{
+        int[] coorOfFoundObject = findNearestObject(creature.getPosX(), creature.getPosY(), Main.loaded.worldObjects.getCreatureLocationsArrayCopy());
+        return directionX(coorOfFoundObject[0], creature);
+    }
+
+    private static double detectCreatureYDirection (Creature creature) throws Exception{
+        int[] indexOfFoundObject = findNearestObject(creature.getPosX(), creature.getPosY(), Main.loaded.worldObjects.getCreatureLocationsArrayCopy());
+        return directionY(indexOfFoundObject[1], creature);
+>>>>>>> Stashed changes
     }
     
     private static double detectWaterYDirection (Creature creature) {
@@ -226,7 +261,16 @@ public class Sensor extends Neuron{
         }
     }
     
+<<<<<<< Updated upstream
     public static double distance(Coor coor, Creature creature) {
+=======
+    public static double distance(int[] coor, Creature creature) throws NullPointerException {
+        int x = creature.getPosX();
+        int y = creature.getPosY();
+        // find shortest distance along each axis
+        int xDifference = Math.min(Math.abs(coor[0] - x), Math.abs(coor[0] - (x - Main.loaded.worldSize)));
+        int yDifference = Math.min(Math.abs(coor[1] - y), Math.abs(coor[1] - (y - Main.loaded.worldSize)));
+>>>>>>> Stashed changes
         // using Pyth theorem
         try {
             return Math.sqrt(Math.pow(coor.x() - creature.getPos().x(), 2) + Math.pow(coor.y() - creature.getPos().y(), 2));
