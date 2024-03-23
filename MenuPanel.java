@@ -35,34 +35,34 @@ public class MenuPanel extends JPanel{
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Main.loaded.generationSize = Integer.parseInt(generationSizeTextField.getText());
-                Main.loaded.startingFoodCount = Integer.parseInt(startingFoodCountTextField.getText());
-                Main.loaded.minimumFoodEaten = Integer.parseInt(minimumFoodEatenTextField.getText());
-                Main.loaded.generationLength = Integer.parseInt(generationLengthTextField.getText());
-                Main.loaded.simulationLength = Integer.parseInt(simulationLengthTextField.getText());
-                Main.loaded.worldSize = Integer.parseInt(worldSizeTextField.getText());
-                Main.loaded.searchDepth = Integer.parseInt(searchDepthTextField.getText());
-                Main.loaded.repoductionPerCreature = Integer.parseInt(repoductionPerCreatureTextField.getText());
-                Main.loaded.mutationChance = Double.parseDouble(mutationChanceTextField.getText());
-                Main.loaded.genomeLength = Integer.parseInt(genomeLengthTextField.getText());
-                Main.loaded.tickDelay = Integer.parseInt(tickDelayTextField.getText());
-                Main.loaded.doVisuals = doVisualsCheckbox.isSelected();
-                Main.loaded.autoStartGeneration = autoStartGenerationCheckbox.isSelected();
-                Main.loaded.autoStartStep = autoStartStepCheckbox.isSelected();
-                Main.startThread();
+                Simulation.simulation.generationSize = Integer.parseInt(generationSizeTextField.getText());
+                Simulation.simulation.startingFoodCount = Integer.parseInt(startingFoodCountTextField.getText());
+                Simulation.simulation.minimumFoodEaten = Integer.parseInt(minimumFoodEatenTextField.getText());
+                Simulation.simulation.generationLength = Integer.parseInt(generationLengthTextField.getText());
+                Simulation.simulation.simulationLength = Integer.parseInt(simulationLengthTextField.getText());
+                Simulation.simulation.worldSize = Integer.parseInt(worldSizeTextField.getText());
+                Simulation.simulation.searchDepth = Integer.parseInt(searchDepthTextField.getText());
+                Simulation.simulation.repoductionPerCreature = Integer.parseInt(repoductionPerCreatureTextField.getText());
+                Simulation.simulation.mutationChance = Double.parseDouble(mutationChanceTextField.getText());
+                Simulation.simulation.genomeLength = Integer.parseInt(genomeLengthTextField.getText());
+                Simulation.simulation.tickDelay = Integer.parseInt(tickDelayTextField.getText());
+                Simulation.simulation.doVisuals = doVisualsCheckbox.isSelected();
+                Simulation.simulation.autoStartGeneration = autoStartGenerationCheckbox.isSelected();
+                Simulation.simulation.autoStartStep = autoStartStepCheckbox.isSelected();
+                Simulation.simulation.startThread();
         }});
 
-        generationSizeTextField = new JTextField(String.valueOf(Main.loaded.generationSize), 20);
-        startingFoodCountTextField = new JTextField(String.valueOf(Main.loaded.startingFoodCount), 20);
-        minimumFoodEatenTextField = new JTextField(String.valueOf(Main.loaded.minimumFoodEaten), 20);
-        generationLengthTextField = new JTextField(String.valueOf(Main.loaded.generationLength), 20);
-        simulationLengthTextField = new JTextField(String.valueOf(Main.loaded.simulationLength), 20);
-        worldSizeTextField = new JTextField(String.valueOf(Main.loaded.worldSize), 20);
-        searchDepthTextField = new JTextField(String.valueOf(Main.loaded.searchDepth), 20);
-        repoductionPerCreatureTextField = new JTextField(String.valueOf(Main.loaded.repoductionPerCreature), 20);
-        mutationChanceTextField = new JTextField(String.valueOf(Main.loaded.mutationChance), 20);
-        genomeLengthTextField = new JTextField(String.valueOf(Main.loaded.genomeLength), 20);
-        tickDelayTextField = new JTextField(String.valueOf(Main.loaded.tickDelay), 20);
+        generationSizeTextField = new JTextField(String.valueOf(Simulation.simulation.generationSize), 20);
+        startingFoodCountTextField = new JTextField(String.valueOf(Simulation.simulation.startingFoodCount), 20);
+        minimumFoodEatenTextField = new JTextField(String.valueOf(Simulation.simulation.minimumFoodEaten), 20);
+        generationLengthTextField = new JTextField(String.valueOf(Simulation.simulation.generationLength), 20);
+        simulationLengthTextField = new JTextField(String.valueOf(Simulation.simulation.simulationLength), 20);
+        worldSizeTextField = new JTextField(String.valueOf(Simulation.simulation.worldSize), 20);
+        searchDepthTextField = new JTextField(String.valueOf(Simulation.simulation.searchDepth), 20);
+        repoductionPerCreatureTextField = new JTextField(String.valueOf(Simulation.simulation.repoductionPerCreature), 20);
+        mutationChanceTextField = new JTextField(String.valueOf(Simulation.simulation.mutationChance), 20);
+        genomeLengthTextField = new JTextField(String.valueOf(Simulation.simulation.genomeLength), 20);
+        tickDelayTextField = new JTextField(String.valueOf(Simulation.simulation.tickDelay), 20);
 
         // JTextFields
         generationSizeTextField.setForeground(Color.black);
@@ -146,19 +146,19 @@ public class MenuPanel extends JPanel{
         // JCheckBox
         doVisualsCheckbox = new JCheckBox();
         doVisualsCheckbox.setText("Do Visuals");
-        doVisualsCheckbox.setSelected(Main.loaded.doVisuals);
+        doVisualsCheckbox.setSelected(Simulation.simulation.doVisuals);
         doVisualsCheckbox.setBackground(Color.BLACK);
         doVisualsCheckbox.setForeground(Color.WHITE);
 
         autoStartGenerationCheckbox = new JCheckBox();
         autoStartGenerationCheckbox.setText("Auto Start Generation");
-        autoStartGenerationCheckbox.setSelected(Main.loaded.autoStartGeneration);
+        autoStartGenerationCheckbox.setSelected(Simulation.simulation.autoStartGeneration);
         autoStartGenerationCheckbox.setBackground(Color.BLACK);
         autoStartGenerationCheckbox.setForeground(Color.WHITE);
 
         autoStartStepCheckbox = new JCheckBox();
         autoStartStepCheckbox.setText("Auto Start Step");
-        autoStartGenerationCheckbox.setSelected(Main.loaded.autoStartGeneration);
+        autoStartGenerationCheckbox.setSelected(Simulation.simulation.autoStartGeneration);
         autoStartStepCheckbox.setBackground(Color.BLACK);
         autoStartStepCheckbox.setForeground(Color.WHITE);
 

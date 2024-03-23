@@ -2,7 +2,6 @@ public class Sensor extends Neuron{
 
     public SensorMethod sensorMethod; 
     public static int numberOfSensorMethods = 8; // Update this when creating new Sensor methods
-    public static int numberOfSensorMethods = 8; // Update this when creating new Sensor methods
     public int methodID;
 
     public Sensor(int methodID) {
@@ -10,11 +9,6 @@ public class Sensor extends Neuron{
         this.methodID = methodID%(numberOfSensorMethods);
         switch(this.methodID){
             case 0: this.sensorMethod = Sensor::nearestFoodDistance; break;
-            case 1: this.sensorMethod = Sensor::detectFoodXDirection; break;
-            case 2: this.sensorMethod = Sensor::detectFoodYDirection; break;
-            case 3: this.sensorMethod = Sensor::nearestCreatureDistance; break;
-            case 4: this.sensorMethod = Sensor::detectCreatureXDirection; break;
-            case 5: this.sensorMethod = Sensor::detectCreatureYDirection; break;
             case 1: this.sensorMethod = Sensor::detectFoodXDirection; break;
             case 2: this.sensorMethod = Sensor::detectFoodYDirection; break;
             case 3: this.sensorMethod = Sensor::nearestCreatureDistance; break;
@@ -146,11 +140,9 @@ public class Sensor extends Neuron{
     public static double directionX(int posX, Creature creature){
         // left
         if (posX < creature.getPosX()) {
-        if (posX < creature.getPosX()) {
             return -1.0;
         }
         // right
-        else if (posX > creature.getPosX()) {
         else if (posX > creature.getPosX()) {
             return 1.0;
         }
@@ -162,11 +154,9 @@ public class Sensor extends Neuron{
     public static double directionY(int posY, Creature creature) {
         // down
         if (posY < creature.getPosY()) {
-        if (posY < creature.getPosY()) {
             return -1.0;
         }
         // up
-        else if (posY > creature.getPosY()) {
         else if (posY > creature.getPosY()) {
             return 1.0;
         }
@@ -185,8 +175,6 @@ public class Sensor extends Neuron{
             int xDifference = Math.min(Math.abs(coor[0] - x), Math.abs(coor[0] - (x - Simulation.simulation.worldSize)));
             int yDifference = Math.min(Math.abs(coor[1] - y), Math.abs(coor[1] - (y - Simulation.simulation.worldSize)));
         // using Pyth theorem
-        return Math.sqrt(Math.pow(xDifference, 2) + Math.pow(yDifference, 2));
-    }
         return Math.sqrt(Math.pow(xDifference, 2) + Math.pow(yDifference, 2));
     }
 }

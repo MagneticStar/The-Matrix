@@ -16,22 +16,10 @@ public class Genome{
     private ArrayList<Motor> motors = new ArrayList<Motor>();
     private ArrayList<Internal> internals = new ArrayList<Internal>();
 
-    private int BASESINKWEIGHT = 32;
-    // Debug Vars
-
     public Genome(){
         generateDNA(); 
         interpretDNA();
-        genomeLength = Main.loaded.genomeLength;
-        oscillatorPeriod = Main.loaded.random.nextInt(1,Main.loaded.generationLength+1);
-    }
-
-    // Creates a new neuron map based on the inputed DNA
-    public Genome(BitSet DNA){
-        this.DNA = DNA;
-        interpretDNA();
-        genomeLength = Main.loaded.genomeLength;
-        oscillatorPeriod = Main.loaded.random.nextInt(1,Main.loaded.generationLength+1);
+        oscillatorPeriod = Simulation.simulation.random.nextInt(1,Simulation.simulation.generationLength+1);
     }
 
     public Color getColor(){
@@ -54,9 +42,6 @@ public class Genome{
     }
     public int getOscillatorPeriod(){
         return this.oscillatorPeriod;
-    }
-    public BitSet getDNA(){
-        return this.DNA;
     }
 
     public static void calculateColor(){
