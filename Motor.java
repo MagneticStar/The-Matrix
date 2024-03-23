@@ -1,7 +1,7 @@
 public class Motor extends Neuron{
 
     public MotorMethod motorMethod;
-    private static int numberOfMotorMethods = 5; // Update this when creating new Motor methods
+    private static int numberOfMotorMethods = 6; // Update this when creating new Motor methods
     public Motor(int methodID){
         super("Motor");
         switch(methodID%(numberOfMotorMethods)){
@@ -10,6 +10,7 @@ public class Motor extends Neuron{
             case 2: this.motorMethod = Motor::MoveRight; break;
             case 3: this.motorMethod = Motor::MoveLeft; break;
             case 4: this.motorMethod = Motor::Eat; break;
+            case 5: this.motorMethod = Motor::DoNothing; break;
         }
     }
 

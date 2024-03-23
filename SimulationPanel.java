@@ -18,6 +18,7 @@ public class SimulationPanel extends JPanel{
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         // Where all graphics are rendered
+        highlightSubject(g);
         drawCreaturesAndFood(g);
     }
 
@@ -44,7 +45,6 @@ public class SimulationPanel extends JPanel{
             }
         }
     }
-    public void drawFood(Graphics g) {
 
     public void highlightSubject(Graphics g){
         int creatureIndex = GUIPanel.currentlySelectedCreatureIndex;

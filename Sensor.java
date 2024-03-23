@@ -2,14 +2,19 @@ public class Sensor extends Neuron{
 
     public SensorMethod sensorMethod; 
     public static int numberOfSensorMethods = 8; // Update this when creating new Sensor methods
+    public static int numberOfSensorMethods = 8; // Update this when creating new Sensor methods
     public int methodID;
-    private static int searchDepth = 10;
 
-    public Sensor(Creature s, int methodID) {
+    public Sensor(int methodID) {
         super("Sensor");
         this.methodID = methodID%(numberOfSensorMethods);
         switch(this.methodID){
             case 0: this.sensorMethod = Sensor::nearestFoodDistance; break;
+            case 1: this.sensorMethod = Sensor::detectFoodXDirection; break;
+            case 2: this.sensorMethod = Sensor::detectFoodYDirection; break;
+            case 3: this.sensorMethod = Sensor::nearestCreatureDistance; break;
+            case 4: this.sensorMethod = Sensor::detectCreatureXDirection; break;
+            case 5: this.sensorMethod = Sensor::detectCreatureYDirection; break;
             case 1: this.sensorMethod = Sensor::detectFoodXDirection; break;
             case 2: this.sensorMethod = Sensor::detectFoodYDirection; break;
             case 3: this.sensorMethod = Sensor::nearestCreatureDistance; break;
@@ -23,10 +28,9 @@ public class Sensor extends Neuron{
     }
     
 
-    public interface SensorMethod{
-        double invoke(Creature creature);
+    public interface SensorMethod {
+        double invoke(Creature creature) throws Exception;
     }
-
     
     ////////////////////////////////////////////////////////
     // SENSOR METHODS // SENSOR METHODS // SENSOR METHODS //
@@ -65,7 +69,7 @@ public class Sensor extends Neuron{
         int[] indexOfFoundObject = findNearestObject(creature.getPosX(), creature.getPosY(), Simulation.simulation.worldObjects.getCreatureLocationsArrayCopy());
         return directionY(indexOfFoundObject[1], creature);
     }
-
+    
     private static double Oscillator(Creature creature) {
         if(Simulation.simulation.currentGenerationTick%creature.getGenome().getOscillatorPeriod()==0){
             return 1;
@@ -119,6 +123,7 @@ public class Sensor extends Neuron{
                     return new int[]{((centerX-j)+Simulation.simulation.worldSize)%Simulation.simulation.worldSize,((centerY-i)+Simulation.simulation.worldSize)%Simulation.simulation.worldSize};
                 }
 
+
                 if(j < i){
                     if(objectLocations[(centerX+i)%Simulation.simulation.worldSize][(centerY+j)%Simulation.simulation.worldSize] > 0){ // Check Right Above
                         return new int[]{(centerX+i)%Simulation.simulation.worldSize,(centerY+j)%Simulation.simulation.worldSize};
@@ -141,9 +146,11 @@ public class Sensor extends Neuron{
     public static double directionX(int posX, Creature creature){
         // left
         if (posX < creature.getPosX()) {
+        if (posX < creature.getPosX()) {
             return -1.0;
         }
         // right
+        else if (posX > creature.getPosX()) {
         else if (posX > creature.getPosX()) {
             return 1.0;
         }
@@ -155,9 +162,11 @@ public class Sensor extends Neuron{
     public static double directionY(int posY, Creature creature) {
         // down
         if (posY < creature.getPosY()) {
+        if (posY < creature.getPosY()) {
             return -1.0;
         }
         // up
+        else if (posY > creature.getPosY()) {
         else if (posY > creature.getPosY()) {
             return 1.0;
         }
@@ -167,6 +176,7 @@ public class Sensor extends Neuron{
         }
     }
     // distance needs to be fixed for modulus
+    // distance needs to be fixed for modulus
     
     public static double distance(int[] coor, Creature creature) {
         int x = creature.getPosX();
@@ -175,6 +185,8 @@ public class Sensor extends Neuron{
             int xDifference = Math.min(Math.abs(coor[0] - x), Math.abs(coor[0] - (x - Simulation.simulation.worldSize)));
             int yDifference = Math.min(Math.abs(coor[1] - y), Math.abs(coor[1] - (y - Simulation.simulation.worldSize)));
         // using Pyth theorem
+        return Math.sqrt(Math.pow(xDifference, 2) + Math.pow(yDifference, 2));
+    }
         return Math.sqrt(Math.pow(xDifference, 2) + Math.pow(yDifference, 2));
     }
 }

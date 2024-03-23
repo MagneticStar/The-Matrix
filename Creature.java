@@ -1,40 +1,46 @@
-import java.awt.*;
-import java.util.ArrayList;
+import java.util.BitSet;
 
-public class Creature extends ScreenObject{
+public class Creature extends ScreenObject implements Cloneable{
     private Genome genome;
     private int foodEaten;
+    private int foodEatenAll;
+    private int moveCount;
 
     // constructors
     public Creature() {
         super();
-        this.genome = new Genome(this);
+        this.genome = new Genome();
     }
     public Creature(Genome genome){
         super();
         this.genome = genome;
     }
-    public Creature(Color color,Coor position){
-        super(color, position);
-        this.genome = new Genome(this);
+    public Creature(BitSet DNA) {
+        super();
+        this.genome = new Genome(DNA);
     }
 
     // setters
     public void setGenome(Genome genome) {
         this.genome = genome;
     }
+    public void moved() {
+        moveCount++;
+    }
 
     // getters
     public Genome getGenome() {
         return this.genome;
     }
-    public Coor getPrintPos() {
-        Screens.SimulationWorldToScreen.setWorld(Screens.simulationPanel.getWidth(), Screens.simulationPanel.getHeight());
-        int[] ans = Screens.SimulationWorldToScreen.translate(this.getPos().matrix());
-        return new Coor(ans[0], ans[1]);
-    }
+    
     public int getFoodCount(){
-        return this.foodEaten;
+        return foodEaten;
+    }
+    public int getFoodCountAll() {
+        return foodEatenAll;
+    }
+    public int getMoveCount() {
+        return moveCount;
     }
 
     // Methods
@@ -81,16 +87,33 @@ public class Creature extends ScreenObject{
             }
             newCreatures.add(creature);
         }
-        return newCreatures;
     }
         
 
     // hunger
     public void ateFood() {
-        this.foodEaten++;
+        foodEaten++;
+        foodEatenAll++;
     }
 
     public void clearFood(){
-        this.foodEaten = 0;
+        foodEaten = 0;
+    }
+    @Override
+    public String toString() {
+        return genome.getDNA().toString();
+    }
+    public Object clone() {
+        try {
+            Creature clone = (Creature)super.clone();
+        clone.genome = (Genome)genome.clone();
+        clone.foodEaten = 0;
+        clone.foodEatenAll = this.foodEatenAll;
+        clone.moveCount = 0;
+        return clone;
+        } catch (Exception e) {
+            System.out.println(e);
+            return null;
+        }
     }
 }

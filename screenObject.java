@@ -5,17 +5,18 @@ class ScreenObject {
     private Color color;
 
     public ScreenObject() {
+        position = new Coor(Main.loaded.worldSize/2, Main.loaded.worldSize/2);
         color = Color.WHITE;
         position = new Coor(Simulation.simulation.worldSize/2, Simulation.simulation.worldSize/2);
     }
 
     public ScreenObject(Color color){
         this.color = color;
+        position = new Coor(Main.loaded.worldSize/2, Main.loaded.worldSize/2);
         position = new Coor(Simulation.simulation.worldSize/2, Simulation.simulation.worldSize/2);
     }
 
     public ScreenObject(Coor position){
-        color = Color.WHITE;
         this.position = position;
     }
 
@@ -54,5 +55,11 @@ class ScreenObject {
     
     public Color getColor() {
         return color;
+    }
+
+    public static Coor getPrintPos(int x, int y) {
+        Screens.SimulationWorldToScreen.setWorld(Screens.simulationPanel.getWidth(), Screens.simulationPanel.getHeight());
+        int[] ans = Screens.SimulationWorldToScreen.translate(new int[]{x,y});
+        return new Coor(ans[0], ans[1]);
     }
 }
