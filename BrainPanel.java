@@ -7,7 +7,7 @@ import javax.swing.JPanel;
 public class BrainPanel extends JPanel {
     
     private JComboBox<String> searchDropDown;
-    private int currentlySelectedCreatureIndex = -1;
+    private int currentlySelectedCreatureIndex = 0;
 
     public BrainPanel() {
         setBackground(Color.BLACK);
