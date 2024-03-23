@@ -35,11 +35,11 @@ public class BrainPanel extends JPanel {
         drawNeuron(g);
     }
     public void drawNeuron(Graphics g) {
-        if (Simulation.simulation.generationSize == 0 || currentlySelectedCreatureIndex == -1 || Main.loaded.worldObjects.getCreature(currentlySelectedCreatureIndex) == null) {
+        if (Simulation.simulation.generationSize == 0 || currentlySelectedCreatureIndex == -1 || Simulation.simulation.worldObjects.getCreature(currentlySelectedCreatureIndex) == null) {
             return;
         }
-        Neuron[] neurons = Main.loaded.worldObjects.getCreature(currentlySelectedCreatureIndex).getGenome().getNeurons();
-        Main.loaded.brainScreenSizeY = neurons.length;
+        Neuron[] neurons = Simulation.simulation.worldObjects.getCreature(currentlySelectedCreatureIndex).getGenome().getNeurons();
+        Simulation.simulation.brainScreenSizeY = neurons.length;
         
         int i = 1;
         int ic = 0;

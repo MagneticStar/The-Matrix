@@ -70,7 +70,7 @@ public class WorldObjectArray {
      * Saves the current food and creature lists for replay
      */
     public void save(){
-        int tick = Main.loaded.currentGenerationTick;
+        int tick = Simulation.simulation.currentGenerationTick;
 
         for(Creature creature : this.creatures){
             Coor position = creature.getPos();
@@ -81,7 +81,7 @@ public class WorldObjectArray {
         for(Coor position : food){
             // Only save the food position if there is no creature there
             if(this.printColorsForAllTicks[tick][position.x()][position.y()] == null){
-                this.printColorsForAllTicks[tick][position.x()][position.y()] = Main.loaded.FOOD_COLOR; 
+                this.printColorsForAllTicks[tick][position.x()][position.y()] = Simulation.simulation.FOOD_COLOR; 
                 this.isFoodBooleansForAllTicks[tick][position.x()][position.y()] = true;   
             } 
         }

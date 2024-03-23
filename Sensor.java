@@ -1,9 +1,7 @@
-import java.util.ArrayList;
-
 public class Sensor extends Neuron{
 
     public SensorMethod sensorMethod; 
-    public static int numberOfSensorMethods = 9; // Update this when creating new Sensor methods
+    public static int numberOfSensorMethods = 8; // Update this when creating new Sensor methods
     public int methodID;
     private static int searchDepth = 10;
 
@@ -12,14 +10,15 @@ public class Sensor extends Neuron{
         this.methodID = methodID%(numberOfSensorMethods);
         switch(this.methodID){
             case 0: this.sensorMethod = Sensor::nearestFoodDistance; break;
-            case 1: this.sensorMethod = Sensor::nearestWaterDistance; break;
-            case 2: this.sensorMethod = Sensor::detectFoodXDirection; break;
-            case 3: this.sensorMethod = Sensor::detectWaterXDirection; break;
-            case 4: this.sensorMethod = Sensor::detectFoodYDirection; break;
-            case 5: this.sensorMethod = Sensor::detectWaterYDirection; break;
+            case 1: this.sensorMethod = Sensor::detectFoodXDirection; break;
+            case 2: this.sensorMethod = Sensor::detectFoodYDirection; break;
+            case 3: this.sensorMethod = Sensor::nearestCreatureDistance; break;
+            case 4: this.sensorMethod = Sensor::detectCreatureXDirection; break;
+            case 5: this.sensorMethod = Sensor::detectCreatureYDirection; break;
             case 6: this.sensorMethod = Sensor::Oscillator; break;
-            case 7: this.sensorMethod = Sensor::nearestCreatureDistance; break;
-            case 8: this.sensorMethod = Sensor::random; break;
+            case 7: this.sensorMethod = Sensor::random; break;
+            default: System.out.println("numberOfSensorMethods needs to be updated to the correct number"); 
+                     System.exit(0);
         }
     }
     
@@ -33,53 +32,42 @@ public class Sensor extends Neuron{
     // SENSOR METHODS // SENSOR METHODS // SENSOR METHODS //
     ////////////////////////////////////////////////////////
 
-    public static double nearestFoodDistance(Creature creature) throws Exception{
+    public static double nearestFoodDistance(Creature creature){
         int[] coorOfFoundObject = findNearestObject(creature.getPosX(), creature.getPosY(), Simulation.simulation.worldObjects.getFoodLocationsArrayCopy());
         double distance = distance(coorOfFoundObject, creature);
         // returns a value between 1 and 0
         return 1-(distance/Simulation.simulation.worldSize);
     }
 
-    private static double detectFoodXDirection (Creature creature) throws Exception{
+    private static double detectFoodXDirection (Creature creature){
         int[] coorOfFoundObject = findNearestObject(creature.getPosX(), creature.getPosY(), Simulation.simulation.worldObjects.getFoodLocationsArrayCopy());
         return directionX(coorOfFoundObject[0], creature);
     }
 
-    private static double detectFoodYDirection (Creature creature) throws Exception{
+    private static double detectFoodYDirection (Creature creature){
         int[] coorOfFoundObject = findNearestObject(creature.getPosX(), creature.getPosY(), Simulation.simulation.worldObjects.getFoodLocationsArrayCopy());
         return directionY(coorOfFoundObject[1], creature);
     }
 
-    private static double nearestCreatureDistance(Creature creature) throws Exception{
+    private static double nearestCreatureDistance(Creature creature){
         int[] coorOfFoundObject = findNearestObject(creature.getPosX(), creature.getPosY(), Simulation.simulation.worldObjects.getCreatureLocationsArrayCopy());
         double distance = distance(coorOfFoundObject, creature);
               // returns a value between 1 and 0
         return 1-(distance/Simulation.simulation.worldSize);
     }
 
-    private static double detectCreatureXDirection (Creature creature) throws Exception{
+    private static double detectCreatureXDirection (Creature creature){
         int[] coorOfFoundObject = findNearestObject(creature.getPosX(), creature.getPosY(), Simulation.simulation.worldObjects.getCreatureLocationsArrayCopy());
         return directionX(coorOfFoundObject[0], creature);
     }
 
-    private static double detectCreatureYDirection (Creature creature) throws Exception{
+    private static double detectCreatureYDirection (Creature creature){
         int[] indexOfFoundObject = findNearestObject(creature.getPosX(), creature.getPosY(), Simulation.simulation.worldObjects.getCreatureLocationsArrayCopy());
         return directionY(indexOfFoundObject[1], creature);
     }
-    
-    private static double detectWaterYDirection (Creature creature) {
-        int indexOfFoundObject = findNearestObject(creature.getPos(), Database.waterCoordinates);
-
-        if(indexOfFoundObject != -1){
-            return directionY(Database.waterCoordinates.get(indexOfFoundObject), creature);
-        }
-
-        // No object found
-        return 0;
-    }
 
     private static double Oscillator(Creature creature) {
-        if(Database.currentGenerationTick%creature.getGenome().getOscillatorPeriod()==0){
+        if(Simulation.simulation.currentGenerationTick%creature.getGenome().getOscillatorPeriod()==0){
             return 1;
         }
         else{
@@ -88,14 +76,14 @@ public class Sensor extends Neuron{
     }
 
     private static double random(Creature creature){
-        return Database.random.nextDouble(-1,1);
+        return Simulation.simulation.random.nextDouble(-1,1);
     }
 
      ////////////////////////////////////////////////////////
     // SENSOR METHOD ASSISTORS // SENSOR METHOD ASSISTORS // 
     ////////////////////////////////////////////////////////
 
-    public static int[] findNearestObject(int centerX, int centerY, int[][] objectLocations) throws Exception{
+    public static int[] findNearestObject(int centerX, int centerY, int[][] objectLocations){
         // Search logic
         if(objectLocations[centerX][centerY] > 0){ // Check Center
             return new int[]{centerX,centerY};
@@ -147,11 +135,10 @@ public class Sensor extends Neuron{
                 }
             }
         }
-        Exception noObjectFound = new Exception("No Object was Found");
-        throw noObjectFound;
+        return null;
     }
 
-    public static double directionX(int posX, Creature creature) throws NullPointerException{
+    public static double directionX(int posX, Creature creature){
         // left
         if (posX < creature.getPosX()) {
             return -1.0;
@@ -165,7 +152,7 @@ public class Sensor extends Neuron{
             return 0.0;
         }
     }
-    public static double directionY(int posY, Creature creature) throws NullPointerException {
+    public static double directionY(int posY, Creature creature) {
         // down
         if (posY < creature.getPosY()) {
             return -1.0;
@@ -181,7 +168,7 @@ public class Sensor extends Neuron{
     }
     // distance needs to be fixed for modulus
     
-    public static double distance(int[] coor, Creature creature) throws NullPointerException {
+    public static double distance(int[] coor, Creature creature) {
         int x = creature.getPosX();
         int y = creature.getPosY();
         // find shortest distance along each axis

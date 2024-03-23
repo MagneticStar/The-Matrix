@@ -19,10 +19,10 @@ public class GUIPanel extends JPanel {
     }
 
     public void updateLabel(){
-        trackersText = "<br/><br/>Current Step: "+(Main.loaded.observedGenerationTick);
-        trackersText += "<br/>Current Generation: "+(Main.loaded.currentGeneration+1);
-        trackersText += "<br/>Reproduced Last Generation: "+Main.loaded.reproducedLastGeneration.get(Main.loaded.currentGeneration);
-        trackersText += "<br/>Food Count: "+Main.loaded.worldObjects.getFoodCountAtTick(Main.loaded.observedGenerationTick)+"</html>";
+        trackersText = "<br/><br/>Current Step: "+(Simulation.simulation.observedGenerationTick);
+        trackersText += "<br/>Current Generation: "+(Simulation.simulation.currentGeneration+1);
+        trackersText += "<br/>Reproduced Last Generation: "+Simulation.simulation.reproducedLastGeneration.get(Simulation.simulation.currentGeneration);
+        trackersText += "<br/>Food Count: "+Simulation.simulation.worldObjects.getFoodCountAtTick(Simulation.simulation.observedGenerationTick)+"</html>";
 
         settingsLabelText = settingsText+trackersText;
         settingsLabel.setText(settingsLabelText);
@@ -37,10 +37,10 @@ public class GUIPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
             // actionPerformed gets called when the first item is added and the last is removed but those instances don't need to count
             // as the user changing the combobox
-            if(stepSelectorComboBox.getSelectedIndex() != Main.loaded.currentGenerationTick && stepSelectorComboBox.getSelectedIndex() >= 0){
+            if(stepSelectorComboBox.getSelectedIndex() != Simulation.simulation.currentGenerationTick && stepSelectorComboBox.getSelectedIndex() >= 0){
                 // Changes the observed tick
-                Main.loaded.observedGenerationTick = stepSelectorComboBox.getSelectedIndex();
-                Main.loaded.selectedTick = true;
+                Simulation.simulation.observedGenerationTick = stepSelectorComboBox.getSelectedIndex();
+                Simulation.simulation.selectedTick = true;
             }
             repaint();
         }});
@@ -56,35 +56,35 @@ public class GUIPanel extends JPanel {
         }});
 
         // Auto Start Generation Checkbox
-        startGenerationsCheckBox = new JCheckBox("Automatically Start Generations",Main.loaded.autoStartGeneration);
+        startGenerationsCheckBox = new JCheckBox("Automatically Start Generations",Simulation.simulation.autoStartGeneration);
         startGenerationsCheckBox.setForeground(Color.white);
         startGenerationsCheckBox.setBackground(Color.black);
         startGenerationsCheckBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Main.loaded.autoStartGeneration = !Main.loaded.autoStartGeneration;
+                Simulation.simulation.autoStartGeneration = !Simulation.simulation.autoStartGeneration;
             repaint();
         }});
         // Auto Start Step Checkbox
-        startStepsCheckBox = new JCheckBox("Automatically Start Steps",Main.loaded.autoStartStep);
+        startStepsCheckBox = new JCheckBox("Automatically Start Steps",Simulation.simulation.autoStartStep);
         startStepsCheckBox.setForeground(Color.white);
         startStepsCheckBox.setBackground(Color.black);
         startStepsCheckBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Main.loaded.autoStartStep = !Main.loaded.autoStartStep;
+                Simulation.simulation.autoStartStep = !Simulation.simulation.autoStartStep;
             repaint();
         }});
 
         // Show Visuals Checkbox
-        showVisualsCheckBox = new JCheckBox("Show Visuals",Main.loaded.doVisuals);
+        showVisualsCheckBox = new JCheckBox("Show Visuals",Simulation.simulation.doVisuals);
         showVisualsCheckBox.setForeground(Color.white);
         showVisualsCheckBox.setBackground(Color.black);
         showVisualsCheckBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Main.loaded.doVisuals = !Main.loaded.doVisuals;
-            Screens.simulationSplitPane.setLeftComponent(Main.loaded.visualPanel);
+                Simulation.simulation.doVisuals = !Simulation.simulation.doVisuals;
+            Screens.simulationSplitPane.setLeftComponent(Simulation.simulation.visualPanel);
             repaint();
         }});
 
@@ -95,7 +95,7 @@ public class GUIPanel extends JPanel {
         saveSimulationButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Main.loaded.saveAndExit = !Main.loaded.saveAndExit;
+                // Simulation.simulation.saveAndExit = !Simulation.simulation.saveAndExit;
                 System.exit(1);
             repaint();
         }});
@@ -105,9 +105,9 @@ public class GUIPanel extends JPanel {
         startGenerationButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            if(Main.loaded.generationFinished == true){
-                Main.loaded.generationFinished = false;
-                Main.loaded.startNextGeneration = true;
+            if(Simulation.simulation.generationFinished == true){
+                Simulation.simulation.generationFinished = false;
+                Simulation.simulation.startNextGeneration = true;
             }
             repaint();
         }});
@@ -116,15 +116,15 @@ public class GUIPanel extends JPanel {
         startStepButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            if(Main.loaded.stepFinished == true){
-                Main.loaded.stepFinished = false;
-                Main.loaded.startNextStep = true;
+            if(Simulation.simulation.stepFinished == true){
+                Simulation.simulation.stepFinished = false;
+                Simulation.simulation.startNextStep = true;
             }
             repaint();
         }});
 
         // Simulation Data Label
-        settingsText = "<html>Generation Size: "+Main.loaded.generationSize+"<br/>Generation Length: "+Main.loaded.generationLength+"<br/>World Size: "+Main.loaded.worldSize+"<br/>Mutation Chance: "+Main.loaded.mutationChance+"<br/>Genome Size: "+Main.loaded.genomeLength;
+        settingsText = "<html>Generation Size: "+Simulation.simulation.generationSize+"<br/>Generation Length: "+Simulation.simulation.generationLength+"<br/>World Size: "+Simulation.simulation.worldSize+"<br/>Mutation Chance: "+Simulation.simulation.mutationChance+"<br/>Genome Size: "+Simulation.simulation.genomeLength;
         settingsLabel = new JLabel();
         updateLabel();
         settingsLabel.setForeground(Color.WHITE);

@@ -43,24 +43,24 @@ public class Creature extends ScreenObject{
         // System.out.println("Reproduced!");
 
         ArrayList<Creature> newCreatures = new ArrayList<Creature>();
-        // Make this.foodeaten % Database.minimumFoodEaten creatures
-        while(this.foodEaten>=Database.minimumFoodEaten){
-            this.foodEaten-=Database.minimumFoodEaten;
+        // Make this.foodeaten % Simulation.simulation.minimumFoodEaten creatures
+        while(this.foodEaten>=Simulation.simulation.minimumFoodEaten){
+            this.foodEaten-=Simulation.simulation.minimumFoodEaten;
 
             Genome genome;
             Creature creature;
 
             // Mutate
-            if(Database.random.nextDouble(0,1)<Database.mutationChance){
+            if(Simulation.simulation.random.nextDouble(0,1)<Simulation.simulation.mutationChance){
 
                 String newDNA = this.getGenome().getDNA();
                 int dnaLength = this.getGenome().getDNA().length();
                 // Debug
-                int bitMutationTotal = (int) (dnaLength/Database.bitMutationAverage);
+                int bitMutationTotal = (int) (dnaLength/Simulation.simulation.bitMutationAverage);
 
 
                 while(bitMutationTotal>0){
-                    int randomBit = Database.random.nextInt(dnaLength);
+                    int randomBit = Simulation.simulation.random.nextInt(dnaLength);
                     newDNA = newDNA.substring(0, randomBit) + ((Integer.parseInt(newDNA.substring(randomBit, randomBit+1))+1)%2) + newDNA.substring(randomBit+1);
                     bitMutationTotal--;
                 }
