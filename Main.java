@@ -4,9 +4,8 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import javax.swing.JPanel;
 import javax.swing.SwingWorker;
-
+import java.util.concurrent.TimeUnit;
 import java.util.BitSet;
 
 public class Main {
@@ -42,6 +41,7 @@ public class Main {
         Screens.createScreens();
     }
 
+    @SuppressWarnings("rawtypes")
     public static void startThread() {
         SwingWorker swingWorker = new SwingWorker() {
             @Override
@@ -56,20 +56,24 @@ public class Main {
         swingWorker.execute();
     }
 
-    public static void tick(JPanel panel, int i) {
-        // movement loop
-        for(int j = 0; j < Main.loaded.creaturesList.length; j++){
-            if (Main.loaded.creaturesList[j] != null) {
+    public static void tick() {
+        // This tick has never run before and needs to be calculated
+        if(loaded.currentGenerationTick == loaded.observedGenerationTick){
+            for(int j = 0; j < Main.loaded.creaturesList.length; j++){
+                if(Main.loaded.creaturesList[j] == null){
+                    continue;
+                }
                 Creature creature = loaded.creaturesList[j];
                 // Do the action
                 determineNeuronActivation(creature).motorMethod.invoke(creature);
                 // Save Tick Data for viewing
                 loaded.creatureColorsForAllTicks[loaded.currentGenerationTick][creature.getPosX()][creature.getPosY()] = creature.getColor();
             }
+            // Save Tick Data for viewing
+            loaded.foodLocationsForAllTicks[loaded.currentGenerationTick] = loaded.foodLocations;
         }
-        // Save Tick Data for viewing
-        loaded.foodLocationsForAllTicks[loaded.currentGenerationTick] = loaded.foodLocations;
-        panel.repaint();
+
+        loaded.visualPanel.repaint();
         Screens.guiPanel.updateLabel();
         Screens.simulationSplitPane.setDividerLocation(1000);
     }
@@ -89,9 +93,8 @@ public class Main {
             loaded.foodLocationsForAllTicks = new int[loaded.generationLength+1][loaded.worldSize][loaded.worldSize];
             
             // Simulate the Generation
-            for (loaded.currentGenerationTick = 0; loaded.currentGenerationTick < loaded.generationLength; loaded.currentGenerationTick++) {
-                tick(loaded.visualPanel, loaded.currentGenerationTick);
-            }
+            loaded.observedGenerationTick = 0;
+            runSimulationLoop(true);
 
             if (loaded.saveAndExit) {
                 Screens.setContent("Save");
@@ -114,6 +117,9 @@ public class Main {
             while(true){
                 if(loaded.autoStartGeneration || loaded.startNextGeneration){
                     break;
+                }
+                if(loaded.currentGenerationTick != loaded.observedGenerationTick){
+                    runSimulationLoop(false);
                 }
                 Main.loaded.visualPanel.repaint();
             }
@@ -155,7 +161,70 @@ public class Main {
                     loaded.creaturesList[i] = new Creature(); 
                 }
             }
+
+            Screens.guiPanel.stepSelectorComboBox.removeAllItems();
+        }   
+    }
+
+    public static void runSimulationLoop(boolean newTicks){
+        // Calculating New Ticks
+        if(newTicks){
+            for (loaded.currentGenerationTick = loaded.observedGenerationTick; loaded.currentGenerationTick < loaded.generationLength; loaded.currentGenerationTick++) {
+                // A different tick has been selected
+                if(loaded.selectedTick){
+                    loaded.selectedTick = false;
+                    runSimulationLoop(false);
+                    return;
+                }
+
+                loaded.observedGenerationTick = loaded.currentGenerationTick;
+                Screens.guiPanel.stepSelectorComboBox.addItem(String.valueOf(loaded.currentGenerationTick));
+                Screens.guiPanel.stepSelectorComboBox.setSelectedIndex(loaded.currentGenerationTick);
+                tick();
+                loaded.stepFinished = true;
+            
+                // Wait till next step should be run
+                while(true){
+                    if(loaded.autoStartStep || loaded.startNextStep){
+                        break;
+                    }
+                    Main.loaded.visualPanel.repaint();
+                }
+                loaded.startNextStep = false;
+    
+                // Tick Delay
+                try{
+                    TimeUnit.MILLISECONDS.sleep(loaded.tickDelay);
+                }
+                catch(Exception e){}
+            }
         }
+        // Replaying old ticks
+        else{
+            for (loaded.observedGenerationTick = loaded.observedGenerationTick; loaded.observedGenerationTick < loaded.currentGenerationTick; loaded.observedGenerationTick++) {
+                tick();
+                loaded.stepFinished = true;
+
+                Screens.guiPanel.stepSelectorComboBox.setSelectedIndex(loaded.observedGenerationTick);
+            
+                // Wait till next step should be run
+                while(true){
+                    if(loaded.autoStartStep || loaded.startNextStep){
+                        break;
+                    }
+                    Main.loaded.visualPanel.repaint();
+                }
+                loaded.startNextStep = false;
+    
+                // Tick Delay
+                try{
+                    TimeUnit.MILLISECONDS.sleep(loaded.tickDelay);
+                }
+                catch(Exception e){}
+            }
+            runSimulationLoop(true);
+        }
+        
     }
 
     // extra funcs
